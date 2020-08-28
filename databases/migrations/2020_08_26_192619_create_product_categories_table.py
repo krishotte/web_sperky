@@ -7,11 +7,14 @@ class CreateProductCategoriesTable(Migration):
         """
         Run the migrations.
         """
-        with self.schema.create('product_categories') as table:
+        with self.schema.create('categories') as table:
             table.increments('id')
 
             # TODO: name should be unique
-            table.string('name')
+            table.string('name').unique()
+
+            # TODO: order unique
+
             table.timestamps()
 
     def down(self):

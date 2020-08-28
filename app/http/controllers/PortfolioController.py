@@ -3,6 +3,7 @@
 from masonite.request import Request
 from masonite.view import View
 from masonite.controllers import Controller
+from app.Product_category import Product_category
 
 
 class PortfolioController(Controller):
@@ -18,3 +19,11 @@ class PortfolioController(Controller):
 
     def show(self, view: View):
         return view.render('menu')
+
+    def show_one_category(self, request: Request, view: View):
+        category = Product_category.find(request.param('category_id'))
+
+        return {
+            'category': category.serialize(),
+            'products': category.products.serialize()
+        }

@@ -28,10 +28,12 @@ for each in categories:
     
 if len(categories) == 0:
     new_cats = [
-        Product_category(name='Náhrdelníky'),
+        Product_category(name='Prívesky'),
         Product_category(name='Náušnice'),
+        Product_category(name='Náramky'),
         Product_category(name='Brošne'),
-        Product_category(name='Ozdoby'),
+        Product_category(name='Prstene'),
+        Product_category(name='Dekorácie'),
     ]
 
     for each in new_cats:

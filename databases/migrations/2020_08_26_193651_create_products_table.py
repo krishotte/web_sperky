@@ -13,10 +13,10 @@ class CreateProductsTable(Migration):
 
             # _TODO: product_categories - foreign key
             table.integer('category_id').unsigned()
-            table.foreign('category_id').references('id').on('product_categories')
+            table.foreign('category_id').references('id').on('categories')
 
-            table.long_text('description')
-            table.string('image_folder')
+            table.long_text('description').nullable()
+            table.string('image_folder').nullable()
             table.float('price')
             # TODO: attach multiple keywords to the product
             table.timestamps()

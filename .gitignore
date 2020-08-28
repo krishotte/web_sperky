@@ -12,3 +12,4 @@ package-lock.json
 #
 /.idea
 *.zip
+/storage/static/img

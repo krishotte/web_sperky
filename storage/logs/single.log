@@ -1,2 +1,4 @@
 2020-08-25 19:14:36 - ERROR - ResponseError in F:\Personal\prog\web\_m_test\bootstrap\start.py on line 38
 2020-08-25 19:15:55 - ERROR - ResponseError in F:\Personal\prog\web\_m_test\bootstrap\start.py on line 38
+2020-08-28 18:20:07 - ERROR - SyntaxError in F:\Personal\prog\web\_m_test\bootstrap\start.py on line 38
+2020-08-28 18:21:40 - ERROR - AttributeError in F:\Personal\prog\web\_m_test\app\http\controllers\PortfolioController.py on line 26
