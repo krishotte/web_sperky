@@ -1,6 +1,10 @@
 import os
 import sys
 
+root_path = os.getcwd()
+print(f'root path: {root_path}')
+sys.path.append(root_path)
+
 from dotenv import load_dotenv
 
 load_dotenv(dotenv_path="F:\\Personal\\prog\\web\\_m_test\\.env", verbose=True)

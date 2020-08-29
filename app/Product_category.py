@@ -9,7 +9,7 @@ class Product_category(Model):
     __table__ = 'categories'
     __fillable__ = ['name']
 
-    @has_many  # ('category_id', 'id')
+    @has_many('category_id', 'id')
     def products(self):
         from app.Product import Product
 

@@ -72,14 +72,16 @@
 		<!-- Categories -->
 		<div class="container-sm">
 		  <div class="row row-cols-3">
+			{% for category in categories %}
 			<div class="col view overlay zoom">
+
 
 				<!-- Card Wider -->
 					<div class="card card-cascade wider">
 					  <!-- Card image -->
 					  <div class="view view-cascade overlay">
 						<img class="card-img-top" src="/static/img/categories/02a.jpg" alt="...">
-						<a href="#!">
+						<a href="/portfolio/{{ category['id'] }}">
 						  <div class="mask rgba-white-slight"></div>
 						</a>
 					  </div>
@@ -87,73 +89,13 @@
 					  <!-- Card content -->
 					  <div class="card-body card-body-cascade text-center">
 						<!-- Title -->
-						<h5 class="card-title"><strong>Náhrdelníky</strong></h5>
+						<h5 class="card-title"><strong>{{ category["name"] }}</strong></h5>
 					  </div>
 					</div>
 
 			</div>
-			<div class="col view overlay zoom">
+			{% endfor %}
 
-				<!-- Card Wider -->
-					<div class="card card-cascade wider">
-					  <!-- Card image -->
-					  <div class="view view-cascade overlay">
-						<img class="card-img-top" src="/static/img/categories/04a.jpg" alt="...">
-						<a href="#!">
-						  <div class="mask rgba-white-slight"></div>
-						</a>
-					  </div>
-
-					  <!-- Card content -->
-					  <div class="card-body card-body-cascade text-center">
-						<!-- Title -->
-						<h5 class="card-title"><strong>Náušnice</strong></h5>
-					  </div>
-					</div>
-
-			</div>
-		  <!--</div>
-		  <div class="row">-->
-			<div class="col view overlay zoom">
-
-				<!-- Card Wider -->
-					<div class="card card-cascade wider">
-					  <!-- Card image -->
-					  <div class="view view-cascade overlay">
-						<img class="card-img-top" src="/static/img/categories/05a.jpg" alt="...">
-						<a href="#!">
-						  <div class="mask rgba-white-slight"></div>
-						</a>
-					  </div>
-
-					  <!-- Card content -->
-					  <div class="card-body card-body-cascade text-center">
-						<!-- Title -->
-						<h5 class="card-title"><strong>Brošne</strong></h5>
-					  </div>
-					</div>
-
-			</div>
-			<div class="col view overlay zoom">
-
-				<!-- Card Wider -->
-					<div class="card card-cascade wider">
-					  <!-- Card image -->
-					  <div class="view view-cascade overlay">
-						<img class="card-img-top" src="/static/img/categories/10a.jpg" alt="...">
-						<a href="#!">
-						  <div class="mask rgba-white-slight"></div>
-						</a>
-					  </div>
-
-					  <!-- Card content -->
-					  <div class="card-body card-body-cascade text-center">
-						<!-- Title -->
-						<h5 class="card-title"><strong>Ozdoby</strong></h5>
-					  </div>
-					</div>
-
-			</div>
 		  </div>
 
 
