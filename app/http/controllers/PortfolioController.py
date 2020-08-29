@@ -4,6 +4,7 @@ from masonite.request import Request
 from masonite.view import View
 from masonite.controllers import Controller
 from app.Product_category import Product_category
+from app.Material import Material
 
 
 class PortfolioController(Controller):
@@ -26,4 +27,14 @@ class PortfolioController(Controller):
         return {
             'category': category.serialize(),
             'products': category.products.serialize()
+        }
+
+    def show_one_category_and_material(self, request: Request, view: View):
+        category = Product_category.find(request.param('category_id'))
+        material = Material.find(request.param('material_id'))
+
+        return {
+            'category': category.serialize(),
+            'material': material.serialize(),
+            'products': material.products().where('category_id', '=', category.id).get().serialize(),
         }

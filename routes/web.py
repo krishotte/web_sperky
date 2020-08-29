@@ -12,7 +12,9 @@ ROUTES = [
     Get('/portfolio', 'PortfolioController@show'),
 
     # /porfolio/@category_id
-    Get('/portfolio/@category_id', 'PortfolioController@show_one_category')
+    Get('/portfolio/@category_id', 'PortfolioController@show_one_category'),
+
+    Get('/portfolio/@category_id/@material_id', 'PortfolioController@show_one_category_and_material'),
 
     # /product/@product_id
 
