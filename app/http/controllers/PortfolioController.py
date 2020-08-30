@@ -75,3 +75,35 @@ class PortfolioController(Controller):
         })
 
         # return request.all()
+
+    def get_one_product(self, request: Request, view: View):
+        product = Product.find(request.param('product_id'))
+        categories = Product_category.all()
+        materials = Material.all()
+        checked_materials = [each.id for each in product.materials]
+
+        return view.render('edit_product', {
+            'product': product.serialize(),
+            'categories': categories.serialize(),
+            'materials': materials.serialize(),
+            'checked_materials': checked_materials,
+        })
+
+    def update_product(self, request: Request, view: View):
+        product_to_update = Product.find(request.param('product_id'))
+
+        product_to_update.name = request.all()['name']
+        product_to_update.description = request.all()['description']
+        product_to_update.price = request.all()['price']
+
+        product_to_update.category().associate(Product_category.where('name', '=', request.all()['category']).first())
+        product_to_update.save()
+
+        material_ids = []
+        for each in request.all().keys():
+            if each.startswith('mat_'):
+                material_ids.append(int(each[4:]))
+
+        product_to_update.materials().sync(material_ids)
+
+        return request.all()

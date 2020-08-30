@@ -19,6 +19,9 @@ ROUTES = [
     Get('/admin/product/new', 'PortfolioController@empty_product'),
     Post('/admin/product/new', 'PortfolioController@store_product'),
 
+    Get('/admin/product/edit/@product_id', 'PortfolioController@get_one_product'),
+    Post('/admin/product/edit/@product_id', 'PortfolioController@update_product'),
+
     # /product/@product_id
 
 ]

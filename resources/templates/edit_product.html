@@ -1,0 +1,63 @@
+{% extends "menu.html" %}
+{% block content_a %}
+
+<main role="main">
+
+    <div class="container-md">
+
+        <form action="/admin/product/edit/{{ product['id'] }}" method="POST">
+            {{ csrf_field }}
+            <div>
+                <h2>Upraviť produkt</h2>
+            </div>
+            <div class="form-group">
+                <label for="name">Názov produktu</label>
+                <input type="text" class="form-control form-control-lg" id="name" name="name" value="{{ product['name']}}">
+            </div>
+
+            <div class="form-group">
+                <label for="description">Popis produktu</label>
+                <!--<input type="text" class="form-control" id="description">-->
+                <textarea class="form-control" id="description" rows="7" name="description">{{ product['description'] }}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="price">Cena</label>
+                <!--<input type="text" class="form-control" id="description">-->
+                <input type=number" class="form-control" id="price" name="price" value="{{ product['price']}}">
+            </div>
+
+            <div class="form-group">
+                <label for="category">Produktová kategória</label>
+                <select class="form-control" id="category" name="category" value="{{ product['category_id'] }}">
+                    {% for cat in categories %}
+                        {% if cat["id"] == product["category_id"] %}
+                            <option selected="selected">{{ cat["name"]  }}</option>
+                        {% else %}
+                            <option>{{ cat["name"]  }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="material">Materiálová skupina</label>
+                {% for mat in materials %}
+                    <div class="form-check">
+                        {% if mat['id'] in checked_materials %}
+                            <input class="form-check-input" type="checkbox" value="" name="mat_{{ mat['id'] }}" checked>
+                        {% else %}
+                            <input class="form-check-input" type="checkbox" value="" name="mat_{{ mat['id'] }}">
+                        {% endif %}
+                        <label class="form-check-label">{{ mat["name"] }}</label>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <button type="submit" class="btn btn-primary">Uložiť</button>
+
+        </form>
+    </div>
+
+</main>
+{% endblock %}
