@@ -7,7 +7,7 @@ from orator.orm import has_many
 class Product_category(Model):
     """Product_category Model."""
     __table__ = 'categories'
-    __fillable__ = ['name']
+    __fillable__ = ['name', 'image_path']
 
     @has_many('category_id', 'id')
     def products(self):

@@ -2,3 +2,13 @@
 2020-08-25 19:15:55 - ERROR - ResponseError in F:\Personal\prog\web\_m_test\bootstrap\start.py on line 38
 2020-08-28 18:20:07 - ERROR - SyntaxError in F:\Personal\prog\web\_m_test\bootstrap\start.py on line 38
 2020-08-28 18:21:40 - ERROR - AttributeError in F:\Personal\prog\web\_m_test\app\http\controllers\PortfolioController.py on line 26
+2020-08-29 11:41:20 - ERROR - AttributeError in F:\Personal\prog\web\_m_test\app\http\controllers\PortfolioController.py on line 39
+2020-08-29 11:41:43 - ERROR - AttributeError in F:\Personal\prog\web\_m_test\app\http\controllers\PortfolioController.py on line 39
+2020-08-29 19:25:14 - ERROR - InvalidCSRFToken in F:\Personal\prog\web\_m_test\bootstrap\start.py on line 38
+2020-08-29 19:25:23 - ERROR - InvalidCSRFToken in F:\Personal\prog\web\_m_test\bootstrap\start.py on line 38
+2020-08-29 19:26:52 - ERROR - InvalidCSRFToken in F:\Personal\prog\web\_m_test\bootstrap\start.py on line 38
+2020-08-29 19:27:02 - ERROR - InvalidCSRFToken in F:\Personal\prog\web\_m_test\bootstrap\start.py on line 38
+2020-08-30 05:08:43 - ERROR - UndefinedError in F:\Personal\prog\web\_m_test\resources\templates\new_product.html on line 30
+2020-08-30 05:08:49 - ERROR - UndefinedError in F:\Personal\prog\web\_m_test\resources\templates\new_product.html on line 30
+2020-08-30 05:08:52 - ERROR - UndefinedError in F:\Personal\prog\web\_m_test\resources\templates\new_product.html on line 30
+2020-08-30 10:14:02 - ERROR - SyntaxError in F:\Personal\prog\web\_m_test\bootstrap\start.py on line 38

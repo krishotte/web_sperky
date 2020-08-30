@@ -10,15 +10,16 @@ class CreateProductCategoriesTable(Migration):
         with self.schema.create('categories') as table:
             table.increments('id')
 
-            # TODO: name should be unique
+            # _TODO: name should be unique
             table.string('name').unique()
 
             # TODO: order unique
 
+            table.string('image_path').nullable()
             table.timestamps()
 
     def down(self):
         """
         Revert the migrations.
         """
-        self.schema.drop('product_categories')
+        self.schema.drop('categories')

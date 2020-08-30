@@ -13,6 +13,12 @@ sys.path.append(root_path)
 root_path = os.path.join(os.path.split(os.path.split(os.path.realpath(__file__))[0])[0], ".env")
 print(f'  {os.path.join(os.path.split(os.path.split(os.path.realpath(__file__))[0])[0], ".env")}')
 
+
+root_path = os.getcwd()
+print(f'root path: {root_path}')
+sys.path.append(root_path)
+
+
 # load_dotenv(dotenv_path=root_path, verbose=True)
 
 load_dotenv(dotenv_path="F:\\Personal\\prog\\web\\_m_test\\.env", verbose=True)
@@ -28,12 +34,12 @@ for each in categories:
     
 if len(categories) == 0:
     new_cats = [
-        Product_category(name='Prívesky'),
-        Product_category(name='Náušnice'),
-        Product_category(name='Náramky'),
-        Product_category(name='Brošne'),
-        Product_category(name='Prstene'),
-        Product_category(name='Dekorácie'),
+        Product_category(name='Prívesky', image_path='/static/img/categories/priv.jpg'),
+        Product_category(name='Náušnice', image_path='/static/img/categories/naus.jpg'),
+        Product_category(name='Náramky', image_path='/static/img/categories/nara.jpg'),
+        Product_category(name='Brošne', image_path='/static/img/categories/bros.jpg'),
+        Product_category(name='Prstene', image_path='/static/img/categories/prst.jpg'),
+        Product_category(name='Dekorácie', image_path='/static/img/categories/deko.jpg'),
     ]
 
     for each in new_cats:

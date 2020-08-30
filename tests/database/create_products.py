@@ -35,7 +35,7 @@ if len(products) == 0:
 
 print('products: ')
 for each in products:
-    print(f'   {each.id}, {each.name}, {each.category_id}')
+    print(f'   {each.serialize()}')
 
 # products_1 = Product.has('category_id', '==', 2).get()
 products_1 = Product_category.find(2).products

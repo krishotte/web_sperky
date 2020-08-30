@@ -6,7 +6,7 @@ from orator.orm import belongs_to, belongs_to_many
 
 class Product(Model):
     """Product Model."""
-    __fillable__ = ['name', 'category_id', 'price']
+    __fillable__ = ['name', 'category_id', 'price', 'description', 'image_folder']
 
     @belongs_to('category_id', 'id')
     def category(self):
