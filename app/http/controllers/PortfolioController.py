@@ -6,6 +6,8 @@ from masonite.controllers import Controller
 from app.Product_category import Product_category
 from app.Material import Material
 from app.Product import Product
+from masonite import Upload
+from pathlib import Path
 
 
 class PortfolioController(Controller):
@@ -49,7 +51,7 @@ class PortfolioController(Controller):
             'materials': materials,
         })
 
-    def store_product(self, request: Request, view: View):
+    def store_product(self, request: Request, view: View, upload: Upload):
         categories = Product_category.all().serialize()
         materials = Material.all().serialize()
 
@@ -60,6 +62,7 @@ class PortfolioController(Controller):
         )
         new_product.category().associate(Product_category.where('name', '=', request.all()['category']).first())
         new_product.save()
+        print(f'product created, id: {new_product.id}')
 
         material_ids = []
         for each in request.all().keys():
@@ -68,6 +71,9 @@ class PortfolioController(Controller):
         print(f'chosen material_ids: {material_ids}')
 
         new_product.materials().sync(material_ids)
+
+        saved = self.save_file_to_disk(new_product.id, upload, request)
+        print(f'file was saved: {saved}')
 
         return view.render('new_product', {
             'categories': categories,
@@ -82,14 +88,17 @@ class PortfolioController(Controller):
         materials = Material.all()
         checked_materials = [each.id for each in product.materials]
 
+        images = self.get_files_on_disk(product.id)
+
         return view.render('edit_product', {
             'product': product.serialize(),
             'categories': categories.serialize(),
             'materials': materials.serialize(),
             'checked_materials': checked_materials,
+            'images': images,
         })
 
-    def update_product(self, request: Request, view: View):
+    def update_product(self, request: Request, view: View, upload: Upload):
         product_to_update = Product.find(request.param('product_id'))
 
         product_to_update.name = request.all()['name']
@@ -106,4 +115,70 @@ class PortfolioController(Controller):
 
         product_to_update.materials().sync(material_ids)
 
-        return request.all()
+        saved = self.save_file_to_disk(product_to_update.id, upload, request)
+        print(f'file was saved: {saved}')
+
+        images = self.get_files_on_disk(product_to_update.id)
+
+        categories = Product_category.all()
+        materials = Material.all()
+        checked_materials = [each.id for each in product_to_update.materials]
+
+        return view.render('edit_product', {
+            'product': product_to_update.serialize(),
+            'categories': categories.serialize(),
+            'materials': materials.serialize(),
+            'checked_materials': checked_materials,
+            'images': images,
+        })
+
+        # return [request.input('name'), request.input('description'), request.input('price')]
+
+    def save_file_to_disk(self, product_id, upload: Upload, request: Request):
+        """
+        generates folder name and file names
+        scans if folder and files exist
+        saves file received in request to new file
+        :return: True if file was saved
+        """
+        folder_prefix = 'storage/static/img/'
+        folder = folder_prefix + str(product_id).zfill(4)
+
+        product_folder = Path.cwd().joinpath("storage").joinpath("static").joinpath("img").joinpath(str(product_id).zfill(4))
+        print(f'product folder: {product_folder}, exists: {product_folder.exists()}')
+
+        if not product_folder.exists():
+            product_folder.mkdir()
+
+        for each in product_folder.iterdir():
+            print(f' file found: {each.name}')
+
+        file_name_available = False
+        counter = 0
+        while (not file_name_available) and (counter < 10):
+            counter += 1
+            # print(f'counter: {counter}')
+            name_to_check = f'{str(product_id).zfill(4)}_{str(counter).zfill(2)}.jpg'
+
+            print(f' file {name_to_check} exists: {product_folder.joinpath(name_to_check).exists()}')
+            if not product_folder.joinpath(name_to_check).exists():
+                file_name_available = True
+
+        if file_name_available:
+            try:
+                upload.driver('disk').store(request.input("file"), location=folder, filename=name_to_check)
+                return True
+            except Exception:
+                pass
+
+        return False
+
+    def get_files_on_disk(self, product_id):
+        product_folder = Path.cwd().joinpath("storage").joinpath("static").joinpath("img").joinpath(str(product_id).zfill(4))
+        print(f'product folder: {product_folder}')
+
+        files = ['/static/img/' + str(product_id).zfill(4) + '/' + file.name for file in product_folder.iterdir()]
+        print(f'files found: {files}')
+
+        return files
+
