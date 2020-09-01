@@ -68,3 +68,11 @@ body {
 form {
     margin-top: 5rem;
 }
+
+._nav_padding {
+    margin-top: 5rem;
+}
+
+.products_item_padding {
+    margin: 1rem;
+}

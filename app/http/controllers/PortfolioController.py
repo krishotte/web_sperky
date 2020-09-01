@@ -25,7 +25,19 @@ class PortfolioController(Controller):
         return view.render('menu')
 
     def show_one_category(self, request: Request, view: View):
+        categories = Product_category.all()
+        materials = Material.all()
         category = Product_category.find(request.param('category_id'))
+        products = category.products
+
+        serialized_products = self.add_image_path(products.serialize())
+
+        return view.render('portfolio', {
+            'products': serialized_products,
+            'categories': categories,
+            'materials': materials,
+            'category_': category,
+        })
 
         return {
             'category': category.serialize(),
@@ -33,8 +45,20 @@ class PortfolioController(Controller):
         }
 
     def show_one_category_and_material(self, request: Request, view: View):
+        categories = Product_category.all()
+        materials = Material.all()
         category = Product_category.find(request.param('category_id'))
         material = Material.find(request.param('material_id'))
+        products = material.products().where('category_id', '=', category.id).get()
+
+        serialized_products = self.add_image_path(products.serialize())
+
+        return view.render('portfolio', {
+            'products': serialized_products,
+            'categories': categories,
+            'materials': materials,
+            'category_': category,
+        })
 
         return {
             'category': category.serialize(),
@@ -75,10 +99,12 @@ class PortfolioController(Controller):
         saved = self.save_file_to_disk(new_product.id, upload, request)
         print(f'file was saved: {saved}')
 
-        return view.render('new_product', {
+        """return view.render('new_product', {
             'categories': categories,
             'materials': materials,
-        })
+        })"""
+
+        return request.redirect('/admin/product/edit/' + str(new_product.id))
 
         # return request.all()
 
@@ -182,3 +208,10 @@ class PortfolioController(Controller):
 
         return files
 
+    def add_image_path(self, serialized_products):
+        for product in serialized_products:
+            id_str = str(product['id']).zfill(4)
+            product['image'] = f'/static/img/{id_str}/{id_str}_01.jpg'
+
+        # print(serialized_products)
+        return serialized_products

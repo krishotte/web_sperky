@@ -1,0 +1,26 @@
+{% extends "menu.html" %}
+{% block content_a %}
+
+<main role="main">
+
+    <div class="container-sm _nav_padding">
+        <div>
+            {% for category in categories %}
+                <!--<button type="button" class="btn btn-info">{{ category["name"] }}</button>-->
+                <a href="/portfolio/{{ category['id'] }}" class="btn btn-outline-info" role="button" aria-pressed="true">{{ category["name"] }}</a>
+            {% endfor %}
+        </div>
+
+        <div>
+            {% for material in materials %}
+                <a href="/portfolio/{{ category_['id'] }}/{{ material['id'] }}" class="btn btn-outline-info" role="button" aria-pressed="true">{{ material["name"] }}</a>
+            {% endfor %}
+        </div>
+    </div>
+
+    {% block content_main %}
+    {% endblock %}
+
+    <main>
+
+{% endblock %}
