@@ -6,6 +6,7 @@ body {
     padding-top: 3rem;
     padding-bottom: 3rem;
     color: #333333;
+    font-family: "Atma";
   }
 
 /* CUSTOMIZE THE CAROUSEL
@@ -75,4 +76,52 @@ form {
 
 .products_item_padding {
     margin: 1rem;
+}
+
+.img-hover {
+  background-repeat:no-repeat;
+  background-size: 100%;
+  display: inline-block;
+  background-position: 50% 50%;
+  -webkit-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+
+.img-hover:hover {
+  background-size: 110%;
+}
+
+.img-wrapper {
+  overflow: hidden;
+}
+
+.inner-img {
+  transition: 0.3s;
+}
+
+.inner-img:hover {
+  transform: scale(1.1);
+}
+
+.hovereffect {
+width:100%;
+height:100%;
+float:left;
+overflow:hidden;
+position:relative;
+text-align:center;
+cursor:default;
+}
+
+.hovereffect img {
+display:block;
+position:relative;
+-webkit-transition:all .4s linear;
+transition:all .4s linear;
+}
+
+.hovereffect:hover img {
+-ms-transform:scale(1.1);
+-webkit-transform:scale(1.1);
+transform:scale(1.1);
 }

@@ -52,18 +52,18 @@
 		<div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
 		  <div class="carousel-inner">
 			<div class="carousel-item active">
-				<div class="container-sm">
-					<img src="/static/img/categories/02a.jpg" class="img-fluid mx-auto d-block" alt="...">
+				<div class="container-fluid">
+					<img src="/static/img/07.jpg" class="img-fluid mx-auto d-block" alt="...">
 				</div>
 			</div>
 			<div class="carousel-item">
-			  	<div class="container-sm">
-					<img src="/static/img/categories/04a.jpg" class="img-fluid mx-auto d-block" alt="...">
+			  	<div class="container-fluid">
+					<img src="/static/img/08.jpg" class="img-fluid mx-auto d-block" alt="...">
 				</div>
 			</div>
 			<div class="carousel-item">
-			  	<div class="container-sm">
-					<img src="/static/img/categories/05a.jpg" class="img-fluid mx-auto d-block" alt="...">
+			  	<div class="container-fluid">
+					<img src="/static/img/09.jpg" class="img-fluid mx-auto d-block" alt="...">
 				</div>
 			</div>
 		  </div>
@@ -73,23 +73,24 @@
 		<div class="container-sm">
 		  <div class="row row-cols-3">
 			{% for category in categories %}
-			<div class="col view overlay zoom">
+			<div class="col">
 
 
 				<!-- Card Wider -->
-					<div class="card card-cascade wider">
+					<div class="card card-cascade wider my-2">
 					  <!-- Card image -->
-					  <div class="view view-cascade overlay">
-						<img class="card-img-top" src="{{ category['image_path'] }}" alt="...">
+					  <div class="view view-cascade overlay hovereffect">
 						<a href="/portfolio/{{ category['id'] }}">
-						  <div class="mask rgba-white-slight"></div>
+						  <img class="card-img-top img-fluid" src="{{ category['image_path'] }}" alt="...">
+
+						  <!--<div class="mask rgba-white-slight"></div>-->
 						</a>
 					  </div>
 
 					  <!-- Card content -->
 					  <div class="card-body card-body-cascade text-center">
 						<!-- Title -->
-						<h5 class="card-title"><strong>{{ category["name"] }}</strong></h5>
+						<h5 class="card-title font-weight-light">{{ category["name"] }}</h5>
 					  </div>
 					</div>
 

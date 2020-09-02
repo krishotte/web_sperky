@@ -203,6 +203,9 @@ class PortfolioController(Controller):
         product_folder = Path.cwd().joinpath("storage").joinpath("static").joinpath("img").joinpath(str(product_id).zfill(4))
         print(f'product folder: {product_folder}')
 
+        if not product_folder.exists():
+            product_folder.mkdir()
+
         files = ['/static/img/' + str(product_id).zfill(4) + '/' + file.name for file in product_folder.iterdir()]
         print(f'files found: {files}')
 
