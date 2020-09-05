@@ -41,9 +41,16 @@
 
 					</ul>
 					<form class="form-inline mt-2 mt-md-0">
-						<a href="/admin/product/new">
-							<button class="btn btn-danger my-2 mx-2 my-sm-0">Admin</button>
-						</a>
+						<div class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle btn-danger my-2 mx-2 my-sm-0" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+								<!--<button class="btn btn-danger my-2 mx-2 my-sm-0">Admin</button>-->
+								Admin
+							</a>
+							<div class="dropdown-menu">
+								<a class="dropdown-item" href="/admin/product/new">Nový produkt</a>
+								<a class="dropdown-item" href="/admin/product/edit">Editovať produkty</a>
+							</div>
+						</div>
 					</form>
 					<form class="form-inline mt-2 mt-md-0">
 							<input class="form-control mr-sm-2" type="text" placeholder="Hľadaj" aria-label="Search">

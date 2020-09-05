@@ -22,15 +22,28 @@ class PortfolioController(Controller):
         self.request = request
 
     def show(self, view: View):
-        return view.render('menu')
+        categories = Product_category.all()
+        materials = Material.all()
+        products = Product.order_by('id', 'asc').get()
+
+        serialized_products = self.add_image_path(products.serialize())
+        serialized_products = self.add_description_lines(serialized_products)
+
+        return view.render('portfolio', {
+            'products': serialized_products,
+            'categories': categories,
+            'materials': materials,
+            'category_': categories[1],
+        })
 
     def show_one_category(self, request: Request, view: View):
         categories = Product_category.all()
         materials = Material.all()
         category = Product_category.find(request.param('category_id'))
-        products = category.products
+        products = category.products().order_by('id', 'asc').get()
 
         serialized_products = self.add_image_path(products.serialize())
+        serialized_products = self.add_description_lines(serialized_products)
 
         return view.render('portfolio', {
             'products': serialized_products,
@@ -49,9 +62,10 @@ class PortfolioController(Controller):
         materials = Material.all()
         category = Product_category.find(request.param('category_id'))
         material = Material.find(request.param('material_id'))
-        products = material.products().where('category_id', '=', category.id).get()
+        products = material.products().where('category_id', '=', category.id).order_by('id', 'asc').get()
 
         serialized_products = self.add_image_path(products.serialize())
+        serialized_products = self.add_description_lines(serialized_products)
 
         return view.render('portfolio', {
             'products': serialized_products,
@@ -122,6 +136,18 @@ class PortfolioController(Controller):
             'materials': materials.serialize(),
             'checked_materials': checked_materials,
             'images': images,
+        })
+
+    def get_all_products(self, view: View):
+        products = Product.order_by('id', 'asc').get()
+        serialized_products = self.add_image_path(products.serialize())
+        serialized_products = self.add_description_lines(serialized_products)
+
+        return view.render('edit_portfolio', {
+            'products': serialized_products,
+            'categories': [],
+            'materials': [],
+
         })
 
     def update_product(self, request: Request, view: View, upload: Upload):
@@ -217,4 +243,10 @@ class PortfolioController(Controller):
             product['image'] = f'/static/img/{id_str}/{id_str}_01.jpg'
 
         # print(serialized_products)
+        return serialized_products
+
+    def add_description_lines(self, serialized_products):
+        for product in serialized_products:
+            product['description_lines'] = product['description'].split('\r\n')
+
         return serialized_products
