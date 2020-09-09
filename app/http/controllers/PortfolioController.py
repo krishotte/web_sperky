@@ -80,6 +80,20 @@ class PortfolioController(Controller):
             'products': material.products().where('category_id', '=', category.id).get().serialize(),
         }
 
+    def show_one_product(self, request: Request, view: View):
+        product = Product.find(request.param('product_id'))
+        serialized_product = self.add_image_path([product.serialize()])[0]
+        serialized_product = self.add_description_lines([serialized_product])[0]
+        files, indexes = self.get_files_on_disk(request.param('product_id'))
+        serialized_product['images'] = files
+        serialized_product['indexes'] = indexes
+
+        # return serialized_product
+
+        return view.render('product', {
+            'product': serialized_product,
+        })
+
     def empty_product(self, view: View):
         categories = Product_category.all().serialize()
         materials = Material.all().serialize()
@@ -128,7 +142,7 @@ class PortfolioController(Controller):
         materials = Material.all()
         checked_materials = [each.id for each in product.materials]
 
-        images = self.get_files_on_disk(product.id)
+        images, indexes = self.get_files_on_disk(product.id)
 
         return view.render('edit_product', {
             'product': product.serialize(),
@@ -170,7 +184,7 @@ class PortfolioController(Controller):
         saved = self.save_file_to_disk(product_to_update.id, upload, request)
         print(f'file was saved: {saved}')
 
-        images = self.get_files_on_disk(product_to_update.id)
+        images, indexes = self.get_files_on_disk(product_to_update.id)
 
         categories = Product_category.all()
         materials = Material.all()
@@ -234,8 +248,9 @@ class PortfolioController(Controller):
 
         files = ['/static/img/' + str(product_id).zfill(4) + '/' + file.name for file in product_folder.iterdir()]
         print(f'files found: {files}')
+        indexes = list(range(len(files)))
 
-        return files
+        return files, indexes
 
     def add_image_path(self, serialized_products):
         for product in serialized_products:
@@ -247,6 +262,9 @@ class PortfolioController(Controller):
 
     def add_description_lines(self, serialized_products):
         for product in serialized_products:
-            product['description_lines'] = product['description'].split('\r\n')
+            if product['description'] != 'None':
+                product['description_lines'] = product['description'].split('\r\n')
+            else:
+                product['description_lines'] = ['Popis chýba']
 
         return serialized_products
