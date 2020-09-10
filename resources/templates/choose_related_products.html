@@ -1,0 +1,43 @@
+{% extends "menu.html" %}
+{% block content_a %}
+
+<main role="main">
+
+    <div class="container-sm _nav_padding">
+        <h2>Vybrať príbuzné produkty k produktu:</h2>
+        <h4>{{ caller_product['name'] }} - <span class="bg-info text-white"> ID: {{ caller_product['id'] }} </span></h4>
+
+        <form action="/related_product/{{ caller_product['id'] }}" method="POST" id="form1">
+            {{ csrf_field }}
+            <div class="row row-cols-2 row-cols-sm-4 row-cols-md-6">
+                {% for product in all_products %}
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-header">{{ product['id'] }}</div>
+                            <div class="card-body">
+                                <img src="{{ product['image'] }}" class="img-fluid card-img-top" alt="Obrázok chýba">
+                                <div class="form-check text-center">
+
+                                    {% if product['id'] in related_products_ids %}
+                                        <input class="form-check-input" type="checkbox" value="{{ product['id'] }}" name="prod_{{ product['id'] }}" checked>
+                                    {% else %}
+                                        <input class="form-check-input" type="checkbox" value="{{ product['id'] }}" name="prod_{{ product['id'] }}">
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </form>
+
+        <a href="/admin/product/edit/{{ caller_product['id'] }}">
+            <button class="btn btn-secondary my-2 mx-2">Zrušiť</button>
+        </a>
+
+        <!-- button is part of the form while its outside the form -->
+        <button type="submit" class="btn btn-primary my-2 mx-2" form="form1">Uložiť</button>
+
+    </div>
+</main>
+{% endblock %}

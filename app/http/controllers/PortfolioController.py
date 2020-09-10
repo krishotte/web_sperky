@@ -2,6 +2,7 @@
 
 from masonite.request import Request
 from masonite.view import View
+from masonite.response import Response
 from masonite.controllers import Controller
 from app.Product_category import Product_category
 from app.Material import Material
@@ -144,12 +145,16 @@ class PortfolioController(Controller):
 
         images, indexes = self.get_files_on_disk(product.id)
 
+        related_products = product.related_products
+        related_products_serialized = self.add_image_path(related_products.serialize())
+
         return view.render('edit_product', {
             'product': product.serialize(),
             'categories': categories.serialize(),
             'materials': materials.serialize(),
             'checked_materials': checked_materials,
             'images': images,
+            'related_products': related_products_serialized,
         })
 
     def get_all_products(self, view: View):
@@ -199,6 +204,35 @@ class PortfolioController(Controller):
         })
 
         # return [request.input('name'), request.input('description'), request.input('price')]
+
+    def choose_related_products(self, request: Request, view: View):
+        all_products = Product.order_by('id', 'asc').get()
+        caller_product = Product.find(request.param('product_id'))
+        serialized_products = self.add_image_path(all_products.serialize())
+
+        related_products_ids = [related_product.id for related_product in caller_product.related_products]
+
+        # return related_products_ids
+
+        return view.render('choose_related_products', {
+            'all_products': serialized_products,
+            'caller_product': caller_product,
+            'related_products_ids': related_products_ids,
+        })
+
+    def update_related_products(self, request: Request, response: Response):
+        product_to_update = Product.find(request.param('product_id'))
+
+        related_product_ids = []
+        for each in request.all().keys():
+            if each.startswith('prod_'):
+                related_product_ids.append(int(each[5:]))
+
+        product_to_update.related_products().sync(related_product_ids)
+
+        # return product_to_update
+
+        return response.redirect('/admin/product/edit/' + str(product_to_update.id))
 
     def save_file_to_disk(self, product_id, upload: Upload, request: Request):
         """
