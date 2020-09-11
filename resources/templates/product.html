@@ -5,7 +5,7 @@
     <div class="container-sm _nav_padding">
         <h2 class="text-center">{{ product["name"] }}</h2>
         <div class="row">
-            <div class="col-sm-5">
+            <div class="col-sm-6">
                 <!-- Carousel -->
                 <div id="carousel1" class="carousel slide" data-ride="carousel">
                     <ol class="carousel-indicators bg-secondary">
@@ -43,7 +43,7 @@
                     </a>
                 </div>
             </div>
-            <div class="col-sm-7">
+            <div class="col-sm-6">
                 <div class="products_item_padding">
                     {% for line in product['description_lines'] %}
                         <p class="my-0">{{ line  }}</p>
@@ -56,6 +56,17 @@
         </div>
 
         <h4>Príbuzné produkty</h4>
+
+        <div class="row row-cols-2 row-cols-sm-4">
+            {% for related_product in related_products %}
+                <div class="col">
+                    <a href="/product/{{ related_product['id'] }}">
+                        <img src="{{ related_product['image'] }}" class="img-fluid" alt="Obrázok chýba">
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+
     </div>
 </main>
 

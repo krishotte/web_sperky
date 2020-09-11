@@ -89,10 +89,14 @@ class PortfolioController(Controller):
         serialized_product['images'] = files
         serialized_product['indexes'] = indexes
 
+        related_products = product.related_products
+        related_products_serialized = self.add_image_path(related_products.serialize())
+
         # return serialized_product
 
         return view.render('product', {
             'product': serialized_product,
+            'related_products': related_products_serialized,
         })
 
     def empty_product(self, view: View):
