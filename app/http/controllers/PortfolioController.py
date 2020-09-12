@@ -13,6 +13,8 @@ from pathlib import Path
 
 class PortfolioController(Controller):
     """PortfolioController Controller Class."""
+    # TODO: implement searching
+    # TODO_: display and remember pushed button
 
     def __init__(self, request: Request):
         """PortfolioController Initializer
@@ -34,7 +36,8 @@ class PortfolioController(Controller):
             'products': serialized_products,
             'categories': categories,
             'materials': materials,
-            'category_': categories[1],
+            'category_': {'id': -1},
+            'material_': {'id': -1},
         })
 
     def show_one_category(self, request: Request, view: View):
@@ -51,6 +54,7 @@ class PortfolioController(Controller):
             'categories': categories,
             'materials': materials,
             'category_': category,
+            'material_': {'id': -1},
         })
 
         return {
@@ -73,6 +77,7 @@ class PortfolioController(Controller):
             'categories': categories,
             'materials': materials,
             'category_': category,
+            'material_': material,
         })
 
         return {
