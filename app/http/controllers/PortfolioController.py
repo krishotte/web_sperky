@@ -26,8 +26,8 @@ class PortfolioController(Controller):
         self.request = request
 
     def show(self, view: View):
-        categories = Product_category.all()
-        materials = Material.all()
+        categories = Product_category.order_by('id', 'asc').get()
+        materials = Material.order_by('id', 'asc').get()
         products = Product.order_by('id', 'desc').get()
 
         serialized_products = add_image_path(products.serialize())
@@ -42,8 +42,8 @@ class PortfolioController(Controller):
         })
 
     def show_one_category(self, request: Request, view: View):
-        categories = Product_category.all()
-        materials = Material.all()
+        categories = Product_category.order_by('id', 'asc').get()
+        materials = Material.order_by('id', 'asc').get()
         category = Product_category.find(request.param('category_id'))
         products = category.products().order_by('id', 'desc').get()
 
@@ -64,8 +64,8 @@ class PortfolioController(Controller):
         }
 
     def show_one_category_and_material(self, request: Request, view: View):
-        categories = Product_category.all()
-        materials = Material.all()
+        categories = Product_category.order_by('id', 'asc').get()
+        materials = Material.order_by('id', 'asc').get()
         category = Product_category.find(request.param('category_id'))
         material = Material.find(request.param('material_id'))
         products = material.products().where('category_id', '=', category.id).order_by('id', 'desc').get()

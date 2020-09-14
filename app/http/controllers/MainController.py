@@ -18,7 +18,7 @@ class MainController(Controller):
         self.request = request
 
     def show(self, view: View):
-        categories = Product_category.all()
+        categories = Product_category.order_by('id', 'asc').get()
 
         # return categories.serialize()
         return view.render('main', {'categories': categories})

@@ -28,8 +28,8 @@ class EditPortfolioController(Controller):
         pass
 
     def empty_product(self, view: View):
-        categories = Product_category.all().serialize()
-        materials = Material.all().serialize()
+        categories = Product_category.order_by('id', 'asc').get()
+        materials = Material.order_by('id', 'asc').get()
 
         return view.render('admin.new_product', {
             'categories': categories,
@@ -37,8 +37,8 @@ class EditPortfolioController(Controller):
         })
 
     def store_product(self, request: Request, view: View, upload: Upload):
-        categories = Product_category.all().serialize()
-        materials = Material.all().serialize()
+        # categories = Product_category.all().serialize()
+        # materials = Material.all().serialize()
 
         print(f' request: {request.all()}')
         new_product = Product(
@@ -73,8 +73,8 @@ class EditPortfolioController(Controller):
 
     def get_one_product(self, request: Request, view: View):
         product = Product.find(request.param('product_id'))
-        categories = Product_category.all()
-        materials = Material.all()
+        categories = Product_category.order_by('id', 'asc').get()
+        materials = Material.order_by('id', 'asc').get()
         checked_materials = [each.id for each in product.materials]
 
         images, indexes = get_files_on_disk(product.id)
@@ -129,8 +129,8 @@ class EditPortfolioController(Controller):
         # TODO: do redirect instead of this
         images, indexes = get_files_on_disk(product_to_update.id)
 
-        categories = Product_category.all()
-        materials = Material.all()
+        categories = Product_category.order_by('id', 'asc').get()
+        materials = Material.order_by('id', 'asc').get()
         checked_materials = [each.id for each in product_to_update.materials]
 
         related_products = product_to_update.related_products
