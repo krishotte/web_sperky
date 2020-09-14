@@ -10,6 +10,7 @@ ROUTES = [
 
     # Portfolio routes
     Get('/portfolio', 'PortfolioController@show'),
+    Post('/portfolio/search', 'PortfolioController@show_search'),
     Get('/portfolio/@category_id', 'PortfolioController@show_one_category'),
     Get('/portfolio/@category_id/@material_id', 'PortfolioController@show_one_category_and_material'),
     Get('/product/@product_id', 'PortfolioController@show_one_product'),
