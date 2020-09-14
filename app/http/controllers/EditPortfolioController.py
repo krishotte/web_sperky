@@ -14,6 +14,7 @@ from .PortfolioController import get_files_on_disk, add_image_path, add_descript
 
 class EditPortfolioController(Controller):
     """EditPortfolioController Controller Class."""
+    # TODO_: add field for detailed description in product create and edit
 
     def __init__(self, request: Request):
         """EditPortfolioController Initializer
@@ -39,10 +40,12 @@ class EditPortfolioController(Controller):
         categories = Product_category.all().serialize()
         materials = Material.all().serialize()
 
+        print(f' request: {request.all()}')
         new_product = Product(
             name=request.all()['name'],
             description=request.all()['description'],
             price=request.all()['price'],
+            detail=request.all()['detail']
         )
         new_product.category().associate(Product_category.where('name', '=', request.all()['category']).first())
         new_product.save()
@@ -79,6 +82,8 @@ class EditPortfolioController(Controller):
         related_products = product.related_products
         related_products_serialized = add_image_path(related_products.serialize())
 
+        # return product
+
         return view.render('admin.edit_product', {
             'product': product.serialize(),
             'categories': categories.serialize(),
@@ -89,7 +94,7 @@ class EditPortfolioController(Controller):
         })
 
     def get_all_products(self, view: View):
-        products = Product.order_by('id', 'asc').get()
+        products = Product.order_by('id', 'desc').get()
         serialized_products = add_image_path(products.serialize())
         serialized_products = add_description_lines(serialized_products)
 
@@ -106,6 +111,7 @@ class EditPortfolioController(Controller):
         product_to_update.name = request.all()['name']
         product_to_update.description = request.all()['description']
         product_to_update.price = request.all()['price']
+        product_to_update.detail = request.all()['detail']
 
         product_to_update.category().associate(Product_category.where('name', '=', request.all()['category']).first())
         product_to_update.save()

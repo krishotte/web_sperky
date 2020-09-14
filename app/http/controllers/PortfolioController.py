@@ -27,7 +27,7 @@ class PortfolioController(Controller):
     def show(self, view: View):
         categories = Product_category.all()
         materials = Material.all()
-        products = Product.order_by('id', 'asc').get()
+        products = Product.order_by('id', 'desc').get()
 
         serialized_products = add_image_path(products.serialize())
         serialized_products = add_description_lines(serialized_products)
@@ -44,7 +44,7 @@ class PortfolioController(Controller):
         categories = Product_category.all()
         materials = Material.all()
         category = Product_category.find(request.param('category_id'))
-        products = category.products().order_by('id', 'asc').get()
+        products = category.products().order_by('id', 'desc').get()
 
         serialized_products = add_image_path(products.serialize())
         serialized_products = add_description_lines(serialized_products)
@@ -67,7 +67,7 @@ class PortfolioController(Controller):
         materials = Material.all()
         category = Product_category.find(request.param('category_id'))
         material = Material.find(request.param('material_id'))
-        products = material.products().where('category_id', '=', category.id).order_by('id', 'asc').get()
+        products = material.products().where('category_id', '=', category.id).order_by('id', 'desc').get()
 
         serialized_products = add_image_path(products.serialize())
         serialized_products = add_description_lines(serialized_products)
@@ -90,6 +90,7 @@ class PortfolioController(Controller):
         product = Product.find(request.param('product_id'))
         serialized_product = add_image_path([product.serialize()])[0]
         serialized_product = add_description_lines([serialized_product])[0]
+        serialized_product = add_detail_lines([serialized_product])[0]
         files, indexes = get_files_on_disk(request.param('product_id'))
         serialized_product['images'] = files
         serialized_product['indexes'] = indexes
@@ -130,9 +131,19 @@ def add_image_path(serialized_products):
 
 def add_description_lines(serialized_products):
     for product in serialized_products:
-        if product['description'] != 'None':
+        if (product['description'] != 'None') and (product['description'] is not None) and (product['description'] is not ''):
             product['description_lines'] = product['description'].split('\r\n')
         else:
             product['description_lines'] = ['Popis chýba']
+
+    return serialized_products
+
+
+def add_detail_lines(serialized_products):
+    for product in serialized_products:
+        if (product['detail'] != 'None') and (product['detail'] is not None):
+            product['detail_lines'] = product['detail'].split('\r\n')
+        else:
+            product['detail_lines'] = ['Detailný popis chýba']
 
     return serialized_products

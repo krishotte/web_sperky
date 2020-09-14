@@ -49,6 +49,12 @@
                         <p class="my-0">{{ line  }}</p>
                     {% endfor %}
 
+                    <div class="mt-2">
+                        {% for line in product['detail_lines'] %}
+                            <p class="my-0">{{ line  }}</p>
+                        {% endfor %}
+                    </div>
+
                     <h4 class="mt-4">{{ product["price"] }} EUR</h4>
                     <button type="button" class="btn btn-success">Objednať</button>
                 </div>
