@@ -13,3 +13,6 @@ package-lock.json
 /.idea
 *.zip
 /storage/static/img
+
+# not working
+/storage/logs

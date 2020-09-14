@@ -9,11 +9,12 @@ from app.Material import Material
 from app.Product import Product
 from masonite import Upload
 from pathlib import Path
+from unidecode import unidecode
 
 
 class PortfolioController(Controller):
     """PortfolioController Controller Class."""
-    # TODO: implement searching
+    # TODO_: implement searching
     # TODO_: display and remember pushed button
 
     def __init__(self, request: Request):
@@ -103,6 +104,29 @@ class PortfolioController(Controller):
         return view.render('product', {
             'product': serialized_product,
             'related_products': related_products_serialized,
+        })
+
+    def show_search(self, request: Request, view: View):
+        products = Product.order_by('id', 'desc').get()
+
+        filtered_products = []
+        for each in products:
+            if unidecode(each.name.lower()).find(unidecode(request.all()['search'].lower())) >= 0:
+                filtered_products.append(each.serialize())
+
+        categories = Product_category.all()
+        materials = Material.all()
+
+        serialized_products = add_image_path(filtered_products)
+        serialized_products = add_description_lines(serialized_products)
+
+        # return filtered_products
+        return view.render('portfolio', {
+            'products': serialized_products,
+            'categories': categories,
+            'materials': materials,
+            'category_': {'id': -1},
+            'material_': {'id': -1},
         })
 
 
