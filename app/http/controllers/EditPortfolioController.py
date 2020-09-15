@@ -10,6 +10,7 @@ from app.Product import Product
 from masonite import Upload
 from pathlib import Path
 from .PortfolioController import get_files_on_disk, add_image_path, add_description_lines
+from os import remove
 
 
 class EditPortfolioController(Controller):
@@ -59,7 +60,7 @@ class EditPortfolioController(Controller):
 
         new_product.materials().sync(material_ids)
 
-        saved = self.save_file_to_disk(new_product.id, upload, request)
+        saved = self._save_file_to_disk(new_product.id, upload, request)
         print(f'file was saved: {saved}')
 
         """return view.render('new_product', {
@@ -123,7 +124,7 @@ class EditPortfolioController(Controller):
 
         product_to_update.materials().sync(material_ids)
 
-        saved = self.save_file_to_disk(product_to_update.id, upload, request)
+        saved = self._save_file_to_disk(product_to_update.id, upload, request)
         print(f'file was saved: {saved}')
 
         # TODO: do redirect instead of this
@@ -176,7 +177,16 @@ class EditPortfolioController(Controller):
 
         return response.redirect('/admin/product/edit/' + str(product_to_update.id))
 
-    def save_file_to_disk(self, product_id, upload: Upload, request: Request):
+    def delete_image(self, request: Request, response: Response):
+        image_to_delete = request.all()['image_to_delete']
+        print(f'  image to delete: {image_to_delete}')
+
+        deleted = self._delete_file(image_to_delete)
+        print(f'  image was deleted: {deleted}')
+
+        return response.redirect('/admin/product/edit/' + str(request.all()['caller_id']))
+
+    def _save_file_to_disk(self, product_id, upload: Upload, request: Request):
         """
         generates folder name and file names
         scans if folder and files exist
@@ -214,3 +224,16 @@ class EditPortfolioController(Controller):
                 pass
 
         return False
+
+    def _delete_file(self, image):
+        image_name = image.split('/')[-1]
+        folder_name = image.split('/')[-2]
+
+        file_to_remove = Path.cwd().joinpath("storage").joinpath("static").joinpath("img").joinpath(folder_name).joinpath(image_name)
+        print(f'--- file to remove: {file_to_remove}')
+
+        try:
+            remove(str(file_to_remove))
+            return True
+        except Exception:
+            return False

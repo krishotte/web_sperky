@@ -35,8 +35,11 @@ categories[4].save()
 categories[5].save()
 
 categories[0].name = 'Náušnice'
+categories[0].image_path = '/static/img/categories/naus.jpg'
 categories[1].name = 'Náramky'
-categories[2].name = 'Prívesky'
+categories[1].image_path = '/static/img/categories/nara.jpg'
+categories[2].name = 'Náhrdelníky'
+categories[2].image_path = '/static/img/categories/priv.jpg'
 
 categories[0].save()
 categories[1].save()

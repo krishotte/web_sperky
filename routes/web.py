@@ -25,7 +25,10 @@ ROUTES = [
 
     # related product chooser
     Get('/related_product/@product_id', 'EditPortfolioController@choose_related_products'),
-    Post('/related_product/@product_id', 'EditPortfolioController@update_related_products')
+    Post('/related_product/@product_id', 'EditPortfolioController@update_related_products'),
+
+    # delete routes
+    Post('/admin/image/delete', 'EditPortfolioController@delete_image'),
 
 ]
 

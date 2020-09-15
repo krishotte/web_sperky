@@ -3,9 +3,9 @@
 
 <main role="main">
 
-    <div class="container-md">
+    <div class="container-md _nav_padding">
 
-        <form action="/admin/product/edit/{{ product['id'] }}" method="POST" enctype="multipart/form-data">
+        <form action="/admin/product/edit/{{ product['id'] }}" method="POST" enctype="multipart/form-data" id="form1">
             {{ csrf_field }}
             <div>
                 <h2>Upraviť produkt <span class="bg-info text-white"> ID: {{ product['id'] }} </span></h2>
@@ -64,6 +64,7 @@
                 <label for="file">Pridať obrázok</label>
                 <input type="file" class="form-control-file" id="file" name="file">
             </div>
+        </form>
 
             <div class="form-group">
                 <label>Uložené obrázky</label>
@@ -72,14 +73,18 @@
                         <div class="col">
                             <p>{{ image }}</p>
                             <img src="{{ image }}" class="img-fluid img-thumbnail">
+                            <form action="/admin/image/delete" method="post">
+                                {{ csrf_field }}
+                                <input type="hidden" name="image_to_delete" value="{{ image }}">
+                                <input type="hidden" name="caller_id" value="{{ product['id'] }}">
+                                <button type="submit" class="btn btn-danger">Vymazať</button>
+                            </form>
                         </div>
                     {% endfor %}
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-primary">Uložiť</button>
-
-        </form>
+            <button type="submit" class="btn btn-primary" form="form1">Uložiť</button>
 
         <h4 class="mt-4">Príbuzné produkty</h4>
 
