@@ -114,8 +114,8 @@ class PortfolioController(Controller):
             if unidecode(each.name.lower()).find(unidecode(request.all()['search'].lower())) >= 0:
                 filtered_products.append(each.serialize())
 
-        categories = Product_category.all()
-        materials = Material.all()
+        categories = Product_category.order_by('id', 'asc').get()
+        materials = Material.order_by('id', 'asc').get()
 
         serialized_products = add_image_path(filtered_products)
         serialized_products = add_description_lines(serialized_products)
