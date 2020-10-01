@@ -41,7 +41,7 @@ class EditPortfolioController(Controller):
         # categories = Product_category.all().serialize()
         # materials = Material.all().serialize()
 
-        print(f' request: {request.all()}')
+        # print(f' request: {request.all()}')
         new_product = Product(
             name=request.all()['name'],
             description=request.all()['description'],
@@ -186,7 +186,7 @@ class EditPortfolioController(Controller):
 
         return response.redirect('/admin/product/edit/' + str(request.all()['caller_id']))
 
-    def update_cover(self):
+    def update_cover(self, response: Response):
         categories = Product_category.order_by('id', 'asc').get()
 
         for category in categories:
@@ -202,7 +202,7 @@ class EditPortfolioController(Controller):
             except AttributeError:
                 pass
 
-        return categories
+        return response.redirect('/main')
 
     def _save_file_to_disk(self, product_id, upload: Upload, request: Request):
         """
