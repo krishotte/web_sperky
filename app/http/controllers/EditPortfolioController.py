@@ -186,6 +186,24 @@ class EditPortfolioController(Controller):
 
         return response.redirect('/admin/product/edit/' + str(request.all()['caller_id']))
 
+    def update_cover(self):
+        categories = Product_category.order_by('id', 'asc').get()
+
+        for category in categories:
+            last_product = category.products().order_by('id', 'desc').first()
+            try:
+                # print(f' last product: {last_product.serialize()}')
+                folder_prefix = '/static/img/'
+                image_path = folder_prefix + str(last_product.id).zfill(4) + '/' + str(last_product.id).zfill(4) + '_01.jpg'
+                print(f' cover image path: {image_path}')
+
+                category.image_path = image_path
+                category.save()
+            except AttributeError:
+                pass
+
+        return categories
+
     def _save_file_to_disk(self, product_id, upload: Upload, request: Request):
         """
         generates folder name and file names

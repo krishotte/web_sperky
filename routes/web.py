@@ -22,6 +22,7 @@ ROUTES = [
     Get('/admin/product/edit', 'EditPortfolioController@get_all_products'),
     Get('/admin/product/edit/@product_id', 'EditPortfolioController@get_one_product'),
     Post('/admin/product/edit/@product_id', 'EditPortfolioController@update_product'),
+    Get('/admin/update-cover', 'EditPortfolioController@update_cover'),
 
     # related product chooser
     Get('/related_product/@product_id', 'EditPortfolioController@choose_related_products'),
