@@ -4,6 +4,7 @@ from masonite.request import Request
 from masonite.view import View
 from masonite.controllers import Controller
 from app.Product_category import Product_category
+from .PortfolioController import get_user
 
 
 class MainController(Controller):
@@ -17,8 +18,14 @@ class MainController(Controller):
         """
         self.request = request
 
-    def show(self, view: View):
+    def show(self, view: View, request: Request):
         categories = Product_category.order_by('id', 'asc').get()
 
+        user = get_user(request)
+        print(f' logged in user: {user}')
+
         # return categories.serialize()
-        return view.render('main', {'categories': categories})
+        return view.render('main', {
+            'categories': categories,
+            'user': user,
+        })

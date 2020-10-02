@@ -28,13 +28,15 @@ class EditPortfolioController(Controller):
     def show(self, view: View):
         pass
 
-    def empty_product(self, view: View):
+    def empty_product(self, view: View, request: Request):
         categories = Product_category.order_by('id', 'asc').get()
         materials = Material.order_by('id', 'asc').get()
+        user = self._get_user(request)
 
         return view.render('admin.new_product', {
             'categories': categories,
             'materials': materials,
+            'user': user,
         })
 
     def store_product(self, request: Request, view: View, upload: Upload):
@@ -82,9 +84,9 @@ class EditPortfolioController(Controller):
 
         related_products = product.related_products
         related_products_serialized = add_image_path(related_products.serialize())
+        user = self._get_user(request)
 
         # return product
-
         return view.render('admin.edit_product', {
             'product': product.serialize(),
             'categories': categories.serialize(),
@@ -92,17 +94,22 @@ class EditPortfolioController(Controller):
             'checked_materials': checked_materials,
             'images': images,
             'related_products': related_products_serialized,
+            'user': user,
         })
 
-    def get_all_products(self, view: View):
+    def get_all_products(self, view: View, request: Request):
         products = Product.order_by('id', 'desc').get()
         serialized_products = add_image_path(products.serialize())
         serialized_products = add_description_lines(serialized_products)
+
+        user = self._get_user(request)
+        print(f' logged in user: {user}')
 
         return view.render('admin.edit_portfolio', {
             'products': serialized_products,
             'categories': [],
             'materials': [],
+            'user': user,
 
         })
 
@@ -136,6 +143,7 @@ class EditPortfolioController(Controller):
 
         related_products = product_to_update.related_products
         related_products_serialized = add_image_path(related_products.serialize())
+        user = self._get_user(request)
 
         return view.render('admin.edit_product', {
             'product': product_to_update.serialize(),
@@ -144,6 +152,7 @@ class EditPortfolioController(Controller):
             'checked_materials': checked_materials,
             'images': images,
             'related_products': related_products_serialized,
+            'user': user,
         })
 
         # return [request.input('name'), request.input('description'), request.input('price')]
@@ -154,6 +163,7 @@ class EditPortfolioController(Controller):
         serialized_products = add_image_path(all_products.serialize())
 
         related_products_ids = [related_product.id for related_product in caller_product.related_products]
+        user = self._get_user(request)
 
         # return related_products_ids
 
@@ -161,6 +171,7 @@ class EditPortfolioController(Controller):
             'all_products': serialized_products,
             'caller_product': caller_product,
             'related_products_ids': related_products_ids,
+            'user': user,
         })
 
     def update_related_products(self, request: Request, response: Response):
@@ -255,3 +266,11 @@ class EditPortfolioController(Controller):
             return True
         except Exception:
             return False
+
+    def _get_user(self, request):
+        try:
+            user = request.user().email
+        except AttributeError:
+            user = ""
+
+        return user

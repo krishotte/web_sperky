@@ -1,6 +1,6 @@
 """Web Routes."""
 
-from masonite.routes import Get, Post
+from masonite.routes import Get, Post, RouteGroup
 
 ROUTES = [
     Get('/', 'WelcomeController@show').name('welcome'),
@@ -16,20 +16,23 @@ ROUTES = [
     Get('/product/@product_id', 'PortfolioController@show_one_product'),
 
     # Admin routes
-    Get('/admin/product/new', 'EditPortfolioController@empty_product'),
-    Post('/admin/product/new', 'EditPortfolioController@store_product'),
+    RouteGroup([
+        Get('/admin/product/new', 'EditPortfolioController@empty_product'),
+        Post('/admin/product/new', 'EditPortfolioController@store_product'),
 
-    Get('/admin/product/edit', 'EditPortfolioController@get_all_products'),
-    Get('/admin/product/edit/@product_id', 'EditPortfolioController@get_one_product'),
-    Post('/admin/product/edit/@product_id', 'EditPortfolioController@update_product'),
-    Get('/admin/update-cover', 'EditPortfolioController@update_cover'),
+        Get('/admin/product/edit', 'EditPortfolioController@get_all_products'),
+        Get('/admin/product/edit/@product_id', 'EditPortfolioController@get_one_product'),
+        Post('/admin/product/edit/@product_id', 'EditPortfolioController@update_product'),
+        Get('/admin/update-cover', 'EditPortfolioController@update_cover'),
 
-    # related product chooser
-    Get('/related_product/@product_id', 'EditPortfolioController@choose_related_products'),
-    Post('/related_product/@product_id', 'EditPortfolioController@update_related_products'),
+        # related product chooser
+        Get('/related_product/@product_id', 'EditPortfolioController@choose_related_products'),
+        Post('/related_product/@product_id', 'EditPortfolioController@update_related_products'),
 
-    # delete routes
-    Post('/admin/image/delete', 'EditPortfolioController@delete_image'),
+        # delete routes
+        Post('/admin/image/delete', 'EditPortfolioController@delete_image'),
+    ], middleware=('auth', ))
+
 
 ]
 

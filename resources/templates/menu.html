@@ -40,6 +40,10 @@
 							</li>
 
 					</ul>
+
+					<div class="nav-item text-light mx-2">prihlásený užívateľ: {{ user }}</div>
+
+					{% if user %}
 					<form class="form-inline mt-2 mt-md-0">
 						<div class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle btn-danger my-2 mx-2 my-sm-0" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
@@ -53,11 +57,22 @@
 							</div>
 						</div>
 					</form>
+					{% endif %}
 					<form class="form-inline mt-2 mt-md-0" action="/portfolio/search" method="post">
 							{{ csrf_field }}
 							<input class="form-control mr-sm-2" type="text" placeholder="Hľadaj" aria-label="Search" name="search">
 							<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Hľadaj</button>
 					</form>
+
+					{% if not user %}
+							<a href="/login" class="nav-link btn btn-primary my-0 mx-2 my-sm-0" role="button">Login</a>
+					{% endif %}
+					{% if user %}
+							<a href="/logout" class="nav-link btn btn-primary my-0 mx-2 my-sm-0" role="button">Logout</a>
+					{% endif %}
+
+
+
 					</div>
 			</nav>
     </header>

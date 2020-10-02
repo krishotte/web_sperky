@@ -10,6 +10,7 @@ from app.Product import Product
 from masonite import Upload
 from pathlib import Path
 from unidecode import unidecode
+from masonite.auth import Auth
 
 
 class PortfolioController(Controller):
@@ -25,7 +26,7 @@ class PortfolioController(Controller):
         """
         self.request = request
 
-    def show(self, view: View):
+    def show(self, view: View, request: Request):
         categories = Product_category.order_by('id', 'asc').get()
         materials = Material.order_by('id', 'asc').get()
         products = Product.order_by('id', 'desc').get()
@@ -33,12 +34,15 @@ class PortfolioController(Controller):
         serialized_products = add_image_path(products.serialize())
         serialized_products = add_description_lines(serialized_products)
 
+        user = get_user(request)
+
         return view.render('portfolio', {
             'products': serialized_products,
             'categories': categories,
             'materials': materials,
             'category_': {'id': -1},
             'material_': {'id': -1},
+            'user': user,
         })
 
     def show_one_category(self, request: Request, view: View):
@@ -50,12 +54,15 @@ class PortfolioController(Controller):
         serialized_products = add_image_path(products.serialize())
         serialized_products = add_description_lines(serialized_products)
 
+        user = get_user(request)
+
         return view.render('portfolio', {
             'products': serialized_products,
             'categories': categories,
             'materials': materials,
             'category_': category,
             'material_': {'id': -1},
+            'user': user,
         })
 
         return {
@@ -72,6 +79,7 @@ class PortfolioController(Controller):
 
         serialized_products = add_image_path(products.serialize())
         serialized_products = add_description_lines(serialized_products)
+        user = get_user(request)
 
         return view.render('portfolio', {
             'products': serialized_products,
@@ -79,6 +87,7 @@ class PortfolioController(Controller):
             'materials': materials,
             'category_': category,
             'material_': material,
+            'user': user,
         })
 
         return {
@@ -98,12 +107,13 @@ class PortfolioController(Controller):
 
         related_products = product.related_products
         related_products_serialized = add_image_path(related_products.serialize())
-
+        user = get_user(request)
         # return serialized_product
 
         return view.render('product', {
             'product': serialized_product,
             'related_products': related_products_serialized,
+            'user': user,
         })
 
     def show_search(self, request: Request, view: View):
@@ -119,6 +129,7 @@ class PortfolioController(Controller):
 
         serialized_products = add_image_path(filtered_products)
         serialized_products = add_description_lines(serialized_products)
+        user = get_user(request)
 
         # return filtered_products
         return view.render('portfolio', {
@@ -127,6 +138,7 @@ class PortfolioController(Controller):
             'materials': materials,
             'category_': {'id': -1},
             'material_': {'id': -1},
+            'user': user,
         })
 
 
@@ -171,3 +183,12 @@ def add_detail_lines(serialized_products):
             product['detail_lines'] = ['Detailný popis chýba']
 
     return serialized_products
+
+
+def get_user(request):
+    try:
+        user = request.user().email
+    except AttributeError:
+        user = ""
+
+    return user
