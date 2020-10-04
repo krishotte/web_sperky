@@ -31,7 +31,7 @@ ROUTES = [
 
         # delete routes
         Post('/admin/image/delete', 'EditPortfolioController@delete_image'),
-    ], middleware=('auth', ))
+    ], middleware=('admin', ))
 
 
 ]

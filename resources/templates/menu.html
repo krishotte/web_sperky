@@ -41,9 +41,11 @@
 
 					</ul>
 
-					<div class="nav-item text-light mx-2">prihlásený užívateľ: {{ user }}</div>
+					{% if user['email'] %}
+						<div class="nav-item text-light mx-2">prihlásený užívateľ: {{ user['email'] }}</div>
+					{% endif %}
 
-					{% if user %}
+					{% if user['role'] == 'admin' %}
 					<form class="form-inline mt-2 mt-md-0">
 						<div class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle btn-danger my-2 mx-2 my-sm-0" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">

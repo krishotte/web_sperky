@@ -186,9 +186,12 @@ def add_detail_lines(serialized_products):
 
 
 def get_user(request):
+    user = {}
     try:
-        user = request.user().email
+        user['email'] = request.user().email
+        user['role'] = request.user().role.name
     except AttributeError:
-        user = ""
+        # user = ""
+        pass
 
     return user

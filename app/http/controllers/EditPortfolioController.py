@@ -268,9 +268,12 @@ class EditPortfolioController(Controller):
             return False
 
     def _get_user(self, request):
+        user = {}
         try:
-            user = request.user().email
+            user['email'] = request.user().email
+            user['role'] = request.user().role.name
         except AttributeError:
-            user = ""
+            # user = ""
+            pass
 
         return user
