@@ -23,10 +23,15 @@ class LoginController:
         Returns:
             masonite.view.View -- Returns the Masonite view class.
         """
+        caller = get_caller_path(request)
+        print(f' login caller: {caller}')
+
         if request.user():
             return request.redirect("/home")
 
-        return view.render("auth/login")
+        return view.render("auth/login", {
+            'caller': caller,
+        })
 
     def store(self, request: Request, auth: Auth, validate: Validator):
         """Login the user.
@@ -39,6 +44,9 @@ class LoginController:
         Returns:
             masonite.request.Request -- The Masonite request class.
         """
+        caller = request.input('caller_path')
+        print(f' post caller: {caller}')
+
         errors = request.validate(
             validate.required(["email", "password"]), validate.email("email"),
         )
@@ -47,7 +55,8 @@ class LoginController:
             return request.back().with_errors(errors).with_input()
 
         if auth.login(request.input("email"), request.input("password")):
-            return request.redirect("/home")
+            # return request.redirect("/home")
+            return  request.redirect(caller)
 
         return request.back().with_errors({"email": ["Email or password is incorrect"]})
 
@@ -62,4 +71,15 @@ class LoginController:
             masonite.request.Request -- The Masonite request class.
         """
         auth.logout()
-        return request.redirect("/login")
+        caller = get_caller_path(request)
+        # return request.redirect("/login")
+        return request.redirect(caller)
+
+
+def get_caller_path(request):
+    caller_http = request.header('HTTP_REFERER')
+    http_host = request.header('HTTP_HOST')
+    caller_subpath = caller_http.split(http_host)
+    print(f' caller: {caller_subpath}')
+
+    return caller_subpath[-1]

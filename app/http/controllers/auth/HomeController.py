@@ -3,6 +3,7 @@
 from masonite.auth import Auth
 from masonite.request import Request
 from masonite.view import View
+from ..PortfolioController import get_user
 
 
 class HomeController:
@@ -14,4 +15,9 @@ class HomeController:
     def show(self, request: Request, view: View, auth: Auth):
         if not auth.user():
             request.redirect("/login")
-        return view.render("auth/home")
+        # return view.render("auth/home")
+        user = get_user(request)
+
+        return view.render("dash/menu", {
+            'user': user,
+        })

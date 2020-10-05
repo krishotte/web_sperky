@@ -31,8 +31,14 @@ ROUTES = [
 
         # delete routes
         Post('/admin/image/delete', 'EditPortfolioController@delete_image'),
-    ], middleware=('admin', ))
+    ], middleware=('admin', )),
 
+    # User Dashboard routes
+    RouteGroup([
+        Get('/dashboard', 'DashboardController@show'),
+        Get('/dashboard/profile', 'DashboardController@show_profile'),
+        Get('/dashboard/orders', 'DashboardController@show_orders'),
+    ], middleware=('auth', ))
 
 ]
 

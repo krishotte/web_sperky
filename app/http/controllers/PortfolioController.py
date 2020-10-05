@@ -193,5 +193,5 @@ def get_user(request):
     except AttributeError:
         # user = ""
         pass
-
+    print(f' current user: {user}')
     return user
