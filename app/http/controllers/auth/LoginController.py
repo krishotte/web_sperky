@@ -56,7 +56,7 @@ class LoginController:
 
         if auth.login(request.input("email"), request.input("password")):
             # return request.redirect("/home")
-            return  request.redirect(caller)
+            return request.redirect(caller)
 
         return request.back().with_errors({"email": ["Email or password is incorrect"]})
 
@@ -70,6 +70,7 @@ class LoginController:
         Returns:
             masonite.request.Request -- The Masonite request class.
         """
+        request.session.reset()
         auth.logout()
         caller = get_caller_path(request)
         # return request.redirect("/login")

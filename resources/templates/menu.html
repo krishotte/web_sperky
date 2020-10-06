@@ -46,6 +46,10 @@
 
 					</ul>
 
+					{% if session().has('ordered_items') %}
+						<a class="nav-link" href="/dashboard/cart">Košík: {{ session().get('ordered_items')|length }}</a>
+					{% endif %}
+
 					{% if user['email'] %}
 						<div class="nav-item text-light mx-2">prihlásený užívateľ: {{ user['email'] }}</div>
 					{% endif %}

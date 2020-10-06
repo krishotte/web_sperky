@@ -24,3 +24,8 @@ class Product(Model):
         # referenced products
         from app.Product import Product
         return Product
+
+    @belongs_to_many
+    def orders(self):
+        from app.Order import Order
+        return Order

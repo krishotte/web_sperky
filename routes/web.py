@@ -38,6 +38,9 @@ ROUTES = [
         Get('/dashboard', 'DashboardController@show'),
         Get('/dashboard/profile', 'DashboardController@show_profile'),
         Get('/dashboard/orders', 'DashboardController@show_orders'),
+        Get('/dashboard/cart', 'DashboardController@show_cart'),
+        Get('/add-to-cart/@product_id', 'DashboardController@add_to_cart'),
+        Get('/make-order', 'DashboardController@make_order'),
     ], middleware=('auth', ))
 
 ]

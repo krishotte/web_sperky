@@ -1,7 +1,7 @@
 """User Model."""
 
 from config.database import Model
-from orator.orm import belongs_to
+from orator.orm import belongs_to, has_many
 
 
 class User(Model):
@@ -16,3 +16,15 @@ class User(Model):
         from app.Role import Role
 
         return Role
+
+    @has_many
+    def addresses(self):
+        from app.Address import Address
+
+        return Address
+
+    @has_many
+    def orders(self):
+        from app.Order import Order
+
+        return Order

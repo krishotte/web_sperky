@@ -1,0 +1,48 @@
+{% extends "dash/menu.html" %}
+{% block content_a %}
+
+<main role="main">
+
+    <div class="container-sm _nav_padding">
+        <h2>Vitajte {{ user['email'] }} vo svojom užívateľskom profile</h2>
+
+        <h4>Váš nákupný košík: </h4>
+
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">id</th>
+                    <th scope="col">názov produktu</th>
+                    <th scope="col">počet</th>
+                    <th scope="col">jednotková cena</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for each in range(ordered_items|length) %}
+                    <tr>
+                        <th scope="row">{{ ordered_items[each] }}</th>
+                        <td>{{ products[each]['name'] }}</td>
+                        <td>{{ counts[each] }}</td>
+                        <td>{{ products[each]['price'] }} EUR</td>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <th scope="row"></th>
+                    <td></td>
+                    <td><strong>Spolu</strong></td>
+                    <td><strong>{{ total_price }} EUR</strong></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="row">
+            <div class="col-9"></div>
+            <div class="col-3">
+                <a href="/make-order" class="btn btn-success" role="button">Objednať</a>
+                <!--<button class="btn btn-success">Objednať</button>-->
+            </div>
+        </div>
+    </div>
+</main>
+
+{% endblock %}
