@@ -38,6 +38,7 @@ ROUTES = [
         Get('/dashboard', 'DashboardController@show'),
         Get('/dashboard/profile', 'DashboardController@show_profile'),
         Get('/dashboard/orders', 'DashboardController@show_orders'),
+        Get('/dashboard/order/@order_id', 'DashboardController@show_single_order'),
         Get('/dashboard/cart', 'DashboardController@show_cart'),
         Get('/add-to-cart/@product_id', 'DashboardController@add_to_cart'),
         Get('/make-order', 'DashboardController@make_order'),

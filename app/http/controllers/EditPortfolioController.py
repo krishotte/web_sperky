@@ -48,7 +48,8 @@ class EditPortfolioController(Controller):
             name=request.all()['name'],
             description=request.all()['description'],
             price=request.all()['price'],
-            detail=request.all()['detail']
+            detail=request.all()['detail'],
+            note=request.all()['note'],
         )
         new_product.category().associate(Product_category.where('name', '=', request.all()['category']).first())
         new_product.save()
@@ -120,6 +121,7 @@ class EditPortfolioController(Controller):
         product_to_update.description = request.all()['description']
         product_to_update.price = request.all()['price']
         product_to_update.detail = request.all()['detail']
+        product_to_update.note = request.all()['note']
 
         product_to_update.category().associate(Product_category.where('name', '=', request.all()['category']).first())
         product_to_update.save()

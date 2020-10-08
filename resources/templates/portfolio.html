@@ -24,9 +24,12 @@
                             <p class="my-0">{{ line  }}</p>
                         {% endfor %}
                         <h4 class="my-4">{{ product["price"] }} EUR</h4>
+                        <a href="/product/{{ product['id'] }}" class="btn btn-success" role="button">Podrobnosti</a>
                     </div>
                 </div>
+
             </div>
+            <hr>
         {% endfor %}
     </div>
 

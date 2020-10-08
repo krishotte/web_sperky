@@ -14,7 +14,7 @@ class Order(Model):
 
         return User
 
-    @belongs_to_many
+    @belongs_to_many(with_pivot=['product_count', 'unit_price'])
     def products(self):
         from app.Product import Product
 

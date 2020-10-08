@@ -7,6 +7,7 @@ from .PortfolioController import get_user
 from .auth.LoginController import get_caller_path
 from app.Product import Product
 from app.Order import Order
+from .EditPortfolioController import add_image_path
 
 
 class DashboardController(Controller):
@@ -40,26 +41,53 @@ class DashboardController(Controller):
 
     def show_orders(self, request: Request, view: View):
         user = get_user(request)
+
+        orders = request.user().orders
+
+        print(f' your orders: {orders.serialize()}')
+
         return view.render('dash/orders', {
             'user': user,
+            'orders': orders.serialize(),
+        })
+
+    def show_single_order(self, request: Request, view: View):
+        user = get_user(request)
+        order = Order.find(request.param('order_id'))
+
+        serialized_products = add_image_path(order.products.serialize())
+        print(f' products: {order.products.serialize()}')
+
+        return view.render('dash/single_order', {
+            'user': user,
+            'order': order.serialize(),
+            'products': serialized_products,
         })
 
     def show_cart(self, request: Request, view: View):
         user = get_user(request)
 
-        items = request.session.get('ordered_items')
-        unique_items = list(set(items))
-        counts = [items.count(item) for item in unique_items]
-        print(f' unique items: {unique_items}')
-        print(f' counts: {counts}')
+        try:
+            items = request.session.get('ordered_items')
+            unique_items = list(set(items))
+            counts = [items.count(item) for item in unique_items]
+            print(f' unique items: {unique_items}')
+            print(f' counts: {counts}')
+        except Exception:
+            counts = 0
+            unique_items = []
 
         total_price = 0
         products = []
-        for index, each in enumerate(unique_items):
-            product = Product.find(each)
-            products.append(product.serialize())
-            total_price += product.price * counts[index]
-        print(f' total price: {total_price}')
+        try:
+            for index, each in enumerate(unique_items):
+                product = Product.find(each)
+                products.append(product.serialize())
+                total_price += product.price * counts[index]
+            print(f' total price: {total_price}')
+            serialized_products = add_image_path(products)
+        except Exception:
+            serialized_products = []
 
         request.session.set('unique_items', unique_items)
         request.session.set('counts', counts)
@@ -69,7 +97,7 @@ class DashboardController(Controller):
             'user': user,
             'ordered_items': unique_items,
             'counts': counts,
-            'products': products,
+            'products': serialized_products,
             'total_price': total_price,
         })
 

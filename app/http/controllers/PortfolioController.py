@@ -101,6 +101,7 @@ class PortfolioController(Controller):
         serialized_product = add_image_path([product.serialize()])[0]
         serialized_product = add_description_lines([serialized_product])[0]
         serialized_product = add_detail_lines([serialized_product])[0]
+        serialized_product = add_note_lines([serialized_product])[0]
         files, indexes = get_files_on_disk(request.param('product_id'))
         serialized_product['images'] = files
         serialized_product['indexes'] = indexes
@@ -181,6 +182,16 @@ def add_detail_lines(serialized_products):
             product['detail_lines'] = product['detail'].split('\r\n')
         else:
             product['detail_lines'] = ['Detailný popis chýba']
+
+    return serialized_products
+
+
+def add_note_lines(serialized_products):
+    for product in serialized_products:
+        if (product['note'] != 'None') and (product['note'] is not None):
+            product['note_lines'] = product['note'].split('\r\n')
+        else:
+            product['note_lines'] = ['Poznámka chýba']
 
     return serialized_products
 
