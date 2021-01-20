@@ -8,12 +8,14 @@
             <div class="col-sm-6">
                 <!-- Carousel -->
                 <div id="carousel1" class="carousel slide" data-ride="carousel">
-                    <ol class="carousel-indicators bg-secondary">
+                    <ol class="carousel-indicators">
                         {% for index in product["indexes"] %}
                             {% if index == 0 %}
-                                <li data-target="#carousel1" data-slide-to="{{ counter }}" class="active"></li>
+                                <li data-target="#carousel1" data-slide-to="{{ counter }}" class="active"
+                                    style="height: 3px; background-color: black"></li>
                             {% else %}
-                                <li data-target="#carousel1" data-slide-to="{{ counter }}"></li>
+                                <li data-target="#carousel1" data-slide-to="{{ counter }}"
+                                    style="height: 3px; background-color: black"></li>
                             {% endif %}
 
                         {% endfor %}
@@ -34,12 +36,18 @@
                         {% endfor %}
                     </div>
                     <a class="carousel-control-prev" href="#carousel1" role="button" data-slide="prev">
-                        <span class="carousel-control-prev-icon bg-secondary" aria-hidden="true"></span>
+                        <!--<span class="carousel-control-prev-icon bg-secondary" aria-hidden="true"></span>-->
                         <span class="sr-only">Previous</span>
+                        <svg class="bi" width="48" height="48" style="color: black">
+                            <use xlink:href="/static/svg/bootstrap-icons.svg#chevron-left"></use>
+                        </svg>
                     </a>
                     <a class="carousel-control-next" href="#carousel1" role="button" data-slide="next">
-                        <span class="carousel-control-next-icon bg-secondary" aria-hidden="true"></span>
+                        <!--<span class="carousel-control-next-icon bg-secondary" aria-hidden="true"></span>-->
                         <span class="sr-only">Next</span>
+                        <svg class="bi" width="48" height="48" style="color: black">
+                            <use xlink:href="/static/svg/bootstrap-icons.svg#chevron-right"></use>
+                        </svg>
                     </a>
                 </div>
             </div>
