@@ -5,7 +5,16 @@ from orator.orm import belongs_to
 
 
 class Address(Model):
-    """Address Model."""
+    """
+    Address Model.
+
+    id: integer default: None
+    user_id: integer default: None
+    street: string(255) default: None
+    zip_code: string(255) default: None
+    city: string(255) default: None
+
+    """
     __fillable__ = ['street', 'zip_code', 'city']
 
     @belongs_to

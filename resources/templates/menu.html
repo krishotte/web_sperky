@@ -30,7 +30,11 @@
 					<div class="collapse navbar-collapse" id="navbarCollapse">
 					<ul class="navbar-nav mr-auto">
 							<li class="nav-item active">
-								<a class="nav-link" href="/main">Home <span class="sr-only">(current)</span></a>
+								<a class="nav-link" href="/main">
+									<svg class="bi pb-1 my-0" width="1.4em" height="1.4em">
+										<use xlink:href="/static/svg/bootstrap-icons.svg#house"></use>
+									</svg>
+									Home <span class="sr-only">(current)</span></a>
 							</li>
 							<li class="nav-item">
 								<a class="nav-link" href="/portfolio">Ponuka</a>
@@ -40,7 +44,11 @@
 							</li>
 							{% if user['email'] %}
 							<li class="nav-item">
-								<a class="nav-link" href="/dashboard">Používateľ</a>
+								<a class="nav-link" href="/dashboard">
+									<svg class="bi pb-1 my-0" width="1.4em" height="1.4em">
+										<use xlink:href="/static/svg/bootstrap-icons.svg#person"></use>
+									</svg>
+									Používateľ</a>
 							</li>
 							{% endif %}
 
@@ -72,17 +80,31 @@
 					<form class="form-inline mt-2 mt-md-0" action="/portfolio/search" method="post">
 							{{ csrf_field }}
 							<input class="form-control mr-sm-2" type="text" placeholder="Hľadaj" aria-label="Search" name="search">
-							<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Hľadaj</button>
+							<button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+								<svg class="bi pb-1" width="1.2em" height="1.2em">
+									<use xlink:href="/static/svg/bootstrap-icons.svg#search"></use>
+								</svg>
+								<span>Hľadaj</span></button>
 					</form>
 
 					{% if not user %}
-							<a href="/login" class="nav-link btn btn-primary my-0 mx-2 my-sm-0" role="button">Login</a>
+						<form class="form-inline mt-2 mt-md-0 ml-2" action="/login" method="get">
+							<button class="btn btn-primary my-2 my-sm-0" type="submit">
+								<svg class="bi pb-1" width="1.4em" height="1.4em">
+									<use xlink:href="/static/svg/bootstrap-icons.svg#box-arrow-in-right"></use>
+								</svg>
+								<span>Login</span></button>
+						</form>
 					{% endif %}
 					{% if user %}
-							<a href="/logout" class="nav-link btn btn-primary my-0 mx-2 my-sm-0" role="button">Logout</a>
+						<form class="form-inline mt-2 mt-md-0 ml-2" action="/logout" method="get">
+							<button class="btn btn-primary my-2 my-sm-0" type="submit">
+								<svg class="bi pb-1" width="1.4em" height="1.4em">
+									<use xlink:href="/static/svg/bootstrap-icons.svg#box-arrow-left"></use>
+								</svg>
+								<span>Logout</span></button>
+						</form>
 					{% endif %}
-
-
 
 					</div>
 			</nav>

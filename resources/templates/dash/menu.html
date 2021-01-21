@@ -52,7 +52,15 @@
 							<a href="/login" class="nav-link btn btn-primary my-0 mx-2 my-sm-0" role="button">Login</a>
 					{% endif %}
 					{% if user %}
-							<a href="/logout" class="nav-link btn btn-primary my-0 mx-2 my-sm-0" role="button">Logout</a>
+							<!--<a href="/logout" class="nav-link btn btn-primary my-0 mx-2 my-sm-0"
+							role="button">Logout</a>-->
+                        <form class="form-inline mt-2 mt-md-0 ml-2" action="/logout" method="get">
+							<button class="btn btn-primary my-2 my-sm-0" type="submit">
+								<svg class="bi pb-1" width="1.4em" height="1.4em">
+									<use xlink:href="/static/svg/bootstrap-icons.svg#box-arrow-left"></use>
+								</svg>
+								<span>Logout</span></button>
+						</form>
 					{% endif %}
 
 

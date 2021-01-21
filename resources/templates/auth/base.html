@@ -5,15 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{{ config('application.name') }}</title>
+    <title>Šperky od Vierky</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Atma">
+
+    <link href="/static/css/test01.css" rel="stylesheet">
 
     {% block css %}{% endblock %}
     
     <style type="text/css">
         html {
-            font-size: 14px;
+            font-size: 16px;
         }
 
         .container {
@@ -22,9 +25,10 @@
     </style>
 </head>
 
-<body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-        <a class="navbar-brand" href="/home">{{ config('application.name') }}</a>
+<header>
+    <nav class="navbar navbar-expand-md navbar-light fixed-top bg-light">
+        <!--<a class="navbar-brand" href="/home">{{ config('application.name') }}</a>-->
+        <a class="navbar-brand" href="/main">Šperky od Vierky</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar"
             aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -46,6 +50,10 @@
             </ul>
         </div>
     </nav>
+</header>
+
+<body>
+
     <div class="container">
         {% block content %}{% endblock %}
     </div>
