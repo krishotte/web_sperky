@@ -15,7 +15,13 @@ from app.Address import Address
 krishotte_user = User.where('email', '=', 'krishotte@seznam.cz').first()
 print(f' krishotte user: {krishotte_user.serialize()}')
 
-# address1 = Address(street='Sancova 8', zip_code='900 11', city='Bratislava')
+address1 = Address(
+    street='Sancova 8',
+    zip_code='900 11',
+    city='Bratislava',
+    name='Peter Krššák',
+    phone='+421905104500',
+)
 # print(f' address to attach: {address1.serialize()}')
 
 # krishotte_user.addresses().save(address1)

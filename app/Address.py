@@ -13,12 +13,12 @@ class Address(Model):
     street: string(255) default: None
     zip_code: string(255) default: None
     city: string(255) default: None
-
+    name: string(255) default: name
+    phone: string(255) default: None
     """
-    __fillable__ = ['street', 'zip_code', 'city']
+    __fillable__ = ['street', 'zip_code', 'city', 'name', 'phone']
 
     @belongs_to
     def user(self):
         from app.User import User
-
         return User
