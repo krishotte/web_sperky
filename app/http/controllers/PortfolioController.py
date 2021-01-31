@@ -199,6 +199,7 @@ def add_note_lines(serialized_products):
 def get_user(request):
     user = {}
     try:
+        user['name'] = request.user().name
         user['email'] = request.user().email
         user['role'] = request.user().role.name
     except AttributeError:

@@ -20,8 +20,7 @@ class User(Model):
     @has_many
     def addresses(self):
         from app.Address import Address
-
-        return Address
+        return Address.order_by('id', 'asc')
 
     @has_many
     def orders(self):

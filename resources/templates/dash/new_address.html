@@ -1,0 +1,44 @@
+{% extends "dash/menu.html" %}
+{% block content_a %}
+
+<main role="main">
+
+    <div class="container-sm _nav_padding">
+        <h2>Zadajte novú adresu</h2>
+
+
+        <hr>
+        <form action="/new-address" method="post">
+            {{ csrf_field }}
+            <div class="form-group">
+                <label for="name">Meno</label>
+                <input type="text" class="form-control form-control-lg" id="name" name="name" value="" required>
+            </div>
+            <div class="form-group">
+                <label for="street">Ulica a číslo domu</label>
+                <input type="text" class="form-control form-control-lg" id="street" name="street" value="" required>
+            </div>
+            <div class="form-group">
+                <label for="city">Mesto/Obec</label>
+                <input type="text" class="form-control form-control-lg" id="city" name="city" value="" required>
+            </div>
+            <div class="form-group">
+                <label for="zip_code">Poštové smerovacie číslo</label>
+                <input type="text" class="form-control form-control-lg" id="zip_code" name="zip_code" value="" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Telefónny kontakt</label>
+                <input type="text" class="form-control form-control-lg" id="phone" name="phone" value="">
+            </div>
+            <div>
+                <button class="btn btn-success" type="submit">Uložiť</button>
+            </div>
+
+        </form>
+
+        <hr>
+
+    </div>
+</main>
+
+{% endblock %}

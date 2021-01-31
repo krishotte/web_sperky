@@ -42,6 +42,10 @@ ROUTES = [
         Get('/dashboard/cart', 'DashboardController@show_cart'),
         Get('/add-to-cart/@product_id', 'DashboardController@add_to_cart'),
         Get('/make-order', 'DashboardController@make_order'),
+        Get('/new-address', 'DashboardController@show_new_address'),
+        Post('/new-address', 'DashboardController@store_new_address'),
+        Get('/edit-address/@address_id', 'DashboardController@show_existing_address'),
+        Post('/edit-address', 'DashboardController@store_existing_address'),
     ], middleware=('auth', ))
 
 ]

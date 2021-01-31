@@ -8,6 +8,8 @@ from .auth.LoginController import get_caller_path
 from app.Product import Product
 from app.Order import Order
 from .EditPortfolioController import add_image_path
+from app.User import User
+from app.Address import Address
 
 
 class DashboardController(Controller):
@@ -30,6 +32,8 @@ class DashboardController(Controller):
 
     def show_profile(self, request: Request, view: View):
         user = get_user(request)
+        user_ = User.where('email', '=', user['email']).get()[0]
+        user_.addresses()
         # print(f' environ: {request.environ}')
         print(f' caller: {request.header("HTTP_REFERER")}')
 
@@ -37,6 +41,7 @@ class DashboardController(Controller):
 
         return view.render('dash/profile', {
             'user': user,
+            'user_': user_,
         })
 
     def show_orders(self, request: Request, view: View):
@@ -131,3 +136,69 @@ class DashboardController(Controller):
             })
 
         return request.redirect('/dashboard/orders')
+
+    def show_new_address(self, request: Request, view: View):
+        """
+        shows form for new user address
+        """
+        user = get_user(request)
+        print(f' logged in user: {user}')
+        return view.render('dash/new_address', {
+            'user': user,
+        })
+
+    def store_new_address(self, request: Request):
+        user = get_user(request)
+        print(f' logged in user: {user}')
+        
+        user_ = User.where('email', '=', user['email']).first_or_fail()
+
+        address1 = Address(
+            street=request.input('street'),
+            zip_code=request.input('zip_code'),
+            city=request.input('city'),
+            name=request.input('name'),
+            phone=request.input('phone'),
+        )
+        print(f' address to store: {address1}')
+
+        user_.addresses().save(address1)
+
+        return request.redirect('/dashboard/profile')
+
+    def show_existing_address(self, request: Request, view: View):
+        user = get_user(request)
+        print(f' logged in user: {user}')
+
+        address_id = request.param('address_id')
+        address_ = Address.find(address_id)
+
+        if address_.user.email == user['email']:
+            print(f' your address')
+            # return request.redirect('/dashboard/profile')
+            return view.render('dash/existing_address', {
+                'user': user,
+                'address': address_,
+            })
+        else:
+            print(f' not your address')
+            return request.redirect('/dashboard')
+
+    def store_existing_address(self, request: Request):
+        user = get_user(request)
+        print(f' logged in user: {user}')
+
+        user_ = User.where('email', '=', user['email']).first_or_fail()
+
+        address1 = Address.find(request.input('id'))
+        address1.street = request.input('street')
+        address1.zip_code = request.input('zip_code')
+        address1.city = request.input('city')
+        address1.name = request.input('name')
+        address1.phone = request.input('phone')
+
+        print(f' address to store: {address1.serialize()}')
+
+        address1.save()
+
+        return request.redirect('/dashboard/profile')
