@@ -1,10 +1,11 @@
 """Address Model."""
 
-from config.database import Model
+# from config.database import Model
 from orator.orm import belongs_to
+from orator import Model, SoftDeletes
 
 
-class Address(Model):
+class Address(Model, SoftDeletes):
     """
     Address Model.
 
@@ -17,6 +18,7 @@ class Address(Model):
     phone: string(255) default: None
     """
     __fillable__ = ['street', 'zip_code', 'city', 'name', 'phone']
+    __dates__ = ['deleted_at']
 
     @belongs_to
     def user(self):

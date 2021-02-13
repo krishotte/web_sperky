@@ -202,3 +202,21 @@ class DashboardController(Controller):
         address1.save()
 
         return request.redirect('/dashboard/profile')
+
+    def delete_address(self, request: Request):
+        user = get_user(request)
+        print(f' logged in user: {user}')
+
+        address_id = request.param('address_id')
+        address_ = Address.find(address_id)
+
+        if address_.user.email == user['email']:
+            print(f' your address, deleting ...')
+            # return request.redirect('/dashboard/profile')
+            address_.delete()
+
+            return request.redirect('/dashboard/profile')
+
+        else:
+            print(f' not your address')
+            return request.redirect('/dashboard')

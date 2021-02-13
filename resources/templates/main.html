@@ -6,23 +6,41 @@
 
 
 		<div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
-		  <div class="carousel-inner">
-			<div class="carousel-item active">
-				<div class="container-fluid">
-					<img src="/static/img/07.jpg" class="img-fluid mx-auto d-block" alt="...">
+		    <div class="carousel-inner">
+
+				<div class="carousel-item active">
+					<div class="container-fluid">
+						<img src="/static/img/banner/last/01.jpg" class="img-fluid mx-auto d-block" alt="...">
+
+					</div>
 				</div>
-			</div>
-			<div class="carousel-item">
-			  	<div class="container-fluid">
-					<img src="/static/img/08.jpg" class="img-fluid mx-auto d-block" alt="...">
+
+				<div class="carousel-item">
+					<div class="container-fluid">
+						<img src="/static/img/banner/last/02.jpg" class="img-fluid mx-auto d-block" alt="...">
+					</div>
 				</div>
-			</div>
-			<div class="carousel-item">
-			  	<div class="container-fluid">
-					<img src="/static/img/09.jpg" class="img-fluid mx-auto d-block" alt="...">
+
+				<div class="carousel-item">
+					<div class="container-fluid">
+						<img src="/static/img/banner/last/03.jpg" class="img-fluid mx-auto d-block" alt="...">
+					</div>
 				</div>
+
+				<div class="carousel-item">
+					<div class="container-fluid">
+						<img src="/static/img/banner/last/04.jpg" class="img-fluid mx-auto d-block" alt="...">
+					</div>
+				</div>
+
+				<div class="carousel-item">
+					<div class="container-fluid">
+						<img src="/static/img/banner/last/05.jpg" class="img-fluid mx-auto d-block" alt="...">
+					</div>
+				</div>
+
+
 			</div>
-		  </div>
 		</div>
 
 		<!-- Categories -->
@@ -34,7 +52,11 @@
 
 				<!-- Card Wider -->
 					<div class="card card-cascade wider my-2">
-					  <!-- Card image -->
+					  <div class="card-body card-body-cascade text-center">
+						<!-- Title -->
+						<h5 class="card-title font-weight-light mb-0">{{ category["name"] }}</h5>
+					  </div>
+						<!-- Card image -->
 					  <div class="view view-cascade overlay hovereffect">
 						<a href="/portfolio/{{ category['id'] }}">
 						  <img class="card-img-top img-fluid" src="{{ category['image_path'] }}" alt="...">
@@ -44,10 +66,7 @@
 					  </div>
 
 					  <!-- Card content -->
-					  <div class="card-body card-body-cascade text-center">
-						<!-- Title -->
-						<h5 class="card-title font-weight-light">{{ category["name"] }}</h5>
-					  </div>
+
 					</div>
 
 			</div>

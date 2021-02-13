@@ -3,10 +3,10 @@
 from masonite.routes import Get, Post, RouteGroup
 
 ROUTES = [
-    Get('/', 'WelcomeController@show').name('welcome'),
+    # Get('/', 'WelcomeController@show').name('welcome'),
 
     # Main route
-    Get('/main', 'MainController@show'),
+    Get('/', 'MainController@show'),
 
     # Portfolio routes
     Get('/portfolio', 'PortfolioController@show'),
@@ -46,6 +46,7 @@ ROUTES = [
         Post('/new-address', 'DashboardController@store_new_address'),
         Get('/edit-address/@address_id', 'DashboardController@show_existing_address'),
         Post('/edit-address', 'DashboardController@store_existing_address'),
+        Get('/delete-address/@address_id', 'DashboardController@delete_address'),
     ], middleware=('auth', ))
 
 ]
