@@ -25,11 +25,11 @@
                         {% for index in product["indexes"] %}
                             {% if index == 0 %}
                                 <div class="carousel-item active">
-                                    <img src="{{ product['images'][index] }}" class="img-fluid products_item_padding" alt="Obrázok chýba 1">
+                                    <img src="{{ product['images'][index] }}" class="img-fluid carousel_item_padding" alt="Obrázok chýba 1">
                                 </div>
                             {% else %}
                                 <div class="carousel-item">
-                                    <img src="{{ product['images'][index] }}" class="img-fluid products_item_padding" alt="Obrázok chýba">
+                                    <img src="{{ product['images'][index] }}" class="img-fluid carousel_item_padding" alt="Obrázok chýba">
                                 </div>
                             {% endif %}
 

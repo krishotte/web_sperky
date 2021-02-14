@@ -74,6 +74,13 @@ body {
     margin: 1rem;
 }
 
+.carousel_item_padding {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    margin-right: 1rem;
+    margin-left: 0rem;
+}
+
 .img-hover {
   background-repeat:no-repeat;
   background-size: 100%;
