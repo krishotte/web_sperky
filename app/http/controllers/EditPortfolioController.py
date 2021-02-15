@@ -215,7 +215,7 @@ class EditPortfolioController(Controller):
             except AttributeError:
                 pass
 
-        return response.redirect('/main')
+        return response.redirect('/')
 
     def _save_file_to_disk(self, product_id, upload: Upload, request: Request):
         """
