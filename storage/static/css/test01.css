@@ -81,6 +81,10 @@ body {
     margin-left: 0rem;
 }
 
+.blog_text {
+    font-size: 1.1rem;
+}
+
 .img-hover {
   background-repeat:no-repeat;
   background-size: 100%;

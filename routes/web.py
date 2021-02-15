@@ -47,7 +47,9 @@ ROUTES = [
         Get('/edit-address/@address_id', 'DashboardController@show_existing_address'),
         Post('/edit-address', 'DashboardController@store_existing_address'),
         Get('/delete-address/@address_id', 'DashboardController@delete_address'),
-    ], middleware=('auth', ))
+    ], middleware=('auth', )),
+
+    Get('/blog/@blog_id', 'BlogController@show_first'),
 
 ]
 
