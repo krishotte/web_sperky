@@ -4,10 +4,17 @@
 <main role="main">
 
     <div class="container-sm _nav_padding">
-        <h2>Vitajte {{ user['email'] }} vo svojom užívateľskom profile</h2>
+        <h2>Vitajte {{ user['name'] }} vo svojom užívateľskom profile</h2>
 
         <h4>Objednávka č. {{ order['id'] }}:</h4>
 
+        <hr>
+
+        <p>Stav objednávky: <strong>{{ order['order_state']['name'] }}</strong></p>
+
+        <hr>
+
+        <h4>Objednané produkty:</h4>
         <table class="table">
             <thead class="thead-dark">
                 <tr>
@@ -35,6 +42,14 @@
                     </tr>
 
                 {% endfor %}
+                <tr>
+                    <td></td>
+                    <td>Spôsob dopravy:</td>
+                    <td>{{ order['shipping']['name'] }}</td>
+                    <td></td>
+                    <td>{{ order['shipping']['price'] }} EUR</td>
+                </tr>
+
                 <tr class="table-secondary">
                     <th scope="row"></th>
                     <td></td>
@@ -45,6 +60,19 @@
 
             </tbody>
         </table>
+
+        <h4>Objednávka bude odoslaná na adresu:</h4>
+
+        <div class="card mb-2 mx-2" style="width: 22rem">
+            <div class="card-body">
+                <p class="mb-0">{{ order['address']['name'] }}</p>
+                <p class="mb-0">{{ order['address']['street'] }}</p>
+                <p class="mb-3">{{ order['address']['zip_code'] }} &nbsp {{ order['address']['city'] }}</p>
+                <p class="mb-1">{{ order['address']['phone'] }}</p>
+
+            </div>
+        </div>
+
     </div>
 </main>
 

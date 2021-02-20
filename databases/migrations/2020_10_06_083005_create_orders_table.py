@@ -16,7 +16,7 @@ class CreateOrdersTable(Migration):
             table.float('shipping_price')
             table.float('total_price')
 
-            # TODO: order status - separate table order_statuses
+            # TODO_: order status - separate table order_statuses
             # ordered
             # confirmed
             # ready for shipping

@@ -14,6 +14,7 @@
                     <th scope="col">id</th>
                     <th scope="col">dátum</th>
                     <th scope="col">cena spolu</th>
+                    <th scope="col">stav objednávky</th>
 
                 </tr>
             </thead>
@@ -25,7 +26,7 @@
                         <th scope="row"><a href="/dashboard/order/{{ order['id'] }}">Objednávka č. {{ order['id'] }}</a></th>
                         <td>{{ order['created_at'] }}</td>
                         <td>{{ order['total_price'] }}</td>
-                        </a>
+                        <th>{{ order['order_state']['name'] }}</th>
 
 
                     </tr>

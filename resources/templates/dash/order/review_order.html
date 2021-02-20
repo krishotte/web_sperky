@@ -6,8 +6,9 @@
     <div class="container-sm _nav_padding">
         <!--<h2>Vitajte {{ user['email'] }} vo svojom užívateľskom profile</h2>-->
 
-        <h2>{{ user['name'] }}, Váš nákupný košík: </h2>
+        <h2>{{ user['name'] }}, Váša nová objednávka: </h2>
 
+        <h4>Objednávané produkty:</h4>
         {% if ordered_items %}
         <table class="table">
             <thead class="thead-dark">
@@ -17,7 +18,7 @@
                     <th scope="col">názov produktu</th>
                     <th scope="col">počet</th>
                     <th scope="col">jednotková cena</th>
-                    <th scope="col">&nbsp</th>
+
                 </tr>
             </thead>
             <tbody>
@@ -31,45 +32,51 @@
                         <td>{{ counts[each] }}</td>
                         <td>{{ products[each]['price'] }} EUR</td>
 
-                        <td>
-                            <form action="/remove-from-cart" method="post">
-                                {{ csrf_field}}
-                                <input type="number" value="{{ ordered_items[each] }}" name="item_to_remove" hidden>
-                                <button class="btn btn-danger" type="submit">Odstrániť</button>
-                            </form>
-                        </td>
+
                     </tr>
                 {% endfor %}
+                <tr>
+                    <td></td>
+                    <td>Doprava</td>
+                    <td>{{ shipping['name'] }}</td>
+                    <td></td>
+                    <td>{{ shipping['price'] }} EUR</td>
+                </tr>
+
                 <tr class="table-secondary">
-                    <th scope="row"></th>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td><strong>Spolu</strong></td>
                     <td><strong>{{ total_price }} EUR</strong></td>
-                    <td></td>
+
                 </tr>
-                <tr class="table-borderless">
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        <form action="/order-user-details" method="get">
-                            {{ csrf_field }}
-                            <button class="btn btn-success" type="submit">Objednať</button>
-                        </form>
-                    </td>
-                </tr>
+
             </tbody>
         </table>
 
+        <hr>
+
+        <h4>Adresa pre odoslanie objednávky:</h4>
+        <div class="card mb-2 mx-2" style="width: 22rem">
+            <div class="card-body">
+                <p class="mb-0">{{ address['name'] }}</p>
+                <p class="mb-0">{{ address['street'] }}</p>
+                <p class="mb-3">{{ address['zip_code'] }} &nbsp {{ address['city'] }}</p>
+                <p class="mb-1">{{ address['phone'] }}</p>
+
+            </div>
+        </div>
+
+        <hr>
 
         <div class="row">
             <div class="col-9"></div>
             <div class="col-3">
-                <!--<a href="/make-order" class="btn btn-success" role="button">Objednať</a>-->
-                <!--<button class="btn btn-success">Objednať</button>-->
+                <form action="/make-order" method="post">
+                    {{ csrf_field }}
+                    <button class="btn btn-success">Objednať</button>
+                </form>
             </div>
         </div>
         {% endif %}

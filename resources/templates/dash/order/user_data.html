@@ -1,0 +1,42 @@
+{% extends "dash/menu.html" %}
+{% block content_a %}
+
+<main role="main">
+
+    <div class="container-sm _nav_padding">
+        <!--<h2>Vitajte {{ user['email'] }} vo svojom užívateľskom profile</h2>-->
+
+        <h2>{{ user['name'] }}, vyberte adresu pre zaslanie objednávky: </h2>
+
+        <h4>Vaše adresy:</h4>
+
+        <hr>
+            <a href="/new-address" class="btn btn-primary ml-2 mb-3">+ Pridať adresu</a>
+
+            <div class="row row-cols-3">
+            {% for address in user_['addresses'] %}
+                <div class="col">
+                    <div class="card mb-2 mx-2" style="width: 22rem">
+                        <div class="card-body">
+                            <p class="mb-0">{{ address['name'] }}</p>
+                            <p class="mb-0">{{ address['street'] }}</p>
+                            <p class="mb-3">{{ address['zip_code'] }} &nbsp {{ address['city'] }}</p>
+                            <p class="mb-1">{{ address['phone'] }}</p>
+                            <div>
+                                <form action="/order-set-address" method="post">
+                                    {{ csrf_field }}
+                                    <input type="number" value="{{ address['id'] }}" name="address_id" hidden>
+                                    <button class="btn btn-success" type="submit">Vybrať</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+
+        <hr>
+    </div>
+</main>
+
+{% endblock %}

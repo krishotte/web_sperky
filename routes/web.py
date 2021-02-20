@@ -41,12 +41,20 @@ ROUTES = [
         Get('/dashboard/order/@order_id', 'DashboardController@show_single_order'),
         Get('/dashboard/cart', 'DashboardController@show_cart'),
         Get('/add-to-cart/@product_id', 'DashboardController@add_to_cart'),
-        Get('/make-order', 'DashboardController@make_order'),
+        Post('/remove-from-cart', 'DashboardController@remove_from_cart'),
+
         Get('/new-address', 'DashboardController@show_new_address'),
         Post('/new-address', 'DashboardController@store_new_address'),
         Get('/edit-address/@address_id', 'DashboardController@show_existing_address'),
         Post('/edit-address', 'DashboardController@store_existing_address'),
         Get('/delete-address/@address_id', 'DashboardController@delete_address'),
+
+        # order routes
+        Get('/order-user-details', 'DashboardController@order_show_user_details'),
+        Post('/order-set-address', 'DashboardController@oder_set_user_address'),
+        Post('/order-review', 'DashboardController@order_review'),
+        Post('/make-order', 'DashboardController@make_order'),
+
     ], middleware=('auth', )),
 
     Get('/blog/@blog_id', 'BlogController@show_first'),

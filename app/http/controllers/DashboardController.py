@@ -10,6 +10,8 @@ from app.Order import Order
 from .EditPortfolioController import add_image_path
 from app.User import User
 from app.Address import Address
+from app.Shipping import Shipping
+from app.OrderState import OrderState
 
 
 class DashboardController(Controller):
@@ -48,6 +50,7 @@ class DashboardController(Controller):
         user = get_user(request)
 
         orders = request.user().orders
+        orders.load('order_state')
 
         print(f' your orders: {orders.serialize()}')
 
@@ -59,13 +62,17 @@ class DashboardController(Controller):
     def show_single_order(self, request: Request, view: View):
         user = get_user(request)
         order = Order.find(request.param('order_id'))
+        order.address
+        order.shipping
+        order.order_state
+        print(f' order to display: {order.serialize()}')
 
         serialized_products = add_image_path(order.products.serialize())
         print(f' products: {order.products.serialize()}')
 
         return view.render('dash/single_order', {
             'user': user,
-            'order': order.serialize(),
+            'order': order,  # .serialize(),
             'products': serialized_products,
         })
 
@@ -107,6 +114,10 @@ class DashboardController(Controller):
         })
 
     def add_to_cart(self, request: Request):
+        """
+        items to order are held in cookie as list
+        items can be in list multiple times
+        """
         caller = get_caller_path(request)
         # request.session.reset()
 
@@ -120,20 +131,146 @@ class DashboardController(Controller):
         print(f' session : {request.session.all()}')
         return request.redirect(caller)
 
+    def remove_from_cart(self, request: Request, view: View):
+        """
+        remove one item from cart
+        """
+        caller = get_caller_path(request)
+
+        item_to_remove = int(request.input('item_to_remove'))
+        ordered_items = request.session.get('ordered_items')
+        print(f' ordered items before del: {ordered_items}')
+
+        index_of_item = ordered_items.index(item_to_remove)
+        ordered_items.pop(index_of_item)
+        print(f' ordered items after del: {ordered_items}')
+
+        request.session.set('ordered_items', ordered_items)
+        return request.redirect(caller)
+
+    def order_show_user_details(self, request: Request, view: View):
+        """
+        first step of order
+        user select address to send order to
+        """
+        user = get_user(request)
+        user_ = User.where('email', '=', user['email']).get()[0]
+        user_.addresses()
+
+        print(f' user addresses: {user_.addresses.serialize()}')
+
+        return view.render('dash/order/user_data', {
+            'user': user,
+            'user_': user_,
+        })
+
+    def oder_set_user_address(self, request: Request, view: View):
+        """
+        sets order address to cookie
+        shows shipping to choose
+        """
+        user = get_user(request)
+        user_ = User.where('email', '=', user['email']).get()[0]
+        user_.addresses()
+
+        address_id = int(request.input('address_id'))
+        address = Address.find(address_id)
+        print(f' address to use: {address.serialize()}')
+
+        request.session.set('address', address.id)
+
+        shippings = Shipping.all()
+
+        return view.render('dash/order/shipping', {
+            'user': user,
+            'user_': user_,
+            'shippings': shippings,
+        })
+
+    def order_review(self, request: Request, view: View):
+        """
+        shows order review
+        """
+        user = get_user(request)
+        user_ = User.where('email', '=', user['email']).get()[0]
+
+        shipping = Shipping.find(int(request.input('shipping_id')))
+        request.session.set('shipping', shipping.id)
+
+        address = Address.find(int(request.session.get('address')))
+
+        items = request.session.get('ordered_items')
+        unique_items = list(set(items))
+        counts = [items.count(item) for item in unique_items]
+
+        total_price = shipping.price
+        products = []
+        try:
+            for index, each in enumerate(unique_items):
+                product = Product.find(each)
+                products.append(product.serialize())
+                total_price += product.price * counts[index]
+            print(f' total price: {total_price}')
+            serialized_products = add_image_path(products)
+        except Exception:
+            serialized_products = []
+
+        request.session.set('total_price', total_price)
+
+        return view.render('dash/order/review_order', {
+            'user': user,
+            'user_': user,
+            'ordered_items': unique_items,
+            'counts': counts,
+            'products': serialized_products,
+            'total_price': total_price,
+            'shipping': shipping,
+            'address': address,
+        })
+
     def make_order(self, request: Request):
         print(f' session: {request.session.all()}')
 
-        order = Order(shipping_price=0, total_price=float(request.session.get('total_price')))
-        print(f' order: {order.serialize()}')
+        shipping = Shipping.find(int(request.session.get('shipping')))
+        address = Address.find(int(request.session.get('address')))
 
+        items = request.session.get('ordered_items')
+        unique_items = list(set(items))
+        counts = [items.count(item) for item in unique_items]
+
+        total_price = float(request.session.get('total_price'))
+        products = []
+        try:
+            for index, each in enumerate(unique_items):
+                product = Product.find(each)
+                products.append(product)
+                # total_price += product.price * counts[index]
+            #print(f' total price: {total_price}')
+            #serialized_products = add_image_path(products)
+        except Exception:
+            #serialized_products = []
+            pass
+
+        # let's make an order
+        order = Order(total_price=total_price)
         order.user().associate(request.user())
+
+        order_state = OrderState.where('phase', '=', 1).first()
+        order.order_state().associate(order_state)
+
+        order.shipping().associate(shipping)
+        order.address().associate(address)
+
         order.save()
 
-        for index, product in enumerate(request.session.get('unique_items')):
+        for index, product in enumerate(products):
             order.products().attach(product, {
-                'product_count': request.session.get('counts')[index],
-                'unit_price': Product.find(product).price
+                'product_count': counts[index],
+                'unit_price': product.price,
             })
+
+        # clear session
+        request.session.reset()
 
         return request.redirect('/dashboard/orders')
 
