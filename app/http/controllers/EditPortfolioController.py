@@ -11,6 +11,7 @@ from masonite import Upload
 from pathlib import Path
 from .PortfolioController import get_files_on_disk, add_image_path, add_description_lines
 from os import remove
+from app.Availability import Availability
 
 
 class EditPortfolioController(Controller):
@@ -77,9 +78,12 @@ class EditPortfolioController(Controller):
 
     def get_one_product(self, request: Request, view: View):
         product = Product.find(request.param('product_id'))
+        product.availability
         categories = Product_category.order_by('id', 'asc').get()
         materials = Material.order_by('id', 'asc').get()
         checked_materials = [each.id for each in product.materials]
+
+        availabilities = Availability.order_by('id', 'asc').get()
 
         images, indexes = get_files_on_disk(product.id)
 
@@ -96,10 +100,12 @@ class EditPortfolioController(Controller):
             'images': images,
             'related_products': related_products_serialized,
             'user': user,
+            'availabilities': availabilities,
         })
 
     def get_all_products(self, view: View, request: Request):
         products = Product.order_by('id', 'desc').get()
+        products.load('availability')
         serialized_products = add_image_path(products.serialize())
         serialized_products = add_description_lines(serialized_products)
 
@@ -124,6 +130,8 @@ class EditPortfolioController(Controller):
         product_to_update.note = request.all()['note']
 
         product_to_update.category().associate(Product_category.where('name', '=', request.all()['category']).first())
+        product_to_update.availability().associate(Availability.where('name', '=', request.input('availability')).first())
+
         product_to_update.save()
 
         material_ids = []
@@ -142,6 +150,7 @@ class EditPortfolioController(Controller):
         categories = Product_category.order_by('id', 'asc').get()
         materials = Material.order_by('id', 'asc').get()
         checked_materials = [each.id for each in product_to_update.materials]
+        availabilities = Availability.order_by('id', 'asc').get()
 
         related_products = product_to_update.related_products
         related_products_serialized = add_image_path(related_products.serialize())
@@ -155,6 +164,7 @@ class EditPortfolioController(Controller):
             'images': images,
             'related_products': related_products_serialized,
             'user': user,
+            'availabilities': availabilities,
         })
 
         # return [request.input('name'), request.input('description'), request.input('price')]

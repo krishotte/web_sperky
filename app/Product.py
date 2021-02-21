@@ -29,3 +29,8 @@ class Product(Model):
     def orders(self):
         from app.Order import Order
         return Order
+
+    @belongs_to
+    def availability(self):
+        from app.Availability import Availability
+        return Availability

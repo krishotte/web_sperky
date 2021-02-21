@@ -71,6 +71,9 @@
 
                     <h4 class="mt-4">{{ product["price"] }} EUR</h4>
                     <a href="/add-to-cart/{{ product['id'] }}" class="btn btn-success" role="button">Objednať</a>
+                    <button class="btn {{ product['availability']['visual_class'] }} ml-1">
+                        {{ product['availability']['name'] }}
+                    </button>
                     <!--<button type="button" class="btn btn-success">Objednať</button>-->
                 </div>
             </div>

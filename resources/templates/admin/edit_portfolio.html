@@ -24,6 +24,10 @@
                         {% endfor %}
 
                         <h4 class="my-4">{{ product["price"] }} EUR</h4>
+
+                        <button class="btn {{ product['availability']['visual_class'] }} ml-1">
+                            {{ product['availability']['name'] }}
+                        </button>
                     </div>
                 </div>
             </div>

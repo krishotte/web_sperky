@@ -66,6 +66,21 @@
                 {% endfor %}
             </div>
 
+            <!-- availability -->
+            <div class="form-group">
+                <label for="availability">Dostupnosť</label>
+                <select class="form-control" id="availability" name="availability"
+                        value="{{ product['availability']['name'] }}">
+                    {% for ava in availabilities %}
+                        {% if ava["id"] == product["availability"]['id'] %}
+                            <option selected="selected">{{ ava["name"]  }}</option>
+                        {% else %}
+                            <option>{{ ava["name"]  }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+
             <div class="form-group">
                 <label for="file">Pridať obrázok</label>
                 <input type="file" class="form-control-file" id="file" name="file">
