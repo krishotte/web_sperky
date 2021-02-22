@@ -12,6 +12,7 @@ from app.User import User
 from app.Address import Address
 from app.Shipping import Shipping
 from app.OrderState import OrderState
+from masonite import env
 
 
 class DashboardController(Controller):
@@ -43,9 +44,8 @@ class DashboardController(Controller):
         if user_.verified_at is not None:
             print(f' user verified')
         # print(f' environ: {request.environ}')
-        print(f' caller: {request.header("HTTP_REFERER")}')
-
-        print(f' session: {request.session.all()}')
+        print(f' APP_URL: {request.header("APP_URL")}')
+        # print(f' env: {env("APP_URL")}')
 
         return view.render('dash/profile', {
             'user': user,

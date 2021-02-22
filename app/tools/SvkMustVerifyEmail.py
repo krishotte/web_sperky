@@ -15,7 +15,8 @@ class SvkMustVerifyEmail:
         sign = Sign()
 
         token = sign.sign("{0}::{1}".format(self.id, time.time()))
-        link = "{0}/email/verify/{1}".format(request.environ["HTTP_HOST"], token)
+        # link = "{0}/email/verify/{1}".format(request.environ["HTTP_HOST"], token)
+        link = "{0}/email/verify/{1}".format(request.header("APP_URL"), token)
 
         mail.to(self.email).template(
             "auth/verifymail", {"name": self.name, "email": self.email, "link": link}

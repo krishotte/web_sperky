@@ -46,7 +46,7 @@ class PasswordController:
                 user.save()
             # message = "Please visit {}/password/{}/reset to reset your password".format(
             message = "Prosím, kliknite na {}/password/{}/reset pre zresetovanie hesla".format(
-                env("SITE", "http://localhost:8000"), user.remember_token
+                env("APP_URL"), user.remember_token
             )
             # mail.subject("Inštrukcie pre zresetovanie hesla").to(user.email).send(message)
             mail.subject("Inštrukcie pre zresetovanie hesla").to(user.email).send(message)

@@ -7,6 +7,7 @@ from masonite.managers import MailManager
 from masonite.request import Request
 from masonite.view import View
 from masonite.helpers import config
+from app.tools.SvkMustVerifyEmail import SvkMustVerifyEmail
 
 
 class ConfirmController:
@@ -65,7 +66,7 @@ class ConfirmController:
     def send_verify_email(self, manager: MailManager, request: Request):
         user = request.user()
 
-        if isinstance(user, MustVerifyEmail):
+        if isinstance(user, SvkMustVerifyEmail):
             user.verify_email(manager, request)
 
         return request.redirect("/dashboard/profile")
