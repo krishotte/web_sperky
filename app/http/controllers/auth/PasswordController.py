@@ -27,8 +27,13 @@ class PasswordController:
             )
 
     def send(self, request: Request, session: Session, mail: Mail, validate: Validator):
-        errors = request.validate(validate.required("email"), validate.email("email"))
+        print(f' session email: {request.session.get("email")}')
+        errors = request.validate(
+            validate.required("email"),
+            validate.email("email", messages={'email': "Emailová adresa nie je platná"})
+        )
 
+        print(f' errors: {errors}')
         if errors:
             return request.back().with_errors(errors)
 
@@ -39,14 +44,18 @@ class PasswordController:
             if not user.remember_token:
                 user.remember_token = str(uuid.uuid4())
                 user.save()
-            message = "Please visit {}/password/{}/reset to reset your password".format(
+            # message = "Please visit {}/password/{}/reset to reset your password".format(
+            message = "Prosím, kliknite na {}/password/{}/reset pre zresetovanie hesla".format(
                 env("SITE", "http://localhost:8000"), user.remember_token
             )
-            mail.subject("Reset Password Instructions").to(user.email).send(message)
+            # mail.subject("Inštrukcie pre zresetovanie hesla").to(user.email).send(message)
+            mail.subject("Inštrukcie pre zresetovanie hesla").to(user.email).send(message)
 
         session.flash(
             "success",
-            "If we found that email in our system then the email has been sent. Please follow the instructions in the email to reset your password.",
+            #"If we found that email in our system then the email has been sent. Please follow the instructions in the email to reset your password.",
+            "Ak emailová adresa existuje v našom systéme, email bol odoslaný."
+            "Pre resetovanie hesla prosím postupujte podľa inštrukcií uvedených v emaile."
         )
         return request.redirect("/password")
 
@@ -62,6 +71,9 @@ class PasswordController:
                 # breach=True checks if the password has been breached before.
                 # Requires 'pip install pwnedapi'
                 breach=False,
+                messages={
+                    'password': 'Heslo musí obsahovať minimálne 8 znakov, jeden špeciálny znak, jedno veľké písmeno a dve číslice'
+                }
             ),
         )
 

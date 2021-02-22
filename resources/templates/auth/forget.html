@@ -17,23 +17,24 @@
                 {% endif %}
                 <div class="card rounded-1">
                     <div class="card-header">
-                        <h5 class="mb-0">Password Reset</h5>
+                        <h5 class="mb-0">Reset hesla</h5>
                     </div>
                     <div class="card-body">
                         <form class="form" action="/password" method="POST">
                             {{ csrf_field }}
                             <div class="form-group">
-                                <label for="">Email</label>
-                                <input type="text" class="form-control form-control-md rounded-0" name="email">
                                 {% if session().has('errors') %}
-                                    {% for error in session().get('errors').get('email').items() %}
+                                    {% for error in session().get('errors').get('email') %}
                                     <div class="alert alert-danger" role="alert">
                                         {{ error }}
                                     </div>
                                     {% endfor %}
                                 {% endif %}
+                                <label for="">Email</label>
+                                <input type="text" class="form-control form-control-md rounded-0" name="email">
+
                             </div>
-                            <button type="submit" class="btn btn-success btn-md float-right">Send reset link</button>
+                            <button type="submit" class="btn btn-success btn-md float-right">Poslať link pre reset hesla</button>
                         </form>
                     </div>
                 </div>

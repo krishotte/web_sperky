@@ -55,6 +55,9 @@ ROUTES = [
         Post('/order-review', 'DashboardController@order_review'),
         Post('/make-order', 'DashboardController@make_order'),
 
+        # user management routes
+        Get('/email/verify/send2', 'auth.ConfirmController@send_verify_email'),
+
     ], middleware=('auth', )),
 
     Get('/blog/@blog_id', 'BlogController@show_first'),

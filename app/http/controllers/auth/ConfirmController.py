@@ -68,4 +68,4 @@ class ConfirmController:
         if isinstance(user, MustVerifyEmail):
             user.verify_email(manager, request)
 
-        return request.redirect("/home")
+        return request.redirect("/dashboard/profile")

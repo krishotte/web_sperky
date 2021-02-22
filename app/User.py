@@ -3,9 +3,10 @@
 from config.database import Model
 from orator.orm import belongs_to, has_many
 from masonite.auth import MustVerifyEmail
+from app.tools.SvkMustVerifyEmail import SvkMustVerifyEmail
 
 
-class User(Model, MustVerifyEmail):
+class User(Model, SvkMustVerifyEmail):
     """User Model."""
 
     __fillable__ = ['name', 'email', 'password']

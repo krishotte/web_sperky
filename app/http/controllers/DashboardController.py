@@ -27,15 +27,21 @@ class DashboardController(Controller):
 
     def show(self, request: Request, view: View):
         user = get_user(request)
+        user_ = User.where('email', '=', user['email']).first()
+        user_.addresses()
 
-        return view.render('dash/menu', {
+        return view.render('dash/profile', {
             'user': user,
+            'user_': user_,
         })
 
     def show_profile(self, request: Request, view: View):
         user = get_user(request)
-        user_ = User.where('email', '=', user['email']).get()[0]
+        user_ = User.where('email', '=', user['email']).first()
         user_.addresses()
+
+        if user_.verified_at is not None:
+            print(f' user verified')
         # print(f' environ: {request.environ}')
         print(f' caller: {request.header("HTTP_REFERER")}')
 
@@ -76,6 +82,7 @@ class DashboardController(Controller):
             'products': serialized_products,
         })
 
+    # cart control methods
     def show_cart(self, request: Request, view: View):
         user = get_user(request)
 
@@ -148,6 +155,7 @@ class DashboardController(Controller):
         request.session.set('ordered_items', ordered_items)
         return request.redirect(caller)
 
+    # order control methods
     def order_show_user_details(self, request: Request, view: View):
         """
         first step of order
@@ -274,6 +282,7 @@ class DashboardController(Controller):
 
         return request.redirect('/dashboard/orders')
 
+    # user address control methods
     def show_new_address(self, request: Request, view: View):
         """
         shows form for new user address
