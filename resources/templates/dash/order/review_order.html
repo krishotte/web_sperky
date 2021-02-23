@@ -6,7 +6,7 @@
     <div class="container-sm _nav_padding">
         <!--<h2>Vitajte {{ user['email'] }} vo svojom užívateľskom profile</h2>-->
 
-        <h2>{{ user['name'] }}, Váša nová objednávka: </h2>
+        <h2>{{ user['name'] }}, Vaša nová objednávka: </h2>
 
         <h4>Objednávané produkty:</h4>
         {% if ordered_items %}
@@ -75,7 +75,7 @@
             <div class="col-4">
                 <form action="/make-order" method="post">
                     {{ csrf_field }}
-                    <button class="btn btn-success">Objednať</button>
+                    <button class="btn btn-success">Záväzne objednať</button>
                 </form>
             </div>
             <div class="col-1"></div>

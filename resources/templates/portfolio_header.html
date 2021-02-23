@@ -3,8 +3,8 @@
 
 <main role="main">
 
-    <div class="container-sm _nav_padding">
-        <div class="text-center my-1">
+    <div class="container-sm" style="margin-top: 2rem">
+        <div class="text-center mb-2">
 
             {% for category in categories %}
                 <!--<button type="button" class="btn btn-info">{{ category["name"] }}</button>-->
@@ -12,14 +12,16 @@
                 <a href="/portfolio/{{ category['id'] }}" class="btn btn-dark active" role="button" aria-pressed="true">{{ category["name"] }}</a>
                 -->
                 {% if category['id'] == category_['id'] %}
-                    <a href="/portfolio/{{ category['id'] }}" class="btn btn-secondary active" role="button" aria-pressed="true">{{ category["name"] }}</a>
+                    <a href="/portfolio/{{ category['id'] }}" class="btn btn-secondary active mb-1"
+                       role="button" aria-pressed="true">{{ category["name"] }}</a>
                 {% else %}
-                    <a href="/portfolio/{{ category['id'] }}" class="btn btn-secondary" role="button" aria-pressed="true">{{ category["name"] }}</a>
+                    <a href="/portfolio/{{ category['id'] }}" class="btn btn-secondary mb-1"
+                       role="button" aria-pressed="true">{{ category["name"] }}</a>
                 {% endif %}
             {% endfor %}
         </div>
 
-        <div class="text-center my-1">
+        <div class="text-center mb-2">
 
             {% if category_['id'] == -1 %}
                 {% set category_ = {'id': 1} %}
@@ -27,9 +29,11 @@
 
             {% for material in materials %}
                 {% if material['id'] == material_['id'] %}
-                    <a href="/portfolio/{{ category_['id'] }}/{{ material['id'] }}" class="btn btn-secondary active" role="button" aria-pressed="true">{{ material["name"] }}</a>
+                    <a href="/portfolio/{{ category_['id'] }}/{{ material['id'] }}" class="btn btn-secondary active mb-1"
+                       role="button" aria-pressed="true">{{ material["name"] }}</a>
                 {% else %}
-                    <a href="/portfolio/{{ category_['id'] }}/{{ material['id'] }}" class="btn btn-secondary" role="button" aria-pressed="true">{{ material["name"] }}</a>
+                    <a href="/portfolio/{{ category_['id'] }}/{{ material['id'] }}" class="btn btn-secondary mb-1"
+                       role="button" aria-pressed="true">{{ material["name"] }}</a>
                 {% endif %}
             {% endfor %}
         </div>
