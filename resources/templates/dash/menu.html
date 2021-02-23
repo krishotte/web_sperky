@@ -26,6 +26,13 @@
 			</button>
 			<div class="collapse navbar-collapse" id="navbarCollapse">
 				<ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/">
+                            <svg class="bi pb-1 my-0" width="1.4em" height="1.4em">
+                                <use xlink:href="/static/svg/bootstrap-icons.svg#house"></use>
+                            </svg>
+                            Home</a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/dashboard">Užívaľský panel</a>
                     </li>
@@ -48,9 +55,6 @@
 						<div class="nav-item mx-2">prihlásený užívateľ: {{ user['email'] }}</div>
 					{% endif %}
 
-
-
-
 					{% if not user %}
 							<a href="/login" class="nav-link btn btn-primary my-0 mx-2 my-sm-0" role="button">Login</a>
 					{% endif %}
@@ -66,10 +70,8 @@
 						</form>
 					{% endif %}
 
-
-
-					</div>
-			</nav>
+            </div>
+        </nav>
     </header>
 
     {% block content_a %}{% endblock %}

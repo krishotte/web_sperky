@@ -3,56 +3,53 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Šperky od Vierky</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Atma">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Atma">
 
     <link href="/static/css/test01.css" rel="stylesheet">
 
-    {% block css %}{% endblock %}
-    
-    <style type="text/css">
-        html {
-            font-size: 16px;
-        }
-
-        .container {
-            max-width: 960px;
-        }
-    </style>
 </head>
 
+<body>
 <header>
     <nav class="navbar navbar-expand-md navbar-light fixed-top bg-light">
         <!--<a class="navbar-brand" href="/home">{{ config('application.name') }}</a>-->
         <a class="navbar-brand" href="/">Šperky od Vierky</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar"
-            aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="navbar-collapse d-lg-flex justify-content-end collapse" id="navbar">
-            <ul class="navbar-nav">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">
+                        <svg class="bi pb-1 my-0" width="1.4em" height="1.4em">
+                            <use xlink:href="/static/svg/bootstrap-icons.svg#house"></use>
+                        </svg>
+                        Home</a>
+                </li>
+
                 {% if auth() %}
-                <li>
+                <li class="nav-item">
                     <a class="nav-link" href="/logout">Logout</a>
                 </li>
                 {% else %}
-                <li>
+                <li class="nav-item">
                     <a class="nav-link" href="/login">Login</a>
                 </li>
-                <li>
+                <li class="nav-item">
                     <a class="nav-link" href="/register">Registrácia</a>
                 </li>
                 {% endif %}
             </ul>
         </div>
+
     </nav>
 </header>
 
-<body>
+<!--<body>-->
 
     <div class="container">
         {% block content %}{% endblock %}
