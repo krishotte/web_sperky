@@ -12,7 +12,7 @@
         <table class="table">
             <thead class="thead-dark">
                 <tr>
-                    <th scope="col">id</th>
+                    <!--<th scope="col">id</th>-->
                     <th scope="col"></th>
                     <th scope="col">názov produktu</th>
                     <th scope="col">počet</th>
@@ -23,7 +23,7 @@
             <tbody>
                 {% for each in range(ordered_items|length) %}
                     <tr>
-                        <th scope="row">{{ ordered_items[each] }}</th>
+                        <!--<th scope="row">{{ ordered_items[each] }}</th>-->
                         <td>
                             <img src="{{ products[each]['image'] }}" class="img-fluid" alt="Obrázok chýba" style="width: 120px">
                         </td>
@@ -35,13 +35,17 @@
                             <form action="/remove-from-cart" method="post">
                                 {{ csrf_field}}
                                 <input type="number" value="{{ ordered_items[each] }}" name="item_to_remove" hidden>
-                                <button class="btn btn-danger" type="submit">Odstrániť</button>
+                                <button class="btn btn-danger my-2 my-sm-0" type="submit">
+                                    <svg class="bi py-0" width="1.4em" height="1.4em">
+                                        <use xlink:href="/static/svg/bootstrap-icons.svg#trash"></use>
+                                    </svg>
+                                    <!--Odstrániť--></button>
                             </form>
                         </td>
                     </tr>
                 {% endfor %}
                 <tr class="table-secondary">
-                    <th scope="row"></th>
+                    <!--<th scope="row"></th>-->
                     <td></td>
                     <td></td>
                     <td><strong>Spolu</strong></td>
@@ -49,7 +53,7 @@
                     <td></td>
                 </tr>
                 <tr class="table-borderless">
-                    <td></td>
+                    <!--<td></td>-->
                     <td></td>
                     <td></td>
                     <td></td>

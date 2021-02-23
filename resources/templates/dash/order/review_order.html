@@ -13,7 +13,7 @@
         <table class="table">
             <thead class="thead-dark">
                 <tr>
-                    <th scope="col">id</th>
+                    <!--<th scope="col">id</th>-->
                     <th scope="col"></th>
                     <th scope="col">názov produktu</th>
                     <th scope="col">počet</th>
@@ -24,7 +24,7 @@
             <tbody>
                 {% for each in range(ordered_items|length) %}
                     <tr>
-                        <th scope="row">{{ ordered_items[each] }}</th>
+                        <!--<th scope="row">{{ ordered_items[each] }}</th>-->
                         <td>
                             <img src="{{ products[each]['image'] }}" class="img-fluid" alt="Obrázok chýba" style="width: 120px">
                         </td>
@@ -36,7 +36,7 @@
                     </tr>
                 {% endfor %}
                 <tr>
-                    <td></td>
+                    <!--<td></td>-->
                     <td>Doprava</td>
                     <td>{{ shipping['name'] }}</td>
                     <td></td>
@@ -44,7 +44,7 @@
                 </tr>
 
                 <tr class="table-secondary">
-                    <td></td>
+                    <!--<td></td>-->
                     <td></td>
                     <td></td>
                     <td><strong>Spolu</strong></td>

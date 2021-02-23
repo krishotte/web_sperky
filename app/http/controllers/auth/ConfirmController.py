@@ -69,4 +69,6 @@ class ConfirmController:
         if isinstance(user, SvkMustVerifyEmail):
             user.verify_email(manager, request)
 
+        request.session.flash('success', 'Email bol odoslaný.')
+
         return request.redirect("/dashboard/profile")

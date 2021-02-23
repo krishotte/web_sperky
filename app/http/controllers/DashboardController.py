@@ -58,6 +58,9 @@ class DashboardController(Controller):
         orders = request.user().orders
         orders.load('order_state')
 
+        for order in orders:
+            print(f' datetime: {order.created_at.strftime("%Y-%m-%d")}')
+
         print(f' your orders: {orders.serialize()}')
 
         return view.render('dash/orders', {
@@ -78,7 +81,7 @@ class DashboardController(Controller):
 
         return view.render('dash/single_order', {
             'user': user,
-            'order': order,  # .serialize(),
+            'order': order.serialize(),
             'products': serialized_products,
         })
 

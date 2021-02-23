@@ -11,6 +11,7 @@
         <hr>
 
         <p>Stav objednávky: <strong>{{ order['order_state']['name'] }}</strong></p>
+        <p>Dátum objednania: {{ order['created_at'] }}</p>
 
         <hr>
 
@@ -18,7 +19,7 @@
         <table class="table">
             <thead class="thead-dark">
                 <tr>
-                    <th scope="col">id</th>
+                    <!--<th scope="col">id</th>-->
                     <th scope="col"></th>
                     <th scope="col">názov produktu</th>
                     <th scope="col">počet kusov</th>
@@ -31,7 +32,7 @@
 
                     <tr>
 
-                        <th scope="row">{{ product['id'] }}</th>
+                        <!--<th scope="row">{{ product['id'] }}</th>-->
                         <td>
                             <img src="{{ product['image'] }}" class="img-fluid" alt="Obrázok chýba" style="width: 120px">
                         </td>
@@ -43,7 +44,7 @@
 
                 {% endfor %}
                 <tr>
-                    <td></td>
+                    <!--<td></td>-->
                     <td>Spôsob dopravy:</td>
                     <td>{{ order['shipping']['name'] }}</td>
                     <td></td>
@@ -51,7 +52,7 @@
                 </tr>
 
                 <tr class="table-secondary">
-                    <th scope="row"></th>
+                    <!--<th scope="row"></th>-->
                     <td></td>
                     <td></td>
                     <td><strong>Spolu</strong></td>

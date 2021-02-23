@@ -7,6 +7,10 @@ from orator.orm import belongs_to, belongs_to_many
 class Order(Model):
     """Order Model."""
     __fillable__ = ['total_price']
+    __dates__ = ['created_at', 'updated_at']
+
+    def get_date_format(self):
+        return "%Y-%m-%d"
 
     @belongs_to
     def user(self):

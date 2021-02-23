@@ -21,7 +21,7 @@
 
                     <tr>
 
-                        <th scope="row"><a href="/dashboard/order/{{ order['id'] }}">Objednávka č. {{ order['id'] }}</a></th>
+                        <th scope="row"><a href="/dashboard/order/{{ order['id'] }}">Obj. #{{ order['id'] }}</a></th>
                         <td>{{ order['created_at'] }}</td>
                         <td>{{ order['total_price'] }}</td>
                         <th>{{ order['order_state']['name'] }}</th>

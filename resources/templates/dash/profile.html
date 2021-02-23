@@ -14,6 +14,11 @@
 
         {% if not user_['verified_at'] %}
             <p><strong>Emailová adresa nie je overená</strong></p>
+            {% if session().has('success') %}
+                <div class="alert alert-success" role="alert">
+                    {{ session().get('success') }}
+                </div>
+            {% endif %}
             <a href="/email/verify/send2" class="btn btn-primary">Vyžiadať overovací email</a>
         {% endif %}
         <hr>
