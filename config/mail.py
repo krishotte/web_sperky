@@ -29,8 +29,8 @@ DRIVERS = {
     'smtp': {
         'host': env('MAIL_HOST', 'smtp.mailtrap.io'),
         'port': env('MAIL_PORT', '465'),
-        'username': env('MAIL_USERNAME', 'username'),
-        'password': env('MAIL_PASSWORD', 'password'),
+        'username': env('MAIL_USERNAME', ''),
+        'password': env('MAIL_PASSWORD', ''),
         'ssl': True
     },
     'mailgun': {

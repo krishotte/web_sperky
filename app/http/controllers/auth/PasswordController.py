@@ -44,12 +44,17 @@ class PasswordController:
             if not user.remember_token:
                 user.remember_token = str(uuid.uuid4())
                 user.save()
-            # message = "Please visit {}/password/{}/reset to reset your password".format(
+
             message = "Prosím, kliknite na {}/password/{}/reset pre zresetovanie hesla".format(
                 env("APP_URL"), user.remember_token
             )
+            link = "{}/password/{}/reset".format(
+                env("APP_URL"), user.remember_token)
+
             # mail.subject("Inštrukcie pre zresetovanie hesla").to(user.email).send(message)
-            mail.subject("Inštrukcie pre zresetovanie hesla").to(user.email).send(message)
+            mail.to(user.email).template(
+                "email/password_reset", {"name": user.name, "email": user.email, "link": link}
+            ).subject("Inštrukcie pre zresetovanie hesla").send()
 
         session.flash(
             "success",
