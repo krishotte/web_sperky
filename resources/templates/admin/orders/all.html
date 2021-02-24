@@ -1,0 +1,37 @@
+{% extends "menu.html" %}
+{% block content_a %}
+
+    <div class="container-sm _nav_padding">
+        <h2 class="mb-3">Administrácia objednávok:</h2>
+
+        <table class="table table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">id</th>
+                    <th scope="col">dátum</th>
+                    <th scope="col">užívateľ</th>
+                    <th scope="col">cena spolu</th>
+                    <th scope="col">stav objednávky</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+
+                    <tr>
+
+                        <th scope="row"><a href="/admin/order/{{ order['id'] }}">Obj. #{{ order['id'] }}</a></th>
+                        <td>{{ order['created_at'] }}</td>
+                        <td>{{ order['user']['email'] }}</td>
+                        <td>{{ order['total_price'] }}</td>
+                        <th>{{ order['order_state']['name'] }}</th>
+
+                    </tr>
+
+                {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

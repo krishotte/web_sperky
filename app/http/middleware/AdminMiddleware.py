@@ -18,9 +18,9 @@ class AdminMiddleware:
         """Run This Middleware Before The Route Executes."""
         try:
             if self.request.user().role == None:
-                self.request.redirect('/main')
+                self.request.redirect('/')
         except AttributeError:
-            self.request.redirect('/main')
+            self.request.redirect('/')
 
     def after(self):
         """Run This Middleware After The Route Executes."""

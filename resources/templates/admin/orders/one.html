@@ -1,0 +1,96 @@
+{% extends "menu.html" %}
+{% block content_a %}
+
+    <div class="container-sm _nav_padding">
+        <h2 class="mb-3">Administrácia objednávok:</h2>
+
+        <h4>Objednávka č. {{ order['id'] }}:</h4>
+
+        <hr>
+
+        <!--<p>Stav objednávky: <strong>{{ order['order_state']['name'] }}</strong></p>-->
+
+        <form class="form-inline mb-2" action="#" method="post">
+            <div class="form-group">
+                <label for="order_status">Stav objednávky:</label>
+                <select class="form-control ml-2" id="order_status" name="order_status" value="{{ order['order_state']['name'] }}">
+                    {% for state in order_states %}
+                        {% if state["id"] == order['order_state']['id'] %}
+                            <option selected="selected">{{ state["name"]  }}</option>
+                        {% else %}
+                            <option>{{ state["name"]  }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+            <button class="btn btn-danger ml-2" type="submit">Zmeniť stav</button>
+        </form>
+
+        <p>Užívateľ: <strong>{{ order['user']['name'] }}</strong>&nbsp {{order['user']['email'] }}</p>
+        <p>Dátum objednania: {{ order['created_at'] }}</p>
+
+        <hr>
+
+        <h4>Objednané produkty:</h4>
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">id</th>
+                    <th scope="col"></th>
+                    <th scope="col">názov produktu</th>
+                    <th scope="col">počet kusov</th>
+                    <th scope="col">jednotková cena</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+
+                    <tr>
+
+                        <th scope="row">{{ product['id'] }}</th>
+                        <td>
+                            <img src="{{ product['image'] }}" class="img-fluid" alt="Obrázok chýba" style="width: 120px">
+                        </td>
+                        <td>{{ product['name'] }}</td>
+                        <td>{{ product['pivot']['product_count'] }}</td>
+                        <td>{{ product['pivot']['unit_price'] }} EUR</td>
+
+                    </tr>
+
+                {% endfor %}
+                <tr>
+                    <td></td>
+                    <td>Spôsob dopravy:</td>
+                    <td><strong>{{ order['shipping']['name'] }}</strong></td>
+                    <td></td>
+                    <td>{{ order['shipping']['price'] }} EUR</td>
+                </tr>
+
+                <tr class="table-secondary">
+                    <th scope="row"></th>
+                    <td></td>
+                    <td></td>
+                    <td><strong>Spolu</strong></td>
+                    <td><strong>{{ order['total_price'] }} EUR</strong></td>
+                </tr>
+
+            </tbody>
+        </table>
+
+        {% if order['shipping']['name'] != 'osobný odber' %}
+        <h4>Objednávka bude odoslaná na adresu:</h4>
+
+        <div class="card mb-2 mx-2" style="width: 22rem">
+            <div class="card-body">
+                <p class="mb-0">{{ order['address']['name'] }}</p>
+                <p class="mb-0">{{ order['address']['street'] }}</p>
+                <p class="mb-3">{{ order['address']['zip_code'] }} &nbsp {{ order['address']['city'] }}</p>
+                <p class="mb-1">{{ order['address']['phone'] }}</p>
+
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+{% endblock %}
