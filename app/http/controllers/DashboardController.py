@@ -79,11 +79,15 @@ class DashboardController(Controller):
         serialized_products = add_image_path(order.products.serialize())
         print(f' products: {order.products.serialize()}')
 
-        return view.render('dash/single_order', {
-            'user': user,
-            'order': order.serialize(),
-            'products': serialized_products,
-        })
+        if order.user.email == user['email']:
+            return view.render('dash/single_order', {
+                'user': user,
+                'order': order.serialize(),
+                'products': serialized_products,
+            })
+        else:
+            print(f' not your order')
+            return request.redirect('/dashboard/orders')
 
     # cart control methods
     def show_cart(self, request: Request, view: View):
