@@ -10,7 +10,9 @@
 
         <!--<p>Stav objednávky: <strong>{{ order['order_state']['name'] }}</strong></p>-->
 
-        <form class="form-inline mb-2" action="#" method="post">
+        <form class="form-inline mb-2" action="/admin/order-update-state" method="post">
+            {{ csrf_field }}
+            <input type="number" name="order_id" value="{{ order['id'] }}" hidden>
             <div class="form-group">
                 <label for="order_status">Stav objednávky:</label>
                 <select class="form-control ml-2" id="order_status" name="order_status" value="{{ order['order_state']['name'] }}">

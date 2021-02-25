@@ -1,0 +1,43 @@
+{% extends "menu.html" %}
+{% block content_a %}
+
+    <div class="container-sm _nav_padding">
+        <h2 class="mb-3">Administrácia užívateľov:</h2>
+
+        <table class="table table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">id</th>
+                    <th scope="col">dátum registrácie</th>
+                    <th scope="col">meno</th>
+                    <th scope="col">email</th>
+                    <th scope="col">verifikovaný</th>
+                    <th scope="col">rola</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                {% for u in users %}
+
+                    <tr>
+
+                        <th scope="row">{{ u['id'] }}</th>
+                        <td>{{ u['created_at'] }}</td>
+                        <td>{{ u['name'] }}</td>
+                        <td>{{ u['email'] }}</td>
+                        <td>{{ u['verified_at'] }}</td>
+                        {% if 'role' in u %}
+                            <th>{{ u['role']['name'] }}</th>
+                        {% else %}
+                            <th></th>
+                        {% endif %}
+
+                    </tr>
+
+                {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

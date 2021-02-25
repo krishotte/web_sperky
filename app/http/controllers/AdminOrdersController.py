@@ -59,3 +59,15 @@ class AdminOrdersController(Controller):
             'order_states': order_states,
             'products': serialized_products,
         })
+
+    def update_order_status(self, request: Request):
+        new_order_state = OrderState.where('name', '=', request.input('order_status')).first()
+        print(f' new order status {new_order_state.serialize()}')
+
+        order = Order.find(request.input('order_id'))
+        print(f' for order: {order.serialize()}')
+
+        order.order_state().associate(new_order_state)
+        order.save()
+
+        return request.redirect(f'/admin/order/{order.id}')

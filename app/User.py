@@ -12,6 +12,10 @@ class User(Model, SvkMustVerifyEmail):
     __fillable__ = ['name', 'email', 'password']
 
     __auth__ = 'email'
+    __dates__ = ['created_at', 'updated_at', 'verified_at']
+
+    def get_date_format(self):
+        return "%Y-%m-%d"
 
     @belongs_to
     def role(self):
