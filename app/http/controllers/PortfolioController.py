@@ -29,7 +29,13 @@ class PortfolioController(Controller):
     def show(self, view: View, request: Request):
         categories = Product_category.order_by('id', 'asc').get()
         materials = Material.order_by('id', 'asc').get()
-        products = Product.order_by('id', 'desc').get()
+        # products = Product.order_by('id', 'desc').get()
+
+        # get only products with certain availabilities
+        products = Product.where_has(
+            'availability',
+            lambda q: q.where('name', '<>', 'Vypredané')
+        ).order_by('id', 'desc').get()
 
         serialized_products = add_image_path(products.serialize())
         serialized_products = add_description_lines(serialized_products)
@@ -49,7 +55,13 @@ class PortfolioController(Controller):
         categories = Product_category.order_by('id', 'asc').get()
         materials = Material.order_by('id', 'asc').get()
         category = Product_category.find(request.param('category_id'))
-        products = category.products().order_by('id', 'desc').get()
+        # products = category.products().order_by('id', 'desc').get()
+
+        # get only products with certain availabilities
+        products = category.products().where_has(
+            'availability',
+            lambda q: q.where('name', '<>', 'Vypredané')
+        ).order_by('id', 'desc').get()
 
         serialized_products = add_image_path(products.serialize())
         serialized_products = add_description_lines(serialized_products)
@@ -65,17 +77,18 @@ class PortfolioController(Controller):
             'user': user,
         })
 
-        return {
-            'category': category.serialize(),
-            'products': category.products.serialize()
-        }
-
     def show_one_category_and_material(self, request: Request, view: View):
         categories = Product_category.order_by('id', 'asc').get()
         materials = Material.order_by('id', 'asc').get()
         category = Product_category.find(request.param('category_id'))
         material = Material.find(request.param('material_id'))
-        products = material.products().where('category_id', '=', category.id).order_by('id', 'desc').get()
+        # products = material.products().where('category_id', '=', category.id).order_by('id', 'desc').get()
+
+        # get only products with certain availabilities
+        products = material.products().where('category_id', '=', category.id).order_by('id', 'desc').where_has(
+            'availability',
+            lambda q: q.where('name', '<>', 'Vypredané')
+        ).order_by('id', 'desc').get()
 
         serialized_products = add_image_path(products.serialize())
         serialized_products = add_description_lines(serialized_products)
@@ -90,12 +103,6 @@ class PortfolioController(Controller):
             'user': user,
         })
 
-        return {
-            'category': category.serialize(),
-            'material': material.serialize(),
-            'products': material.products().where('category_id', '=', category.id).get().serialize(),
-        }
-
     def show_one_product(self, request: Request, view: View):
         product = Product.find(request.param('product_id'))
         product.availability
@@ -108,10 +115,15 @@ class PortfolioController(Controller):
         serialized_product['images'] = files
         serialized_product['indexes'] = indexes
 
-        related_products = product.related_products
+        # related_products = product.related_products
+        # get only products with certain availabilities
+        related_products = product.related_products().where_has(
+            'availability',
+            lambda q: q.where('name', '<>', 'Vypredané')
+        ).order_by('id', 'desc').get()
+
         related_products_serialized = add_image_path(related_products.serialize())
         user = get_user(request)
-        # return serialized_product
 
         return view.render('product', {
             'product': serialized_product,
@@ -120,7 +132,12 @@ class PortfolioController(Controller):
         })
 
     def show_search(self, request: Request, view: View):
-        products = Product.order_by('id', 'desc').get()
+        # products = Product.order_by('id', 'desc').get()
+        # get only products with certain availabilities
+        products = Product.where_has(
+            'availability',
+            lambda q: q.where('name', '<>', 'Vypredané')
+        ).order_by('id', 'desc').get()
 
         filtered_products = []
         for each in products:
