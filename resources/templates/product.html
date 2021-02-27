@@ -4,6 +4,15 @@
 <main role="main">
     <div class="container-sm _nav_padding">
         <h1 class="text-center">{{ product["name"] }}</h1>
+
+        <div class="row justify-content-sm-center">
+        {% if session().has('success') %}
+            <div class="alert alert-success fixed-top _alert_popup" id="alert1">
+                {{ session().get('success') }}
+            </div>
+        {% endif %}
+        </div>
+
         <div class="row mb-3">
             <div class="col-sm-6">
                 <!-- Carousel -->
@@ -95,5 +104,15 @@
 
     </div>
 </main>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#alert1').hide();
+        $('#alert1').slideDown(600);
+        setTimeout(function() {
+            $("#alert1").slideUp(600);
+         }, 3200);
+    });
+</script>
 
 {% endblock %}

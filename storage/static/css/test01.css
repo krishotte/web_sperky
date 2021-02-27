@@ -13,6 +13,13 @@ body {
     max-width: 1140px;
 }
 
+._alert_popup {
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 80px;
+}
+
 /* CUSTOMIZE THE CAROUSEL
 -------------------------------------------------- */
 

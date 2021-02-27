@@ -143,6 +143,8 @@ class DashboardController(Controller):
         else:
             request.session.set('ordered_items', [int(request.param('product_id'))])
 
+        request.session.flash('success', 'Produkt bol pridaný do košíka')
+
         print(f' session : {request.session.all()}')
         return request.redirect(caller)
 
