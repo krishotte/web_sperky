@@ -71,3 +71,12 @@ class AdminOrdersController(Controller):
         order.save()
 
         return request.redirect(f'/admin/order/{order.id}')
+
+    def update_order_discount(self, request: Request):
+        new_discount = request.input('discount')
+
+        order = Order.find(request.input('order_id'))
+        order.discount = new_discount
+        order.save()
+
+        return request.redirect(f'/admin/order/{order.id}')

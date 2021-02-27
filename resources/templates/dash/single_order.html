@@ -55,12 +55,21 @@
                     <td>{{ order['shipping']['price'] }} EUR</td>
                 </tr>
 
+                {% if order['discount'] != 0 %}
+                    <tr>
+                        <td></td>
+                        <td><strong>Zľava</strong></td>
+                        <td></td>
+                        <td>-{{ order['discount'] }} EUR</td>
+                    </tr>
+                {% endif %}
+
                 <tr class="table-secondary">
                     <!--<th scope="row"></th>-->
                     <td></td>
                     <td></td>
                     <td><strong>Spolu</strong></td>
-                    <td><strong>{{ order['total_price'] }} EUR</strong></td>
+                    <td><strong>{{ order['total_price'] - order['discount'] }} EUR</strong></td>
                 </tr>
 
             </tbody>

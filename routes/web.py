@@ -36,6 +36,7 @@ ROUTES = [
         Get('/admin/orders', 'AdminOrdersController@show_all_orders'),
         Get('/admin/order/@order_id', 'AdminOrdersController@show_one_order'),
         Post('/admin/order-update-state', 'AdminOrdersController@update_order_status'),
+        Post('/admin/order-update-discount', 'AdminOrdersController@update_order_discount'),
 
         # Admin Users
         Get('/admin/users', 'AdminUsersController@show_all_users'),

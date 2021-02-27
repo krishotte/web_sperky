@@ -23,7 +23,7 @@
                         <th scope="row"><a href="/admin/order/{{ order['id'] }}">Obj. #{{ order['id'] }}</a></th>
                         <td>{{ order['created_at'] }}</td>
                         <td>{{ order['user']['email'] }}</td>
-                        <td>{{ order['total_price'] }}</td>
+                        <td>{{ order['total_price'] - order['discount'] }}</td>
                         <th>{{ order['order_state']['name'] }}</th>
 
                     </tr>

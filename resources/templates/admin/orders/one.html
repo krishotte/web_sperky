@@ -31,6 +31,22 @@
         <p>Užívateľ: <strong>{{ order['user']['name'] }}</strong>&nbsp {{order['user']['email'] }}</p>
         <p>Dátum objednania: {{ order['created_at'] }}</p>
 
+        <form action="/admin/order-update-discount" method="post" class="form-inline">
+            {{ csrf_field }}
+            <input type="number" name="order_id" value="{{ order['id'] }}" hidden>
+            <div class="form-group">
+                <label for="discount" class="mr-2">Zľava</label>
+                <div class="input-group">
+                    <input type="number" step="0.1" class="form-control" value="{{ order['discount'] }}"
+                        name="discount" id="discount" style="width: 5rem">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text mr-2">EUR</div>
+                    </div>
+                </div>
+                <button class="btn btn-danger" type="submit">Uložiť</button>
+            </div>
+        </form>
+
         <hr>
 
         <h4>Objednané produkty:</h4>
@@ -69,12 +85,22 @@
                     <td>{{ order['shipping']['price'] }} EUR</td>
                 </tr>
 
+                {% if order['discount'] != 0 %}
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td><strong>Zľava</strong></td>
+                        <td></td>
+                        <td>-{{ order['discount'] }} EUR</td>
+                    </tr>
+                {% endif %}
+
                 <tr class="table-secondary">
                     <th scope="row"></th>
                     <td></td>
                     <td></td>
                     <td><strong>Spolu</strong></td>
-                    <td><strong>{{ order['total_price'] }} EUR</strong></td>
+                    <td><strong>{{ order['total_price'] - order['discount'] }} EUR</strong></td>
                 </tr>
 
             </tbody>
@@ -92,6 +118,16 @@
 
             </div>
         </div>
+        {% endif %}
+
+        {% if order['note'] %}
+            <h4>Poznámka:</h4>
+            <div class="card mb-2 mx-2" style="width: 22rem">
+                <div class="card-body">
+                    <p class="mb-0">{{ order['note'] }}</p>
+
+                </div>
+            </div>
         {% endif %}
     </div>
 
