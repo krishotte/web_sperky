@@ -4,8 +4,6 @@
 <main role="main">
 
     <div class="container-sm _nav_padding">
-        <!--<h2>Vitajte {{ user['email'] }} vo svojom užívateľskom profile</h2>-->
-
         <h2>{{ user['name'] }}, vyberte adresu pre zaslanie objednávky: </h2>
 
         <h4>Vaše adresy:</h4>
@@ -26,7 +24,11 @@
                                 <form action="/order-set-address" method="post">
                                     {{ csrf_field }}
                                     <input type="number" value="{{ address['id'] }}" name="address_id" hidden>
-                                    <button class="btn btn-success" type="submit">Vybrať</button>
+                                    <button class="btn btn-success" type="submit">
+                                        <svg class="bi pb-1" width="1.4em" height="1.4em">
+                                            <use xlink:href="/static/svg/bootstrap-icons.svg#check2"></use>
+                                        </svg>
+                                        Vybrať</button>
                                 </form>
                             </div>
                         </div>
@@ -36,6 +38,18 @@
             </div>
 
         <hr>
+
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col-sm-auto">
+                <a href="/dashboard/cart" class="btn btn-primary">
+                    <svg class="bi pb-1" width="1.4em" height="1.4em">
+                        <use xlink:href="/static/svg/bootstrap-icons.svg#arrow-left"></use>
+                    </svg>
+                    Späť</a>
+            </div>
+        </div>
+
     </div>
 </main>
 

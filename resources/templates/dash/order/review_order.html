@@ -70,18 +70,58 @@
 
         <hr>
 
-        <div class="row">
-            <div class="col-7"></div>
-            <div class="col-4">
-                <form action="/make-order" method="post">
+        <div class="form-group">
+            <label for="note" class="h4">Poznámka:</label>
+            {% if note == None %}
+            <textarea class="form-control" id="note" rows="4" name="note" form="form1"
+                onchange="updateBackNote();"></textarea>
+            {% else %}
+            <textarea class="form-control" id="note" rows="4" name="note" form="form1"
+                onchange="updateBackNote();">{{ note }}</textarea>
+            {% endif %}
+        </div>
+
+        <hr>
+
+        <div class="row justify-content-md-center">
+            <div class="col-sm-1"></div>
+            <div class="col">
+                <form action="/order-back-to-shipping" method="post">
                     {{ csrf_field }}
-                    <button class="btn btn-success">Záväzne objednať</button>
+                    <textarea type="text" id="back_note" name="note" value="" hidden></textarea>
+                    <button class="btn btn-primary mb-2" type="submit" onclick="updateBackNote();">
+                        <svg class="bi pb-1" width="1.4em" height="1.4em">
+                            <use xlink:href="/static/svg/bootstrap-icons.svg#arrow-left"></use>
+                        </svg>
+                        Späť</button>
+                </form>
+                <!--<button class="btn btn-primary" onclick="updateBackNote();">Back</button>-->
+
+            </div>
+            <div class="col-sm-5"></div>
+            <div class="col">
+                <form action="/make-order" method="post" id="form1">
+                    {{ csrf_field }}
+                    <button class="btn btn-success">
+                        <svg class="bi pb-1" width="1.4em" height="1.4em">
+                            <use xlink:href="/static/svg/bootstrap-icons.svg#check2-all"></use>
+                        </svg>
+                        Záväzne objednať</button>
                 </form>
             </div>
-            <div class="col-1"></div>
+            <div class="col-sm-1"></div>
         </div>
         {% endif %}
     </div>
 </main>
+
+<script type="text/javascript">
+    function updateBackNote() {
+        var note = document.getElementById('note');
+        var back_note = document.getElementById('back_note');
+        console.log('updating back note: ' + note.value);
+        back_note.value = note.value;
+    }
+</script>
 
 {% endblock %}

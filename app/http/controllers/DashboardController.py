@@ -13,6 +13,7 @@ from app.Address import Address
 from app.Shipping import Shipping
 from app.OrderState import OrderState
 from masonite import env
+import pendulum
 
 
 class DashboardController(Controller):
@@ -55,7 +56,7 @@ class DashboardController(Controller):
     def show_orders(self, request: Request, view: View):
         user = get_user(request)
 
-        orders = request.user().orders
+        orders = request.user().orders().order_by('id', 'desc').get()
         orders.load('order_state')
 
         for order in orders:
@@ -169,7 +170,7 @@ class DashboardController(Controller):
         user select address to send order to
         """
         user = get_user(request)
-        user_ = User.where('email', '=', user['email']).get()[0]
+        user_ = User.where('email', '=', user['email']).first()
         user_.addresses()
 
         print(f' user addresses: {user_.addresses.serialize()}')
@@ -179,20 +180,26 @@ class DashboardController(Controller):
             'user_': user_,
         })
 
-    def oder_set_user_address(self, request: Request, view: View):
+    def order_set_user_address(self, request: Request):
         """
         sets order address to cookie
-        shows shipping to choose
+        redirects to shipping
         """
-        user = get_user(request)
-        user_ = User.where('email', '=', user['email']).get()[0]
-        user_.addresses()
-
         address_id = int(request.input('address_id'))
         address = Address.find(address_id)
         print(f' address to use: {address.serialize()}')
 
         request.session.set('address', address.id)
+
+        return request.redirect('/order-shipping')
+
+    def order_show_shipping(self, request: Request, view: View):
+        """
+        allows to go back from order review
+        """
+        user = get_user(request)
+        user_ = User.where('email', '=', user['email']).first()
+        user_.addresses()
 
         shippings = Shipping.all()
 
@@ -202,21 +209,39 @@ class DashboardController(Controller):
             'shippings': shippings,
         })
 
+    def order_set_shipping(self, request: Request):
+        """
+        saves shipping to session, redirects to order review
+        """
+        request.session.set('shipping', int(request.input('shipping_id')))
+
+        return request.redirect('/order-review')
+
+    def order_back_to_shipping(self, request: Request):
+        """
+        saves note to session, redirects to order_show_shipping
+        """
+        note = request.input('note')
+        print(f' saving note to session: {note}')
+        request.session.set('note', note)
+
+        return request.redirect('/order-shipping')
+
     def order_review(self, request: Request, view: View):
         """
         shows order review
         """
         user = get_user(request)
-        user_ = User.where('email', '=', user['email']).get()[0]
+        user_ = User.where('email', '=', user['email']).first()
 
-        shipping = Shipping.find(int(request.input('shipping_id')))
-        request.session.set('shipping', shipping.id)
-
+        shipping = Shipping.find(int(request.session.get('shipping')))
         address = Address.find(int(request.session.get('address')))
 
         items = request.session.get('ordered_items')
         unique_items = list(set(items))
         counts = [items.count(item) for item in unique_items]
+
+        note = request.session.get('note')
 
         total_price = shipping.price
         products = []
@@ -241,6 +266,7 @@ class DashboardController(Controller):
             'total_price': total_price,
             'shipping': shipping,
             'address': address,
+            'note': note,
         })
 
     def make_order(self, request: Request):
@@ -253,21 +279,18 @@ class DashboardController(Controller):
         unique_items = list(set(items))
         counts = [items.count(item) for item in unique_items]
 
+        note = request.input('note')
         total_price = float(request.session.get('total_price'))
         products = []
         try:
             for index, each in enumerate(unique_items):
                 product = Product.find(each)
                 products.append(product)
-                # total_price += product.price * counts[index]
-            #print(f' total price: {total_price}')
-            #serialized_products = add_image_path(products)
         except Exception:
-            #serialized_products = []
             pass
 
         # let's make an order
-        order = Order(total_price=total_price)
+        order = Order(total_price=total_price, note=note)
         order.user().associate(request.user())
 
         order_state = OrderState.where('phase', '=', 1).first()
@@ -276,6 +299,10 @@ class DashboardController(Controller):
         order.shipping().associate(shipping)
         order.address().associate(address)
 
+        # save to get an id
+        order.save()
+
+        order.name = f"{pendulum.now().format('%Y')}{str(order.id).zfill(4)}"
         order.save()
 
         for index, product in enumerate(products):

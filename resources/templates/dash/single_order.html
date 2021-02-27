@@ -6,7 +6,11 @@
     <div class="container-sm _nav_padding">
         <h2>Vitajte {{ user['name'] }} vo svojom užívateľskom profile</h2>
 
-        <h4>Objednávka č. {{ order['id'] }}:</h4>
+        {% if order['name'] %}
+            <h4>Objednávka č. {{ order['name'] }}:</h4>
+        {% else %}
+            <h4>Objednávka č. {{ order['id'] }}:</h4>
+        {% endif %}
 
         <hr>
 
@@ -73,6 +77,16 @@
 
             </div>
         </div>
+
+        {% if order['note'] %}
+            <h4>Poznámka:</h4>
+            <div class="card mb-2 mx-2" style="width: 22rem">
+                <div class="card-body">
+                    <p class="mb-0">{{ order['note'] }}</p>
+
+                </div>
+            </div>
+        {% endif %}
 
     </div>
 </main>

@@ -4,8 +4,6 @@
 <main role="main">
 
     <div class="container-sm _nav_padding">
-        <!--<h2>Vitajte {{ user['email'] }} vo svojom užívateľskom profile</h2>-->
-
         <h2>{{ user['name'] }}, Váš nákupný košík: </h2>
 
         {% if ordered_items %}
@@ -52,19 +50,6 @@
                     <td><strong>{{ total_price }} EUR</strong></td>
                     <td></td>
                 </tr>
-                <!--<tr class="table-borderless">-->
-                    <!--<td></td>-->
-                    <!--<td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        <form action="/order-user-details" method="get">
-                            {{ csrf_field }}
-                            <button class="btn btn-success" type="submit">Objednať</button>
-                        </form>
-                    </td>
-                </tr>-->
             </tbody>
         </table>
 
@@ -72,12 +57,11 @@
         <div class="row">
             <div class="col-7"></div>
             <div class="col-4">
-                <!--<a href="/make-order" class="btn btn-success" role="button">Objednať</a>-->
-                <!--<button class="btn btn-success">Objednať</button>-->
-                <form action="/order-user-details" method="get">
-                    {{ csrf_field }}
-                    <button class="btn btn-success" type="submit">Objednať</button>
-                </form>
+                    <a href="/order-user-details" class="btn btn-success">
+                        <svg class="bi pb-1" width="1.4em" height="1.4em">
+                            <use xlink:href="/static/svg/bootstrap-icons.svg#check2"></use>
+                        </svg>
+                        Objednať</a>
             </div>
             <div class="col-1"></div>
         </div>

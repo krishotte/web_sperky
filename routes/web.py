@@ -60,8 +60,11 @@ ROUTES = [
 
         # order routes
         Get('/order-user-details', 'DashboardController@order_show_user_details'),
-        Post('/order-set-address', 'DashboardController@oder_set_user_address'),
-        Post('/order-review', 'DashboardController@order_review'),
+        Post('/order-set-address', 'DashboardController@order_set_user_address'),
+        Get('/order-shipping', 'DashboardController@order_show_shipping'),
+        Post('order-set-shipping', 'DashboardController@order_set_shipping'),
+        Post('/order-back-to-shipping', 'DashboardController@order_back_to_shipping'),
+        Get('/order-review', 'DashboardController@order_review'),
         Post('/make-order', 'DashboardController@make_order'),
 
         # user management routes
