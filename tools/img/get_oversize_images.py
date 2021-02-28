@@ -10,7 +10,7 @@ print(f' img folder: {img_folder}')
 product_folders = [folder for folder in img_folder.iterdir()]
 # print(f' product folders: {product_folders}')
 
-img_files = [file for file in product_folders[0].iterdir()]
+# img_files = [file for file in product_folders[0].iterdir()]
 # print(f' img files: {img_files}')
 
 for folder in product_folders:
