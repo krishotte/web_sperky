@@ -216,8 +216,8 @@ class EditPortfolioController(Controller):
             last_product = category.products().order_by('id', 'desc').first()
             try:
                 # print(f' last product: {last_product.serialize()}')
-                folder_prefix = '/static/img/'
-                image_path = folder_prefix + str(last_product.id).zfill(4) + '/' + str(last_product.id).zfill(4) + '_01.jpg'
+                folder_prefix = '/static/img_webp/'
+                image_path = folder_prefix + str(last_product.id).zfill(4) + '/' + str(last_product.id).zfill(4) + '_01.webp'
                 print(f' cover image path: {image_path}')
 
                 category.image_path = image_path
@@ -234,10 +234,10 @@ class EditPortfolioController(Controller):
         saves file received in request to new file
         :return: True if file was saved
         """
-        folder_prefix = 'storage/static/img/'
+        folder_prefix = 'storage/static/img_webp/'
         folder = folder_prefix + str(product_id).zfill(4)
 
-        product_folder = Path.cwd().joinpath("storage").joinpath("static").joinpath("img").joinpath(str(product_id).zfill(4))
+        product_folder = Path.cwd().joinpath("storage").joinpath("static").joinpath("img_webp").joinpath(str(product_id).zfill(4))
         print(f'product folder: {product_folder}, exists: {product_folder.exists()}')
 
         if not product_folder.exists():
@@ -251,7 +251,7 @@ class EditPortfolioController(Controller):
         while (not file_name_available) and (counter < 10):
             counter += 1
             # print(f'counter: {counter}')
-            name_to_check = f'{str(product_id).zfill(4)}_{str(counter).zfill(2)}.jpg'
+            name_to_check = f'{str(product_id).zfill(4)}_{str(counter).zfill(2)}.webp'
 
             print(f' file {name_to_check} exists: {product_folder.joinpath(name_to_check).exists()}')
             if not product_folder.joinpath(name_to_check).exists():
@@ -259,9 +259,10 @@ class EditPortfolioController(Controller):
 
         if file_name_available:
             try:
-                upload.driver('disk').store(request.input("file"), location=folder, filename=name_to_check)
+                upload.driver('disk').accept('webp').store(request.input("file"), location=folder, filename=name_to_check)
                 return True
-            except Exception:
+            except Exception as e:
+                print(f' exception during file save: {e}')
                 pass
 
         return False
@@ -270,7 +271,7 @@ class EditPortfolioController(Controller):
         image_name = image.split('/')[-1]
         folder_name = image.split('/')[-2]
 
-        file_to_remove = Path.cwd().joinpath("storage").joinpath("static").joinpath("img").joinpath(folder_name).joinpath(image_name)
+        file_to_remove = Path.cwd().joinpath("storage").joinpath("static").joinpath("img_webp").joinpath(folder_name).joinpath(image_name)
         print(f'--- file to remove: {file_to_remove}')
 
         try:

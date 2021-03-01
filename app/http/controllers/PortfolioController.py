@@ -163,13 +163,13 @@ class PortfolioController(Controller):
 
 
 def get_files_on_disk(product_id):
-    product_folder = Path.cwd().joinpath("storage").joinpath("static").joinpath("img").joinpath(str(product_id).zfill(4))
+    product_folder = Path.cwd().joinpath("storage").joinpath("static").joinpath("img_webp").joinpath(str(product_id).zfill(4))
     print(f'product folder: {product_folder}')
 
     if not product_folder.exists():
         product_folder.mkdir()
 
-    files = ['/static/img/' + str(product_id).zfill(4) + '/' + file.name for file in product_folder.iterdir()]
+    files = ['/static/img_webp/' + str(product_id).zfill(4) + '/' + file.name for file in product_folder.iterdir()]
     print(f'files found: {files}')
     indexes = list(range(len(files)))
 
@@ -179,7 +179,7 @@ def get_files_on_disk(product_id):
 def add_image_path(serialized_products):
     for product in serialized_products:
         id_str = str(product['id']).zfill(4)
-        product['image'] = f'/static/img/{id_str}/{id_str}_01.jpg'
+        product['image'] = f'/static/img_webp/{id_str}/{id_str}_01.webp'
 
     # print(serialized_products)
     return serialized_products
