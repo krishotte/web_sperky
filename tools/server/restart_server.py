@@ -16,7 +16,7 @@ sys.path.append(str(root_path))
 load_dotenv(dotenv_path=env_path, verbose=True)
 """
 
-server_1 = env("WEB_SEVER_SERVICE_1")
+server_1 = env("WEB_SERVER_SERVICE_1")
 print(f' server1: {server_1}')
 
 
