@@ -18,8 +18,13 @@ load_dotenv(dotenv_path=env_path, verbose=True)
 
 server_1 = env("WEB_SERVER_SERVICE_1")
 print(f' server1: {server_1}')
+server_2 = env("WEB_SERVER_SERVICE_2")
+print(f' server1: {server_1}')
 
 
 def restart_server():
     if len(server_1) > 0:
         subprocess.run(['sudo', 'systemctl', 'restart', server_1])
+
+    if len(server_2) > 0:
+        subprocess.run(['sudo', 'systemctl', 'restart', server_2])
