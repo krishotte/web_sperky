@@ -7,11 +7,12 @@ from masonite.controllers import Controller
 from app.Product_category import Product_category
 from app.Material import Material
 from app.Product import Product
-from masonite import Upload
+from masonite import Upload, Queue
 from pathlib import Path
 from .PortfolioController import get_files_on_disk, add_image_path, add_description_lines
 from os import remove
 from app.Availability import Availability
+from app.jobs.RestartWebserverJob import RestartWebserverJob
 
 
 class EditPortfolioController(Controller):
@@ -226,6 +227,11 @@ class EditPortfolioController(Controller):
                 pass
 
         return response.redirect('/')
+
+    def restart_server(self, request: Request, queue: Queue):
+        queue.push(RestartWebserverJob, wait="2 seconds")
+
+        return request.redirect('/admin/product/edit')
 
     def _save_file_to_disk(self, product_id, upload: Upload, request: Request):
         """
