@@ -171,7 +171,7 @@ class EditPortfolioController(Controller):
         # return [request.input('name'), request.input('description'), request.input('price')]
 
     def choose_related_products(self, request: Request, view: View):
-        all_products = Product.where('id', '<>', request.param('product_id')).order_by('id', 'asc').get()
+        all_products = Product.where('id', '<>', request.param('product_id')).order_by('id', 'desc').get()
         caller_product = Product.find(request.param('product_id'))
         serialized_products = add_image_path(all_products.serialize())
 
