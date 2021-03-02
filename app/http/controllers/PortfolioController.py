@@ -169,7 +169,7 @@ def get_files_on_disk(product_id):
     if not product_folder.exists():
         product_folder.mkdir()
 
-    files = ['/static/img_webp/' + str(product_id).zfill(4) + '/' + file.name for file in product_folder.iterdir()]
+    files = ['/static/img_webp/' + str(product_id).zfill(4) + '/' + file.name for file in sorted(product_folder.iterdir())]
     print(f'files found: {files}')
     indexes = list(range(len(files)))
 
