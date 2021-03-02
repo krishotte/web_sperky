@@ -2,6 +2,7 @@ import subprocess
 import sys
 from masonite import env
 
+
 """
 from pathlib import Path
 from dotenv import load_dotenv
@@ -19,7 +20,7 @@ load_dotenv(dotenv_path=env_path, verbose=True)
 server_1 = env("WEB_SERVER_SERVICE_1")
 print(f' server1: {server_1}')
 server_2 = env("WEB_SERVER_SERVICE_2")
-print(f' server1: {server_1}')
+print(f' server2: {server_2}')
 
 
 def restart_server():
