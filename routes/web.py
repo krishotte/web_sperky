@@ -78,6 +78,7 @@ ROUTES = [
     Get('/blog/@blog_id', 'BlogController@show_first'),
 
     Get('/about/contacts', 'MainController@show_contacts'),
+    Get('/about/conditions', 'MainController@show_conditions'),
 
 ]
 
