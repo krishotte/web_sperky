@@ -77,6 +77,8 @@ ROUTES = [
 
     Get('/blog/@blog_id', 'BlogController@show_first'),
 
+    Get('/about/contacts', 'MainController@show_contacts'),
+
 ]
 
 from masonite.auth import Auth 

@@ -29,3 +29,10 @@ class MainController(Controller):
             'categories': categories,
             'user': user,
         })
+
+    def show_contacts(self, request: Request, view: View):
+        user = get_user(request)
+
+        return view.render('about/contacts', {
+            'user': user,
+        })
