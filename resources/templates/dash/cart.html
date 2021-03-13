@@ -23,16 +23,36 @@
                     <tr>
                         <!--<th scope="row">{{ ordered_items[each] }}</th>-->
                         <td>
-                            <img src="{{ products[each]['image'] }}" class="img-fluid" alt="Obrázok chýba" style="width: 120px">
+                            {% if 'variant_id' in ordered_items[each] %}
+                                <img src="{{ products[each]['variants'][0]['image'] }}" class="img-fluid" alt="Obrázok chýba" style="width: 120px">
+                            {% else %}
+                                <img src="{{ products[each]['image'] }}" class="img-fluid" alt="Obrázok chýba" style="width: 120px">
+                            {% endif %}
                         </td>
-                        <td>{{ products[each]['name'] }}</td>
-                        <td>{{ counts[each] }}</td>
-                        <td>{{ products[each]['price'] }} EUR</td>
+                        {% if 'variant_id' in ordered_items[each] %}
+                            <td>{{ products[each]['name'] }}<br/>{{ products[each]['variants'][0]['name'] }}</td>
+                        {% else %}
+                            <td>{{ products[each]['name'] }}</td>
+                        {% endif %}
+                        <td>{{ ordered_items[each]['count'] }}</td>
+
+                        {% if 'variant_id' in ordered_items[each] %}
+                            {% if products[each]['variants'][0]['price'] %}
+                                <td>{{ products[each]['variants'][0]['price'] }} EUR</td>
+                            {% else %}
+                                <td>{{ products[each]['price'] }} EUR</td>
+                            {% endif %}
+                        {% else %}
+                            <td>{{ products[each]['price'] }} EUR</td>
+                        {% endif %}
 
                         <td>
                             <form action="/remove-from-cart" method="post">
                                 {{ csrf_field}}
-                                <input type="number" value="{{ ordered_items[each] }}" name="item_to_remove" hidden>
+                                <input type="number" value="{{ ordered_items[each]['product_id'] }}" name="item_to_remove" hidden>
+                                {% if 'variant_id' in ordered_items[each] %}
+                                    <input type="number" value="{{ ordered_items[each]['variant_id'] }}" name="variant_id" hidden>
+                                {% endif %}
                                 <button class="btn btn-danger my-1 my-sm-0" type="submit">
                                     <svg class="bi py-0" width="1.2em" height="1.2em">
                                         <use xlink:href="/static/svg/bootstrap-icons.svg#trash"></use>

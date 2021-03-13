@@ -14,6 +14,8 @@ from app.Shipping import Shipping
 from app.OrderState import OrderState
 from masonite import env
 import pendulum
+import json
+from app.Variant import Variant
 
 
 class DashboardController(Controller):
@@ -96,40 +98,28 @@ class DashboardController(Controller):
 
         try:
             items = request.session.get('ordered_items')
-            unique_items = list(set(items))
-            counts = [items.count(item) for item in unique_items]
+            print(f' cart contains: {items}')
+            unique_items = items_to_unique(items)
             print(f' unique items: {unique_items}')
-            print(f' counts: {counts}')
         except Exception:
-            counts = 0
+            raise
             unique_items = []
 
         total_price = 0
-        products = []
-        try:
-            for index, each in enumerate(unique_items):
-                product = Product.find(each)
-                products.append(product.serialize())
-                total_price += product.price * counts[index]
-            print(f' total price: {total_price}')
-            serialized_products = add_image_path(products)
-        except Exception:
-            serialized_products = []
+        serialized_products, total_price = evaluate_cart(unique_items, total_price)
 
-        request.session.set('unique_items', unique_items)
-        request.session.set('counts', counts)
         request.session.set('total_price', total_price)
         # print(f' products: {products}')
         return view.render('dash/cart', {
             'user': user,
             'ordered_items': unique_items,
-            'counts': counts,
             'products': serialized_products,
             'total_price': total_price,
         })
 
     def add_to_cart(self, request: Request):
         """
+        obsolete - not used
         items to order are held in cookie as list
         items can be in list multiple times
         """
@@ -148,21 +138,78 @@ class DashboardController(Controller):
         print(f' session : {request.session.all()}')
         return request.redirect(caller)
 
+    def add_to_cart2(self, request: Request):
+        caller = get_caller_path(request)
+
+        product_id = int(request.input('product_id'))
+        variant_id = int(request.input('variant_id'))
+        print(f' request: {request.all()}')
+
+        product = Product.find(product_id)
+        product.variants
+
+        if len(product.variants) > 0:
+            if request.has('variant_id'):
+                # order product with variant
+                print(f' variant required, variant selected')
+                if request.session.has('ordered_items'):
+                    items = request.session.get('ordered_items')
+                    items.append({
+                        'product_id': product_id,
+                        'variant_id': variant_id,
+                    })
+                    request.session.set('ordered_items', json.dumps(items))
+                else:
+                    request.session.set('ordered_items', json.dumps([{
+                        'product_id': product_id,
+                        'variant_id': variant_id,
+                    }]))
+                request.session.flash('success', 'Produkt bol pridaný do košíka')
+            else:
+                # order not possible
+                print(f' variant required, but not found')
+                request.session.flash('warning', 'Prosím vyberte si variant produktu')
+
+        else:
+            # order product without variant
+            if request.session.has('ordered_items'):
+                items = request.session.get('ordered_items')
+                print(f' items: {items}')
+                items.append({
+                    'product_id': product_id,
+                })
+                request.session.set('ordered_items', json.dumps(items))
+            else:
+                request.session.set('ordered_items', json.dumps([{
+                    'product_id': product_id,
+                }]))
+            request.session.flash('success', 'Produkt bol pridaný do košíka')
+
+        return request.redirect(caller)
+
     def remove_from_cart(self, request: Request, view: View):
         """
         remove one item from cart
         """
         caller = get_caller_path(request)
 
-        item_to_remove = int(request.input('item_to_remove'))
+        # item_to_remove = int(request.input('item_to_remove'))
         ordered_items = request.session.get('ordered_items')
         print(f' ordered items before del: {ordered_items}')
+
+        if request.has('variant_id'):
+            item_to_remove = {
+                'product_id': int(request.input('item_to_remove')),
+                'variant_id': int(request.input('variant_id')),
+            }
+        else:
+            item_to_remove = {'product_id': int(request.input('item_to_remove'))}
 
         index_of_item = ordered_items.index(item_to_remove)
         ordered_items.pop(index_of_item)
         print(f' ordered items after del: {ordered_items}')
 
-        request.session.set('ordered_items', ordered_items)
+        request.session.set('ordered_items', json.dumps(ordered_items))
         return request.redirect(caller)
 
     # order control methods
@@ -240,22 +287,12 @@ class DashboardController(Controller):
         address = Address.find(int(request.session.get('address')))
 
         items = request.session.get('ordered_items')
-        unique_items = list(set(items))
-        counts = [items.count(item) for item in unique_items]
+        unique_items = items_to_unique(items)
 
         note = request.session.get('note')
 
         total_price = shipping.price
-        products = []
-        try:
-            for index, each in enumerate(unique_items):
-                product = Product.find(each)
-                products.append(product.serialize())
-                total_price += product.price * counts[index]
-            print(f' total price: {total_price}')
-            serialized_products = add_image_path(products)
-        except Exception:
-            serialized_products = []
+        serialized_products, total_price = evaluate_cart(unique_items, total_price)
 
         request.session.set('total_price', total_price)
 
@@ -263,7 +300,6 @@ class DashboardController(Controller):
             'user': user,
             'user_': user,
             'ordered_items': unique_items,
-            'counts': counts,
             'products': serialized_products,
             'total_price': total_price,
             'shipping': shipping,
@@ -402,3 +438,62 @@ class DashboardController(Controller):
         else:
             print(f' not your address')
             return request.redirect('/dashboard')
+
+
+def items_to_unique(items):
+    """
+    builds list of unique items with counts
+    :param items:
+    :return:
+    """
+    unique_items = []
+    counts = []
+    for item in items:
+        count = items.count(item)
+        if item not in unique_items:
+            # item['count'] = count
+            unique_items.append(item)
+            counts.append(count)
+
+    unique_items_with_counts = []
+    for index, uitem in enumerate(unique_items):
+        uitem['count'] = counts[index]
+        unique_items_with_counts.append(uitem)
+
+    return unique_items_with_counts
+
+
+def evaluate_cart(unique_items, total_price):
+    """
+    prepare products with variants for view
+    :param unique_items:
+    :return: products
+    """
+    total_price_ = total_price
+    products = []
+    try:
+        for each in unique_items:
+            product = Product.find(each['product_id'])
+            if 'variant_id' in each:
+                # load variant if selected
+                product.load({
+                    'variants': Variant.query().where('id', '=', each['variant_id'])
+                })
+                if product.variants[0].price:
+                    # count in variant price if exists
+                    total_price_ += product.variants[0].price * each['count']
+                else:
+                    total_price_ += product.price * each['count']
+            else:
+                total_price_ += product.price * each['count']
+
+            products.append(product.serialize())
+            print(f' products: {products}')
+
+        print(f' total price: {total_price_}')
+
+        serialized_products = add_image_path(products)
+    except Exception:
+        serialized_products = []
+
+    return serialized_products, total_price_

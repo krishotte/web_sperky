@@ -23,6 +23,8 @@ ROUTES = [
         Get('/admin/product/edit', 'EditPortfolioController@get_all_products'),
         Get('/admin/product/edit/@product_id', 'EditPortfolioController@get_one_product'),
         Post('/admin/product/edit/@product_id', 'EditPortfolioController@update_product'),
+        Post('/admin/product/save-variant', 'EditPortfolioController@save_variant'),
+        Post('/admin/product/save-new-variant', 'EditPortfolioController@save_new_variant'),
         Get('/admin/update-cover', 'EditPortfolioController@update_cover'),
 
         Get('/admin/restart-server', 'EditPortfolioController@restart_server'),
@@ -52,7 +54,8 @@ ROUTES = [
         Get('/dashboard/orders', 'DashboardController@show_orders'),
         Get('/dashboard/order/@order_id', 'DashboardController@show_single_order'),
         Get('/dashboard/cart', 'DashboardController@show_cart'),
-        Get('/add-to-cart/@product_id', 'DashboardController@add_to_cart'),
+        # Get('/add-to-cart/@product_id', 'DashboardController@add_to_cart'),
+        Post('/add-to-cart2', 'DashboardController@add_to_cart2'),
         Post('/remove-from-cart', 'DashboardController@remove_from_cart'),
 
         Get('/new-address', 'DashboardController@show_new_address'),

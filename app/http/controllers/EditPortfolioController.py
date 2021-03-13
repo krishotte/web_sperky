@@ -13,6 +13,7 @@ from .PortfolioController import get_files_on_disk, add_image_path, add_descript
 from os import remove
 from app.Availability import Availability
 from app.jobs.RestartWebserverJob import RestartWebserverJob
+from app.Variant import Variant
 
 
 class EditPortfolioController(Controller):
@@ -80,6 +81,7 @@ class EditPortfolioController(Controller):
     def get_one_product(self, request: Request, view: View):
         product = Product.find(request.param('product_id'))
         product.availability
+        product.variants
         categories = Product_category.order_by('id', 'asc').get()
         materials = Material.order_by('id', 'asc').get()
         checked_materials = [each.id for each in product.materials]
@@ -209,6 +211,41 @@ class EditPortfolioController(Controller):
         print(f'  image was deleted: {deleted}')
 
         return response.redirect('/admin/product/edit/' + str(request.all()['caller_id']))
+
+    def save_variant(self, request: Request):
+        # print(f' form: {request.all()}')
+        variant_id = request.input('variant_id')
+
+        variant = Variant.find(variant_id)
+        variant.name = request.input('variant_name')
+        variant.price = request.input('variant_price')
+        variant.image = request.input('variant_image')
+        variant.save()
+
+        return request.redirect(f'/admin/product/edit/{request.input("product_id")}')
+
+    def save_new_variant(self, request: Request):
+        product = Product.find(request.input('product_id'))
+        print(f' new variant request: {request.all()}')
+
+        price = request.input('price')
+        print(f' price: {price}')
+        if not price:
+            variant = Variant(
+                name=request.input('variant_name'),
+                image=request.input('variant_image'),
+            )
+        else:
+            variant = Variant(
+                name=request.input('variant_name'),
+                price=request.input('variant_price'),
+                image=request.input('variant_image'),
+            )
+
+        variant.product().associate(product)
+        variant.save()
+
+        return request.redirect(f'/admin/product/edit/{product.id}')
 
     def update_cover(self, response: Response):
         categories = Product_category.order_by('id', 'asc').get()

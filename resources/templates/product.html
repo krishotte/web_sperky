@@ -11,10 +11,16 @@
                 {{ session().get('success') }}
             </div>
         {% endif %}
+
+        {% if session().has('warning') %}
+            <div class="alert alert-warning fixed-top _alert_popup" id="alert2">
+                {{ session().get('warning') }}
+            </div>
+        {% endif %}
         </div>
 
         <div class="row mb-3">
-            <div class="col-sm-6">
+            <div class="col-sm-6" id="image_place">
                 <!-- Carousel -->
                 <div id="carousel1" class="carousel slide" data-ride="carousel">
                     <ol class="carousel-indicators">
@@ -78,12 +84,38 @@
                         {% endfor %}
                     </div>
 
-                    <h4 class="mt-4">{{ product["price"] }} EUR</h4>
-                    <a href="/add-to-cart/{{ product['id'] }}" class="btn btn-success mr-1 mb-1" role="button">Objednať</a>
+                    <h4 class="mt-4" id="price">{{ product["price"] }} EUR</h4>
+
+                    <form action="/add-to-cart2" method="post" id="form1" novalidate>
+                        {{ csrf_field }}
+                        <input name="product_id" value="{{ product['id'] }}" hidden>
+
+                        {% if product['variants']|length > 0 %}
+                            <h5 class="mt-4">Varianty produktu:</h5>
+                            <div class="mt-1 mb-4">
+
+                                {% for variant in product['variants'] %}
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="variant_id"
+                                           id="check_variant_{{ variant['id'] }}" value="{{ variant['id'] }}" required
+                                            onchange='checkVariant({{ variant["price"]|tojson }}, {{ "%04d" | format(product["id"]) | tojson}}, {{ variant["image"]|tojson }});'>
+                                    <label class="form-check-label" for="check_variant_{{ variant['id'] }}">
+                                        {{ variant['name'] }}
+                                    </label>
+                                </div>
+
+                                {% endfor %}
+
+                            </div>
+                        {% endif %}
+                    </form>
+
+                    <button class="btn btn-success mr-1 mb-1" type="submit" form="form1">Objednať</button>
                     <button class="btn {{ product['availability']['visual_class'] }} mb-1">
                         {{ product['availability']['name'] }}
                     </button>
-                    <!--<button type="button" class="btn btn-success">Objednať</button>-->
+
                 </div>
             </div>
         </div>
@@ -113,6 +145,34 @@
             $("#alert1").slideUp(600);
          }, 3200);
     });
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#alert2').hide();
+        $('#alert2').slideDown(600);
+        setTimeout(function() {
+            $("#alert2").slideUp(600);
+         }, 3200);
+    });
+</script>
+
+<script type="text/javascript">
+    function checkVariant(price, subfolder, file_name) {
+        var price_element = document.getElementById('price');
+        if (price) {
+            price_element.innerHTML = parseFloat(price).toFixed(1) + ' EUR';
+        }
+        else {
+            price_element.innerHTML = parseFloat({{ product['price'] |tojson}}).toFixed(1) + ' EUR';
+        }
+        // var path = "/static/img/" + subfolder + "/" + file_name;
+
+        var image_element = document.getElementById('image_place');
+        var str1 = '<img src=' + file_name + ' class="img-fluid carousel_item_padding" alt="Obrázok chýba">'
+        console.log(' str1: ' + str1)
+        image_element.innerHTML = '<img src="' + file_name + '" class="img-fluid carousel_item_padding" alt="Obrázok chýba 1">'
+    }
 </script>
 
 {% endblock %}

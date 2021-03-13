@@ -106,6 +106,7 @@ class PortfolioController(Controller):
     def show_one_product(self, request: Request, view: View):
         product = Product.find(request.param('product_id'))
         product.availability
+        product.variants
 
         serialized_product = add_image_path([product.serialize()])[0]
         serialized_product = add_description_lines([serialized_product])[0]
