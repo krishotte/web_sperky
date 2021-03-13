@@ -228,7 +228,7 @@ class EditPortfolioController(Controller):
         product = Product.find(request.input('product_id'))
         print(f' new variant request: {request.all()}')
 
-        price = request.input('price')
+        price = request.input('variant_price')
         print(f' price: {price}')
         if not price:
             variant = Variant(

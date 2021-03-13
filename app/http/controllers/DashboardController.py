@@ -79,8 +79,15 @@ class DashboardController(Controller):
         order.order_state
         print(f' order to display: {order.serialize()}')
 
+        # serialized_products = add_image_path(order.products.serialize())
+        for product in order.products:
+            if product.pivot.variant_id:
+                product.load({
+                    'variants': Variant.query().where('id', '=', product.pivot.variant_id)
+                })
+
         serialized_products = add_image_path(order.products.serialize())
-        print(f' products: {order.products.serialize()}')
+        print(f' products: {serialized_products}')  # order.products.serialize()}')
 
         if order.user.email == user['email']:
             return view.render('dash/single_order', {
@@ -314,18 +321,24 @@ class DashboardController(Controller):
         address = Address.find(int(request.session.get('address')))
 
         items = request.session.get('ordered_items')
-        unique_items = list(set(items))
-        counts = [items.count(item) for item in unique_items]
+        unique_items = items_to_unique(items)
 
         note = request.input('note')
         total_price = float(request.session.get('total_price'))
         products = []
         try:
             for index, each in enumerate(unique_items):
-                product = Product.find(each)
+                product = Product.find(each['product_id'])
+
+                if 'variant_id' in each:
+                    product.load({
+                        'variants': Variant.query().where('id', '=', each['variant_id'])
+                    })
+
                 products.append(product)
         except Exception:
             pass
+        print(f' products1: {products}')
 
         # let's make an order
         order = Order(total_price=total_price, note=note)
@@ -342,12 +355,24 @@ class DashboardController(Controller):
 
         order.name = f"{pendulum.now().format('%Y')}{str(order.id).zfill(4)}"
         order.save()
+        print(f' order saved')
 
         for index, product in enumerate(products):
-            order.products().attach(product, {
-                'product_count': counts[index],
-                'unit_price': product.price,
-            })
+            if len(product.variants) > 0:
+                if product.variants[0].price:
+                    product_price = product.variants[0].price
+                else:
+                    product_price = product.price
+                order.products().attach(product, {
+                    'product_count': unique_items[index]['count'],
+                    'unit_price': product_price,
+                    'variant_id': unique_items[index]['variant_id'],
+                })
+            else:
+                order.products().attach(product, {
+                    'product_count': unique_items[index]['count'],
+                    'unit_price': product.price,
+                })
 
         # clear session
         request.session.reset()
@@ -448,17 +473,21 @@ def items_to_unique(items):
     """
     unique_items = []
     counts = []
-    for item in items:
-        count = items.count(item)
-        if item not in unique_items:
-            # item['count'] = count
-            unique_items.append(item)
-            counts.append(count)
-
     unique_items_with_counts = []
-    for index, uitem in enumerate(unique_items):
-        uitem['count'] = counts[index]
-        unique_items_with_counts.append(uitem)
+
+    try:
+        for item in items:
+            count = items.count(item)
+            if item not in unique_items:
+                # item['count'] = count
+                unique_items.append(item)
+                counts.append(count)
+
+        for index, uitem in enumerate(unique_items):
+            uitem['count'] = counts[index]
+            unique_items_with_counts.append(uitem)
+    except Exception:
+        pass
 
     return unique_items_with_counts
 

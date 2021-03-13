@@ -8,6 +8,7 @@ from app.OrderState import OrderState
 from app.User import User
 from .EditPortfolioController import add_image_path
 from .PortfolioController import get_user
+from app.Variant import Variant
 
 
 class AdminOrdersController(Controller):
@@ -48,6 +49,14 @@ class AdminOrdersController(Controller):
         order.order_state
         order.shipping
         order.address
+
+        for product in order.products:
+            if product.pivot.variant_id:
+                product.load({
+                    'variants': Variant.query().where('id', '=', product.pivot.variant_id)
+                })
+
+        print(f' loaded order: {order.serialize()}')
 
         order_states = OrderState.order_by('id', 'asc').get()
 

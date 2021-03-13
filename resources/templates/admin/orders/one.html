@@ -68,9 +68,20 @@
 
                         <th scope="row">{{ product['id'] }}</th>
                         <td>
-                            <img src="{{ product['image'] }}" class="img-fluid" alt="Obrázok chýba" style="width: 120px">
+                            {% if 'variants' in product %}
+                                <img src="{{ product['variants'][0]['image'] }}" class="img-fluid" alt="Obrázok chýba" style="width: 120px">
+                            {% else %}
+                                <img src="{{ product['image'] }}" class="img-fluid" alt="Obrázok chýba" style="width: 120px">
+                            {% endif %}
+
                         </td>
-                        <td>{{ product['name'] }}</td>
+
+                        {% if 'variants' in product %}
+                            <td>{{ product['name'] }}<br/>{{ product['variants'][0]['name'] }}</td>
+                        {% else %}
+                            <td>{{ product['name'] }}</td>
+                        {% endif %}
+
                         <td>{{ product['pivot']['product_count'] }}</td>
                         <td>{{ product['pivot']['unit_price'] }} EUR</td>
 
