@@ -29,3 +29,17 @@ class MainController(Controller):
             'categories': categories,
             'user': user,
         })
+
+    def show_contacts(self, request: Request, view: View):
+        user = get_user(request)
+
+        return view.render('about/contacts', {
+            'user': user,
+        })
+
+    def show_conditions(self, request: Request, view: View):
+        user = get_user(request)
+
+        return view.render('about/obchodne_podmienky', {
+            'user': user,
+        })
