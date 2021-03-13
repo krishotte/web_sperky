@@ -147,30 +147,7 @@ class EditPortfolioController(Controller):
         saved = self._save_file_to_disk(product_to_update.id, upload, request)
         print(f'file was saved: {saved}')
 
-        # TODO: do redirect instead of this
-        images, indexes = get_files_on_disk(product_to_update.id)
-
-        categories = Product_category.order_by('id', 'asc').get()
-        materials = Material.order_by('id', 'asc').get()
-        checked_materials = [each.id for each in product_to_update.materials]
-        availabilities = Availability.order_by('id', 'asc').get()
-
-        related_products = product_to_update.related_products
-        related_products_serialized = add_image_path(related_products.serialize())
-        user = self._get_user(request)
-
-        return view.render('admin.edit_product', {
-            'product': product_to_update.serialize(),
-            'categories': categories.serialize(),
-            'materials': materials.serialize(),
-            'checked_materials': checked_materials,
-            'images': images,
-            'related_products': related_products_serialized,
-            'user': user,
-            'availabilities': availabilities,
-        })
-
-        # return [request.input('name'), request.input('description'), request.input('price')]
+        return request.redirect(f'/admin/product/edit/{product_to_update.id}')
 
     def choose_related_products(self, request: Request, view: View):
         all_products = Product.where('id', '<>', request.param('product_id')).order_by('id', 'desc').get()
@@ -215,10 +192,12 @@ class EditPortfolioController(Controller):
     def save_variant(self, request: Request):
         # print(f' form: {request.all()}')
         variant_id = request.input('variant_id')
+        price = request.input('variant_price')
 
         variant = Variant.find(variant_id)
         variant.name = request.input('variant_name')
-        variant.price = request.input('variant_price')
+        if price:
+            variant.price = price
         variant.image = request.input('variant_image')
         variant.save()
 
