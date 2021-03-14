@@ -112,13 +112,12 @@
                     </form>
 
                     <button class="btn btn-success mr-1 mb-1" type="submit" form="form1">Objednať</button>
-                    {% if 'variants' not in product %}
-                        <button class="btn {{ product['availability']['visual_class'] }} mb-1" id="availability_element">
-                            {{ product['availability']['name'] }}
-                        </button>
+                    {% if product['variants']|length > 0 %}
+                        <button class="btn mb-1" id="availability_element" style="visibility: hidden"></button>
                     {% else %}
-                        <button class="btn mb-1" id="availability_element" style="visibility: hidden">
-
+                        <button class="btn {{ product['availability']['visual_class'] }} mb-1" id="availability_element"
+                            style="visibility: visible">
+                            {{ product['availability']['name'] }}
                         </button>
                     {% endif %}
 
