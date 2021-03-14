@@ -11,6 +11,7 @@ from masonite import Upload
 from pathlib import Path
 from unidecode import unidecode
 from masonite.auth import Auth
+from app.Availability import Availability
 
 
 class PortfolioController(Controller):
@@ -106,7 +107,12 @@ class PortfolioController(Controller):
     def show_one_product(self, request: Request, view: View):
         product = Product.find(request.param('product_id'))
         product.availability
-        product.variants
+
+        for variant in product.variants:
+            variant.load({
+                'availability': Availability.query().where('name', '<>', 'Vypredané')
+            })
+        print(f' loaded product: {product.serialize()}')
 
         serialized_product = add_image_path([product.serialize()])[0]
         serialized_product = add_description_lines([serialized_product])[0]

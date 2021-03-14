@@ -95,16 +95,16 @@
                             <div class="mt-1 mb-4">
 
                                 {% for variant in product['variants'] %}
-
+                                {% if 'availability' in variant %}
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="variant_id"
                                            id="check_variant_{{ variant['id'] }}" value="{{ variant['id'] }}" required
-                                            onchange='checkVariant({{ variant["price"]|tojson }}, {{ "%04d" | format(product["id"]) | tojson}}, {{ variant["image"]|tojson }});'>
+                                            onchange='checkVariant({{ variant["price"]|tojson }}, {{ "%04d" | format(product["id"]) | tojson}}, {{ variant["image"]|tojson }}, {{ variant["availability"]["name"]|tojson }}, {{ variant["availability"]["visual_class"]|tojson }});'>
                                     <label class="form-check-label" for="check_variant_{{ variant['id'] }}">
                                         {{ variant['name'] }}
                                     </label>
                                 </div>
-
+                                {% endif %}
                                 {% endfor %}
 
                             </div>
@@ -112,9 +112,15 @@
                     </form>
 
                     <button class="btn btn-success mr-1 mb-1" type="submit" form="form1">Objednať</button>
-                    <button class="btn {{ product['availability']['visual_class'] }} mb-1">
-                        {{ product['availability']['name'] }}
-                    </button>
+                    {% if 'variants' not in product %}
+                        <button class="btn {{ product['availability']['visual_class'] }} mb-1" id="availability_element">
+                            {{ product['availability']['name'] }}
+                        </button>
+                    {% else %}
+                        <button class="btn mb-1" id="availability_element" style="visibility: hidden">
+
+                        </button>
+                    {% endif %}
 
                 </div>
             </div>
@@ -158,7 +164,7 @@
 </script>
 
 <script type="text/javascript">
-    function checkVariant(price, subfolder, file_name) {
+    function checkVariant(price, subfolder, file_name, availability_name, visual_class) {
         var price_element = document.getElementById('price');
         if (price) {
             price_element.innerHTML = parseFloat(price).toFixed(1) + ' EUR';
@@ -170,8 +176,14 @@
 
         var image_element = document.getElementById('image_place');
         var str1 = '<img src=' + file_name + ' class="img-fluid carousel_item_padding" alt="Obrázok chýba">'
-        console.log(' str1: ' + str1)
+        // console.log(' str1: ' + str1)
         image_element.innerHTML = '<img src="' + file_name + '" class="img-fluid carousel_item_padding" alt="Obrázok chýba 1">'
+
+        var availability_element = document.getElementById('availability_element');
+        availability_element.style.visibility = 'hidden';
+        availability_element.innerHTML = availability_name;
+        availability_element.className = 'btn ' + visual_class;
+        availability_element.style.visibility = 'visible';
     }
 </script>
 

@@ -118,7 +118,7 @@
                     <input type="text" name="product_id" value="{{ product['id'] }}" hidden>
                     <input type="text" name="variant_id" value="{{ variant['id'] }}" hidden>
                     <div class="form-row align-items-end">
-                        <div class="col-4">
+                        <div class="col-3">
                             <div class="form-group">
                                 <label for="variant_name">Názov variantu</label>
                                 <input type="text" name="variant_name" value="{{ variant['name'] }}" id="variant_name"
@@ -147,6 +147,23 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="variant_availability">Dostupnosť</label>
+                                <select class="form-control" id="variant_availability" name="variant_availability"
+                                        value="{{ variant['availability']['name'] }}">
+                                    <!--<option>...</option>-->
+                                    {% for ava in availabilities %}
+                                        {% if ava["id"] == variant["availability"]['id'] %}
+                                            <option selected="selected">{{ ava["name"]  }}</option>
+                                        {% else %}
+                                            <option>{{ ava["name"]  }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
                         <div class="col-1 align-bottom">
                             <button class="btn btn-danger mb-3" type="submit">Uložiť</button>
                         </div>
@@ -161,7 +178,7 @@
                 {{ csrf_field }}
                 <input type="text" name="product_id" value="{{ product['id'] }}" hidden>
                 <div class="form-row align-items-end">
-                    <div class="col-4">
+                    <div class="col-3">
                         <div class="form-group">
                             <label for="variant_name2">Názov variantu</label>
                             <input type="text" name="variant_name" value="" id="variant_name2"
@@ -186,6 +203,22 @@
                             </select>
                         </div>
                     </div>
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="variant_availability2">Dostupnosť</label>
+                            <select class="form-control" id="variant_availability2" name="variant_availability"
+                                    value="{{ availabilities[0]['name'] }}">
+                                <!--<option>...</option>-->
+                                {% for ava in availabilities %}
+
+
+                                        <option>{{ ava["name"]  }}</option>
+
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
                     <div class="col-2">
                         <button class="btn btn-success mb-3" type="submit">Vytvoriť variant</button>
                     </div>

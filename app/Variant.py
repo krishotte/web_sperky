@@ -12,3 +12,8 @@ class Variant(Model):
     def product(self):
         from app.Product import Product
         return Product
+
+    @belongs_to
+    def availability(self):
+        from app.Availability import Availability
+        return Availability

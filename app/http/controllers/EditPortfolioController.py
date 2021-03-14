@@ -82,6 +82,9 @@ class EditPortfolioController(Controller):
         product = Product.find(request.param('product_id'))
         product.availability
         product.variants
+        product.variants.load('availability')
+        print(f' loaded product: {product.serialize()}')
+
         categories = Product_category.order_by('id', 'asc').get()
         materials = Material.order_by('id', 'asc').get()
         checked_materials = [each.id for each in product.materials]
@@ -193,12 +196,14 @@ class EditPortfolioController(Controller):
         # print(f' form: {request.all()}')
         variant_id = request.input('variant_id')
         price = request.input('variant_price')
+        availability = Availability.where('name', '=', request.input('variant_availability')).first()
 
         variant = Variant.find(variant_id)
         variant.name = request.input('variant_name')
         if price:
             variant.price = price
         variant.image = request.input('variant_image')
+        variant.availability().associate(availability)
         variant.save()
 
         return request.redirect(f'/admin/product/edit/{request.input("product_id")}')
