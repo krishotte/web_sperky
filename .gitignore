@@ -14,6 +14,8 @@ package-lock.json
 *.zip
 /storage/static/img
 *.log
+*.pkl
+/storage/invoice
 
 # not working
 /storage/logs
