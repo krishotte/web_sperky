@@ -45,6 +45,10 @@ ROUTES = [
         # Admin Users
         Get('/admin/users', 'AdminUsersController@show_all_users'),
 
+        # invoice routes
+        Post('/admin/invoice-create', 'InvoiceController@create_invoice'),
+        Get('/admin/invoice-show-one/@invoice_id', 'InvoiceController@show'),
+
     ], middleware=('admin', )),
 
     # User Dashboard routes

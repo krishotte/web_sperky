@@ -37,7 +37,7 @@ item_label_4 = {
 }
 
 
-def create(order, products):
+def create(order, products, filename):
     elements = [
         # left column - supplier
         {
@@ -315,10 +315,10 @@ def create(order, products):
     ib = "IBAN: SK38 0900 0000 0051 3467 9672"
     vs = "xxxxxxxxx"
     payment_form = "Bankovým prevodom"
-    f["payment"] = f'{ib}\nVariabilný symbol: {order["var_symbol"]}\nKonštantný symbol: 0308\nForma úhrady: {payment_form}\n'
+    f["payment"] = f'{ib}\nVariabilný symbol: {order["invoice"]["variable_symbol"]}\nKonštantný symbol: 0308\nForma úhrady: {payment_form}\n'
 
     number = "20210001"
-    f["invoice"] = f'Faktúra č.: {order["name"]}'
+    f["invoice"] = f'Faktúra č.: {order["invoice"]["prefix"]}{order["invoice"]["year"]}{str(order["invoice"]["number"]).zfill(4)}'
     f["order"] = f'Objednávka č.: {order["name"]}'
 
     f["odberatel_heading"] = "ODBERATEĽ:"
@@ -329,13 +329,8 @@ def create(order, products):
 
     f["terminy_label"] = "Dátum vystavenia:\nDátum splatnosti"
 
-    f["terminy_values"] = f'{order["order_date"]}\n{order["due_date"]}'
+    f["terminy_values"] = f'{order["invoice"]["issue_date"]}\n{order["invoice"]["due_date"]}'
 
     # and now we render the page
 
-    root_path = Path().cwd()
-    invoice_file = root_path.joinpath('storage').joinpath('invoice').joinpath('test').joinpath('faktura01.pdf')
-    print(f' root path: {root_path}')
-    print(f' invoice path: {invoice_file}')
-
-    f.render(str(invoice_file))
+    f.render(str(filename))

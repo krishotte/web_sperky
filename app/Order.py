@@ -1,7 +1,7 @@
 """Order Model."""
 
 from config.database import Model
-from orator.orm import belongs_to, belongs_to_many
+from orator.orm import belongs_to, belongs_to_many, has_one
 
 
 class Order(Model):
@@ -36,3 +36,8 @@ class Order(Model):
     def address(self):
         from app.Address import Address
         return Address
+
+    @has_one
+    def invoice(self):
+        from app.Invoice import Invoice
+        return Invoice

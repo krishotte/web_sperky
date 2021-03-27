@@ -49,6 +49,7 @@ class AdminOrdersController(Controller):
         order.order_state
         order.shipping
         order.address
+        order.invoice
 
         for product in order.products:
             if product.pivot.variant_id:
