@@ -297,7 +297,7 @@ def create(order, products, filename):
 
     # here we instantiate the template and define the HEADER
     f = Template(format="A4", elements=elements,
-                 title="Faktura")
+                 title=f'Faktúra {order["invoice"]["prefix"]}{order["invoice"]["year"]}{str(order["invoice"]["number"]).zfill(4)}')
     f.pdf.add_font('Roboto', '', 'storage/static/fonts/Roboto-Regular.ttf', uni=True)
     f.pdf.add_font('RobotoB', '', 'storage/static/fonts/Roboto-Bold.ttf', uni=True)
     f.pdf.set_font('Roboto', '', 14)
@@ -315,7 +315,7 @@ def create(order, products, filename):
     ib = "IBAN: SK38 0900 0000 0051 3467 9672"
     vs = "xxxxxxxxx"
     payment_form = "Bankovým prevodom"
-    f["payment"] = f'{ib}\nVariabilný symbol: {order["invoice"]["variable_symbol"]}\nKonštantný symbol: 0308\nForma úhrady: {payment_form}\n'
+    f["payment"] = f'{ib}\nVariabilný symbol: {order["invoice"]["variable_symbol"]}\nKonštantný symbol: 0008\nForma úhrady: {payment_form}\n'
 
     number = "20210001"
     f["invoice"] = f'Faktúra č.: {order["invoice"]["prefix"]}{order["invoice"]["year"]}{str(order["invoice"]["number"]).zfill(4)}'

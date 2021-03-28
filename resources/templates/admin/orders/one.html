@@ -51,15 +51,18 @@
         <h4>Faktúra:</h4>
         {% if 'invoice' in order %}
             <div>
-                <p>faktúra: {{ order['invoice']['id'] }}</p>
-                <a href="/admin/invoice-show-one/{{ order['invoice']['id'] }}" class="btn btn-primary">Zobraziť faktúru</a>
+                <p class="mb-2">faktúra č.: {{ order['invoice']['prefix'] }}{{ order['invoice']['year'] }}{{ '%04d' | format(order['invoice']['number']) }}</p>
+                <!--<a href="/admin/invoice-show-one/{{ order['invoice']['id'] }}" class="btn btn-primary">Zobraziť faktúru</a>-->
+                <button class="btn btn-primary" onclick="openInvoice();">Zobraziť faktúru</button>
             </div>
+            {% set invoice = order['invoice']['id'] %}
         {% else %}
             <form action="/admin/invoice-create" method="post">
                 {{ csrf_field }}
                 <input type="number" name="order_id" value="{{ order['id'] }}" hidden>
                 <button class="btn btn-primary" type="submit">Vytvoriť faktúru</button>
             </form>
+            {% set invoice = 0 %}
         {% endif %}
         <hr>
 
@@ -156,4 +159,20 @@
         {% endif %}
     </div>
 
+    <script type="text/javascript">
+        function openInvoice() {
+            if ({{ invoice }} != 0) {
+                var invoice_link = window.location.protocol + "//" + window.location.host + "/admin/invoice-show-one/" + {{ invoice }};
+                console.log(" current host: " + window.location.host);
+                console.log(" go to: " + invoice_link);
+                window.open(invoice_link);
+            }
+        }
+    </script>
+    <script type="text/javascript">
+        $(document).ready( function() {
+            console.log(' invoice status: ' + {{ invoice }});
+            }
+        );
+    </script>
 {% endblock %}
