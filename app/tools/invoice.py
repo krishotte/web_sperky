@@ -270,6 +270,35 @@ def create(order, products, filename):
     elements.append(shipping_price)
     elements.append(hline6)
 
+    if order['discount'] != 0:
+        discount_label = {
+            'name': f'ship_label', 'type': 'T',
+            'x1': 25.0, 'y1': offset, 'x2': 120.0, 'y2': offset + 7,
+            'multiline': False, 'font': 'Roboto',
+            'size': 10.0, 'bold': 0, 'italic': 0, 'underline': 0,
+            'foreground': 0, 'background': 0,
+            'align': 'I', 'text': f'Zľava: ', 'priority': 2,
+        }
+        discount_price = {
+            'name': f'ship_price', 'type': 'T',
+            'x1': 160.0, 'y1': offset, 'x2': 185.0, 'y2': offset + 7,
+            'multiline': False, 'font': 'Roboto',
+            'size': 10.0, 'bold': 0, 'italic': 0, 'underline': 0,
+            'foreground': 0, 'background': 0,
+            'align': 'I', 'text': f'-{order["discount"]} EUR', 'priority': 2,
+        }
+        offset += 8
+        hline7 = {
+            'name': 'hline7', 'type': 'L',
+            'x1': 20.0, 'y1': offset, 'x2': 190.0, 'y2': offset,
+            'size': 0.2, 'priority': 2, 'text': '',
+            'foreground': 0x888888,
+        }
+        offset += 2
+        elements.append(discount_label)
+        elements.append(discount_price)
+        elements.append(hline7)
+
     dph = {
         'name': 'dph', 'type': 'T',
         'x1': 25.0, 'y1': offset + 4, 'x2': 120.0, 'y2': offset + 10,
@@ -290,7 +319,7 @@ def create(order, products, filename):
         'multiline': False, 'font': 'RobotoB',
         'size': 12, 'bold': 0, 'italic': 0, 'underline': 0,
         'foreground': 0, 'background': 0,
-        'align': 'I', 'text': f'{order["total_price"]} EUR', 'priority': 3, }
+        'align': 'I', 'text': f'{order["total_price"] - order["discount"]} EUR', 'priority': 3, }
     elements.append(total_price_label)
     elements.append(total_price)
     elements.append(dph)
