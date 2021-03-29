@@ -33,7 +33,7 @@ class PortfolioController(Controller):
         # products = Product.order_by('id', 'desc').get()
 
         # get only products with certain availabilities
-        products = Product.where_has(
+        products = Product.with_('variants').where_has(
             'availability',
             lambda q: q.where('name', '<>', 'Vypredané')
         ).order_by('id', 'desc').get()
@@ -63,6 +63,7 @@ class PortfolioController(Controller):
             'availability',
             lambda q: q.where('name', '<>', 'Vypredané')
         ).order_by('id', 'desc').get()
+        products.load('variants')
 
         serialized_products = add_image_path(products.serialize())
         serialized_products = add_description_lines(serialized_products)
@@ -90,6 +91,7 @@ class PortfolioController(Controller):
             'availability',
             lambda q: q.where('name', '<>', 'Vypredané')
         ).order_by('id', 'desc').get()
+        products.load('variants')
 
         serialized_products = add_image_path(products.serialize())
         serialized_products = add_description_lines(serialized_products)

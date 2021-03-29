@@ -112,6 +112,7 @@ class EditPortfolioController(Controller):
     def get_all_products(self, view: View, request: Request):
         products = Product.order_by('id', 'desc').get()
         products.load('availability')
+        products.load('variants')
         serialized_products = add_image_path(products.serialize())
         serialized_products = add_description_lines(serialized_products)
 
