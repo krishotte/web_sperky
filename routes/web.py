@@ -24,6 +24,7 @@ ROUTES = [
         Get('/admin/product/edit/@product_id', 'EditPortfolioController@get_one_product'),
         Post('/admin/product/edit/@product_id', 'EditPortfolioController@update_product'),
         Post('/admin/product/save-variant', 'EditPortfolioController@save_variant'),
+        Post('/admin/product/delete-variant', 'EditPortfolioController@delete_variant'),
         Post('/admin/product/save-new-variant', 'EditPortfolioController@save_new_variant'),
         Get('/admin/update-cover', 'EditPortfolioController@update_cover'),
 

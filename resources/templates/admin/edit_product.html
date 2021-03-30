@@ -5,6 +5,12 @@
 
     <div class="container-md _nav_padding">
 
+        {% if session().has('warning') %}
+            <div class="alert alert-warning fixed-top _alert_popup" id="alert1">
+                {{ session().get('warning') }}
+            </div>
+        {% endif %}
+
         <form action="/admin/product/edit/{{ product['id'] }}" method="POST" enctype="multipart/form-data" id="form1">
             {{ csrf_field }}
             <div>
@@ -132,7 +138,7 @@
                                        id="variant_price" class="form-control">
                             </div>
                         </div>
-                        <div class="col-4">
+                        <div class="col-3">
                             <div class="form-group">
                                 <label for="variant_image">Obrázok</label>
                                 <select class="form-control" id="variant_image" name="variant_image" value="{{ variant['image'] }}">
@@ -167,7 +173,15 @@
                         <div class="col-1 align-bottom">
                             <button class="btn btn-danger mb-3" type="submit">Uložiť</button>
                         </div>
+                        <div class="col-1 align-bottom">
+                            <button class="btn btn-warning mb-3" type="submit" form="delete_variant_{{ variant['id'] }}">Vymazať</button>
+                        </div>
                     </div>
+                </form>
+                <form action="/admin/product/delete-variant" method="post" id="delete_variant_{{ variant['id'] }}">
+                    {{ csrf_field }}
+                    <input type="text" name="product_id" value="{{ product['id'] }}" hidden>
+                    <input type="text" name="variant_id" value="{{ variant['id'] }}" hidden>
                 </form>
             {% endfor %}
 
@@ -242,5 +256,14 @@
         </a>
     </div>
 
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#alert1').hide();
+            $('#alert1').slideDown(600);
+            setTimeout(function() {
+                $("#alert1").slideUp(600);
+             }, 3200);
+        });
+    </script>
 </main>
 {% endblock %}

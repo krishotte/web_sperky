@@ -14,6 +14,7 @@ from os import remove
 from app.Availability import Availability
 from app.jobs.RestartWebserverJob import RestartWebserverJob
 from app.Variant import Variant
+from orator.exceptions.query import QueryException
 
 
 class EditPortfolioController(Controller):
@@ -206,6 +207,16 @@ class EditPortfolioController(Controller):
         variant.image = request.input('variant_image')
         variant.availability().associate(availability)
         variant.save()
+
+        return request.redirect(f'/admin/product/edit/{request.input("product_id")}')
+
+    def delete_variant(self, request: Request):
+        variant_to_delete = Variant.find(request.input("variant_id"))
+        print(f' deleting variant: {variant_to_delete.serialize()}')
+        try:
+            variant_to_delete.delete()
+        except QueryException:
+            request.session.flash('warning', 'Nie je možné vymazať variant, nakoľko existujú objednávky, ktoré ho obsahujú.')
 
         return request.redirect(f'/admin/product/edit/{request.input("product_id")}')
 

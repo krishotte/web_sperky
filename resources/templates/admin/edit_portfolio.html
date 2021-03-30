@@ -16,9 +16,9 @@
                     </a>
                     {% if product['variants']|length > 0 %}
                         <button class="btn btn-secondary btn-sm" style="position: absolute; left: 45px; top: 30px;" disabled>
-                            <svg class="bi my-0" width="1.2em" height="1.2em">
+                            <!--<svg class="bi my-0" width="1.2em" height="1.2em">
                                 <use xlink:href="/static/svg/bootstrap-icons.svg#collection-fill"></use>
-                            </svg>&nbsp varianty
+                            </svg>-->Varianty
                         </button>
                     {% endif %}
                 </div>
@@ -26,7 +26,7 @@
                 <div class="col-sm-7">
                     <div class="products_item_padding">
                         <h4 class="my-4">{{ product["name"] }}
-                            <span class="bg-info text-white"> ID: {{ product['id'] }} </span>
+                            <span class="bg-info text-white"> &nbsp ID: {{ product['id'] }} &nbsp</span>
                         </h4>
                         <!--<p>{{ product["description"] }}</p>-->
                         {% for line in product['description_lines'] %}
