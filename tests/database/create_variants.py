@@ -2,6 +2,7 @@
 import sys
 from pathlib import Path
 from dotenv import load_dotenv
+import os
 
 
 root_path = Path.cwd()
@@ -11,6 +12,7 @@ print(f'  env path: {env_path}')
 
 sys.path.append(str(root_path))
 load_dotenv(dotenv_path=env_path, verbose=True)
+print(f' env: {os.environ}')
 
 from app.Product import Product
 from app.Variant import Variant
