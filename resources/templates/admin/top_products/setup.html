@@ -27,13 +27,13 @@
                                     <img src="{{ tp['image'] }}" class="img-fluid card-img-top" alt="Obrázok chýba">
                                 </div>
 
-                                <form action="/admin/top_product/modify" method="post" id="form_mod">
+                                <form action="/admin/top_product/modify" method="post" id="form_mod_{{ tp['id'] }}">
                                     {{ csrf_field }}
                                     <input type="text" name="top_product_id" value="{{ tp['id'] }}" hidden>
                                     <!--<button class="btn btn-warning" type="submit">Zmeniť</button>-->
                                 </form>
 
-                                <form action="/admin/top_product/delete" method="post" id="form_del">
+                                <form action="/admin/top_product/delete" method="post" id="form_del_{{ tp['id'] }}">
                                     {{ csrf_field }}
                                     <input type="text" name="top_product_id" value="{{ tp['id'] }}" hidden>
                                     <!--<button class="btn btn-danger" type="submit">Zmazať</button>-->
@@ -41,11 +41,11 @@
 
                                 <div class="row justify-content-between">
                                     <div class="col-4 col-sm-6">
-                                        <button class="btn btn-warning" type="submit" form="form_mod">Zmeniť</button>
+                                        <button class="btn btn-warning" type="submit" form="form_mod_{{ tp['id'] }}">Zmeniť</button>
                                     </div>
 
                                     <div class="col-4 col-sm-6">
-                                        <button class="btn btn-danger" type="submit" form="form_del">Zmazať</button>
+                                        <button class="btn btn-danger" type="submit" form="form_del_{{ tp['id'] }}">Zmazať</button>
                                     </div>
                                 </div>
 

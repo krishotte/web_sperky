@@ -89,7 +89,8 @@ class AdminTopProductsController(Controller):
 
     def delete_existing(self, request: Request):
         top_product_to_delete = TopProduct.find(request.input('top_product_id'))
-
+        top_product_to_delete.product
+        print(f' deleting top product: {top_product_to_delete.serialize()}')
         top_product_to_delete.delete()
 
         return request.redirect('/admin/top_products')
