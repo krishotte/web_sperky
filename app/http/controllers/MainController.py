@@ -5,6 +5,7 @@ from masonite.view import View
 from masonite.controllers import Controller
 from app.Product_category import Product_category
 from .PortfolioController import get_user
+from app.TopProduct import TopProduct
 
 
 class MainController(Controller):
@@ -21,6 +22,11 @@ class MainController(Controller):
     def show(self, view: View, request: Request):
         categories = Product_category.order_by('id', 'asc').get()
 
+        top_products = TopProduct.order_by('id', 'asc').get()
+        for top_product in top_products:
+            id_str = str(top_product.product.id).zfill(4)
+            top_product.image = f'/static/img_webp/{id_str}/{id_str}_01.webp'
+
         user = get_user(request)
         print(f' logged in user: {user}')
 
@@ -28,6 +34,7 @@ class MainController(Controller):
         return view.render('main', {
             'categories': categories,
             'user': user,
+            'top_products': top_products,
         })
 
     def show_contacts(self, request: Request, view: View):

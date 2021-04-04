@@ -1,0 +1,42 @@
+{% extends "menu.html" %}
+{% block content_a %}
+
+<main role="main">
+
+    <div class="container-sm _nav_padding">
+        <h2>Vybrať top produkt:</h2>
+
+
+            {{ csrf_field }}
+            <div class="row row-cols-2 row-cols-sm-4 row-cols-md-6 mb-3">
+                {% for product in products %}
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-header">{{ product['id'] }}</div>
+                            <div class="card-body">
+                                <p>{{ product['name'] }}</p>
+                                <img src="{{ product['image'] }}" class="img-fluid card-img-top" alt="Obrázok chýba">
+                                <form action="{{ form_action }}" method="post">
+                                    {{ csrf_field }}
+                                    <input type="number" name="product_id" value="{{ product['id'] }}" hidden>
+                                    {% if form_action == '/admin/top_product/update' %}
+                                        <input type="number" name="top_product_id" value="{{ top_product_id }}" hidden>
+                                    {% endif %}
+                                    <button class="btn btn-primary" type="submit">Vybrať</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+
+        <a href="/admin/top_products">
+            <button class="btn btn-secondary my-2 mx-2">Zrušiť</button>
+        </a>
+
+
+
+    </div>
+</main>
+{% endblock %}

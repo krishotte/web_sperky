@@ -1,0 +1,83 @@
+{% extends "menu.html" %}
+{% block content_a %}
+
+<main role="main">
+
+    <div class="container-md _nav_padding mb-4">
+
+        {% if session().has('warning') %}
+            <div class="alert alert-warning fixed-top _alert_popup" id="alert1">
+                {{ session().get('warning') }}
+            </div>
+        {% endif %}
+
+
+            {% if top_products|length > 0 %}
+                <p class="mb-1"><strong>Top produkty:</strong></p>
+            {% endif %}
+
+            <div class="row row-cols-1 row-cols-sm-3">
+                {% for tp in top_products %}
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-header">{{ tp['product']['id'] }}</div>
+                            <div class="card-body">
+                                <p class="mb-2">{{ tp['product']['name'] }}</p>
+                                <div class="mb-2">
+                                    <img src="{{ tp['image'] }}" class="img-fluid card-img-top" alt="Obrázok chýba">
+                                </div>
+
+                                <form action="/admin/top_product/modify" method="post" id="form_mod">
+                                    {{ csrf_field }}
+                                    <input type="text" name="top_product_id" value="{{ tp['id'] }}" hidden>
+                                    <!--<button class="btn btn-warning" type="submit">Zmeniť</button>-->
+                                </form>
+
+                                <form action="/admin/top_product/delete" method="post" id="form_del">
+                                    {{ csrf_field }}
+                                    <input type="text" name="top_product_id" value="{{ tp['id'] }}" hidden>
+                                    <!--<button class="btn btn-danger" type="submit">Zmazať</button>-->
+                                </form>
+
+                                <div class="row justify-content-between">
+                                    <div class="col-4 col-sm-6">
+                                        <button class="btn btn-warning" type="submit" form="form_mod">Zmeniť</button>
+                                    </div>
+
+                                    <div class="col-4 col-sm-6">
+                                        <button class="btn btn-danger" type="submit" form="form_del">Zmazať</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                {% endfor %}
+            </div>
+
+
+            <p class="mb-1 mt-4"><strong>Pridať top produkt:</strong></p>
+            <form action="/admin/top_product/new" method="get">
+                {{ csrf_field }}
+                <div class="form-row">
+                    <div class="col-3">
+                        <button class="btn btn-success mb-3" type="submit">Vybrať top produkt</button>
+                    </div>
+                </div>
+            </form>
+
+
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#alert1').hide();
+            $('#alert1').slideDown(600);
+            setTimeout(function() {
+                $("#alert1").slideUp(600);
+             }, 3200);
+        });
+    </script>
+</main>
+{% endblock %}

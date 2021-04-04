@@ -1,7 +1,7 @@
 """Product Model."""
 
 from config.database import Model
-from orator.orm import belongs_to, belongs_to_many, has_many
+from orator.orm import belongs_to, belongs_to_many, has_many, has_one
 
 
 class Product(Model):
@@ -39,3 +39,8 @@ class Product(Model):
     def variants(self):
         from app.Variant import Variant
         return Variant.order_by('id')
+
+    @has_one
+    def top_product(self):
+        from app.TopProduct import TopProduct
+        return TopProduct

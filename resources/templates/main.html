@@ -51,8 +51,6 @@
 		  <div class="row row-cols-2 row-cols-sm-2 row-cols-md-3">
 			{% for category in categories %}
 			<div class="col">
-
-
 				<!-- Card Wider -->
 					<div class="card card-cascade wider my-2">
 					  <div class="card-body card-body-cascade text-center">
@@ -63,21 +61,38 @@
 					  <div class="view view-cascade overlay hovereffect">
 						<a href="/portfolio/{{ category['id'] }}">
 						  <img class="card-img-top img-fluid" src="{{ category['image_path'] }}" alt="...">
-
 						  <!--<div class="mask rgba-white-slight"></div>-->
 						</a>
 					  </div>
-
-					  <!-- Card content -->
-
 					</div>
-
 			</div>
 			{% endfor %}
-
 		  </div>
+		</div>
 
+		<!-- top products -->
+		{% if top_products|length > 0 %}
+			<h1 class="text-center mt-4">Top produkty</h1>
+		{% endif %}
 
+		<div class="container-sm">
+		  	<div class="row row-cols-2 row-cols-sm-2 row-cols-md-3 justify-content-center">
+				{% for tp in top_products %}
+					<div class="col">
+						<!-- Card Wider -->
+						<div class="card card-cascade wider my-2">
+						    <!--<div class="card-body card-body-cascade text-center">
+								<h5 class="card-title font-weight-light mb-0">{{ tp['product']["name"] }}</h5>
+						    </div>-->
+							<div class="view view-cascade overlay hovereffect">
+								<a href="/product/{{ tp['product']['id'] }}">
+							  		<img class="card-img-top img-fluid" src="{{ tp['image'] }}" alt="...">
+								</a>
+						    </div>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
 		</div>
 
 		<!-- footer -->

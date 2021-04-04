@@ -28,6 +28,14 @@ ROUTES = [
         Post('/admin/product/save-new-variant', 'EditPortfolioController@save_new_variant'),
         Get('/admin/update-cover', 'EditPortfolioController@update_cover'),
 
+        # top products
+        Get('/admin/top_products', 'AdminTopProductsController@show'),
+        Get('/admin/top_product/new', 'AdminTopProductsController@choose_new'),
+        Post('/admin/top_product/create', 'AdminTopProductsController@create_new'),
+        Post('/admin/top_product/modify', 'AdminTopProductsController@show_existing'),
+        Post('/admin/top_product/update', 'AdminTopProductsController@update_existing'),
+        Post('/admin/top_product/delete', 'AdminTopProductsController@delete_existing'),
+
         Get('/admin/restart-server', 'EditPortfolioController@restart_server'),
 
         # related product chooser
