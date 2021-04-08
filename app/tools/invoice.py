@@ -343,7 +343,11 @@ def create(order, products, filename):
 
     ib = "IBAN: SK38 0900 0000 0051 3467 9672"
     vs = "xxxxxxxxx"
-    payment_form = "Bankovým prevodom"
+    if order["shipping"]["name"] == 'osobný odber':
+        payment_form = "V hotovosti pri vyzdvihnutí tovaru"
+    else:
+        payment_form = "Bankovým prevodom"
+
     f["payment"] = f'{ib}\nVariabilný symbol: {order["invoice"]["variable_symbol"]}\nKonštantný symbol: 0008\nForma úhrady: {payment_form}\n'
 
     number = "20210001"

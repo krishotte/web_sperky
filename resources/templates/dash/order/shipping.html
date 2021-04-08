@@ -12,8 +12,12 @@
                 <div class="col">
                     <div class="card mb-2 mx-2" style="width: 22rem">
                         <div class="card-body">
-                            <p class="mb-0">{{ shipping['name'] }}</p>
-                            <p class="mb-0">{{ shipping['price'] }} EUR</p>
+                            <p class="mb-0"><strong>Spôsob dopravy:</strong></p>
+                            <p class="mb-0">&nbsp{{ shipping['name'] }}</p>
+                            <p class="mb-0">&nbsp{{ shipping['price'] }} EUR</p>
+                            <p class="mb-0 mt-2"><strong>Spôsob platby:</strong></p>
+                            <p class="mb-0">&nbsp{{ payments[loop.index0]['name'] }}</p>
+
                             <div>
                                 <form action="/order-set-shipping" method="post">
                                     {{ csrf_field }}

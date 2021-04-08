@@ -259,10 +259,16 @@ class DashboardController(Controller):
 
         shippings = Shipping.all()
 
+        payments = [
+            {'name': 'V hotovosti pri prebratí tovaru'},
+            {'name': 'Bankovým prevodom'},
+        ]
+
         return view.render('dash/order/shipping', {
             'user': user,
             'user_': user_,
             'shippings': shippings,
+            'payments': payments,
         })
 
     def order_set_shipping(self, request: Request):
