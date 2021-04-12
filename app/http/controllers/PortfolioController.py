@@ -12,6 +12,7 @@ from pathlib import Path
 from unidecode import unidecode
 from masonite.auth import Auth
 from app.Availability import Availability
+from os import environ
 
 
 class PortfolioController(Controller):
@@ -42,6 +43,7 @@ class PortfolioController(Controller):
         serialized_products = add_description_lines(serialized_products)
 
         user = get_user(request)
+        settings = get_settings()
 
         return view.render('portfolio', {
             'products': serialized_products,
@@ -50,6 +52,7 @@ class PortfolioController(Controller):
             'category_': {'id': -1},
             'material_': {'id': -1},
             'user': user,
+            'settings': settings,
         })
 
     def show_one_category(self, request: Request, view: View):
@@ -69,6 +72,7 @@ class PortfolioController(Controller):
         serialized_products = add_description_lines(serialized_products)
 
         user = get_user(request)
+        settings = get_settings()
 
         return view.render('portfolio', {
             'products': serialized_products,
@@ -77,6 +81,7 @@ class PortfolioController(Controller):
             'category_': category,
             'material_': {'id': -1},
             'user': user,
+            'settings': settings,
         })
 
     def show_one_category_and_material(self, request: Request, view: View):
@@ -96,6 +101,7 @@ class PortfolioController(Controller):
         serialized_products = add_image_path(products.serialize())
         serialized_products = add_description_lines(serialized_products)
         user = get_user(request)
+        settings = get_settings()
 
         return view.render('portfolio', {
             'products': serialized_products,
@@ -104,6 +110,7 @@ class PortfolioController(Controller):
             'category_': category,
             'material_': material,
             'user': user,
+            'settings': settings,
         })
 
     def show_one_product(self, request: Request, view: View):
@@ -133,11 +140,13 @@ class PortfolioController(Controller):
 
         related_products_serialized = add_image_path(related_products.serialize())
         user = get_user(request)
+        settings = get_settings()
 
         return view.render('product', {
             'product': serialized_product,
             'related_products': related_products_serialized,
             'user': user,
+            'settings': settings,
         })
 
     def show_search(self, request: Request, view: View):
@@ -159,6 +168,7 @@ class PortfolioController(Controller):
         serialized_products = add_image_path(filtered_products)
         serialized_products = add_description_lines(serialized_products)
         user = get_user(request)
+        settings = get_settings()
 
         # return filtered_products
         return view.render('portfolio', {
@@ -168,6 +178,7 @@ class PortfolioController(Controller):
             'category_': {'id': -1},
             'material_': {'id': -1},
             'user': user,
+            'settings': settings,
         })
 
 
@@ -235,3 +246,12 @@ def get_user(request):
         pass
     print(f' current user: {user}')
     return user
+
+
+def get_settings():
+    try:
+        settings = {'fb_chat_id': environ['FB_CHAT_ID']}
+    except KeyError:
+        settings = {'fb_chat_id': ''}
+
+    return settings
