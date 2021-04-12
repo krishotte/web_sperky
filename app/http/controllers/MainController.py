@@ -4,7 +4,7 @@ from masonite.request import Request
 from masonite.view import View
 from masonite.controllers import Controller
 from app.Product_category import Product_category
-from .PortfolioController import get_user
+from .PortfolioController import get_user, get_settings
 from app.TopProduct import TopProduct
 
 
@@ -35,6 +35,7 @@ class MainController(Controller):
             'categories': categories,
             'user': user,
             'top_products': top_products,
+            'settings': get_settings(),
         })
 
     def show_contacts(self, request: Request, view: View):
@@ -42,6 +43,7 @@ class MainController(Controller):
 
         return view.render('about/contacts', {
             'user': user,
+            'settings': get_settings(),
         })
 
     def show_conditions(self, request: Request, view: View):
@@ -49,4 +51,5 @@ class MainController(Controller):
 
         return view.render('about/obchodne_podmienky', {
             'user': user,
+            'settings': get_settings(),
         })

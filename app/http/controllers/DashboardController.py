@@ -16,6 +16,7 @@ from masonite import env
 import pendulum
 import json
 from app.Variant import Variant
+from .PortfolioController import get_settings
 
 
 class DashboardController(Controller):
@@ -33,10 +34,12 @@ class DashboardController(Controller):
         user = get_user(request)
         user_ = User.where('email', '=', user['email']).first()
         user_.addresses()
+        settings = get_settings()
 
         return view.render('dash/profile', {
             'user': user,
             'user_': user_,
+            'settings': settings,
         })
 
     def show_profile(self, request: Request, view: View):
@@ -53,6 +56,7 @@ class DashboardController(Controller):
         return view.render('dash/profile', {
             'user': user,
             'user_': user_,
+            'settings': get_settings(),
         })
 
     def show_orders(self, request: Request, view: View):
@@ -69,6 +73,7 @@ class DashboardController(Controller):
         return view.render('dash/orders', {
             'user': user,
             'orders': orders.serialize(),
+            'settings': get_settings(),
         })
 
     def show_single_order(self, request: Request, view: View):
@@ -94,6 +99,7 @@ class DashboardController(Controller):
                 'user': user,
                 'order': order.serialize(),
                 'products': serialized_products,
+                'settings': get_settings(),
             })
         else:
             print(f' not your order')
@@ -122,6 +128,7 @@ class DashboardController(Controller):
             'ordered_items': unique_items,
             'products': serialized_products,
             'total_price': total_price,
+            'settings': get_settings(),
         })
 
     def add_to_cart(self, request: Request):
@@ -234,6 +241,7 @@ class DashboardController(Controller):
         return view.render('dash/order/user_data', {
             'user': user,
             'user_': user_,
+            'settings': get_settings(),
         })
 
     def order_set_user_address(self, request: Request):
@@ -269,6 +277,7 @@ class DashboardController(Controller):
             'user_': user_,
             'shippings': shippings,
             'payments': payments,
+            'settings': get_settings(),
         })
 
     def order_set_shipping(self, request: Request):
@@ -318,6 +327,7 @@ class DashboardController(Controller):
             'shipping': shipping,
             'address': address,
             'note': note,
+            'settings': get_settings(),
         })
 
     def make_order(self, request: Request):
@@ -394,6 +404,7 @@ class DashboardController(Controller):
         print(f' logged in user: {user}')
         return view.render('dash/new_address', {
             'user': user,
+            'settings': get_settings(),
         })
 
     def store_new_address(self, request: Request):
@@ -428,6 +439,7 @@ class DashboardController(Controller):
             return view.render('dash/existing_address', {
                 'user': user,
                 'address': address_,
+                'settings': get_settings(),
             })
         else:
             print(f' not your address')
