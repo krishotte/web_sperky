@@ -34,12 +34,11 @@ class DashboardController(Controller):
         user = get_user(request)
         user_ = User.where('email', '=', user['email']).first()
         user_.addresses()
-        settings = get_settings()
 
         return view.render('dash/profile', {
             'user': user,
             'user_': user_,
-            'settings': settings,
+            'settings': get_settings(),
         })
 
     def show_profile(self, request: Request, view: View):
