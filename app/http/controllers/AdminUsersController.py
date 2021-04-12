@@ -24,7 +24,7 @@ class AdminUsersController(Controller):
     def show_all_users(self, request: Request, view: View):
         user = get_user(request)
 
-        users = User.order_by('id', 'asc').get()
+        users = User.order_by('id', 'desc').get()
         users.load('role')
 
         return view.render('admin/users/all', {
