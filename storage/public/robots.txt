@@ -1,0 +1,28 @@
+# Group 1
+User-agent: Googlebot
+Disallow: /portfolio/search
+Disallow: /dashboard
+Disallow: /admin
+Disallow: /related_product
+Disallow: /add-to-cart2
+Disallow: /remove-from-cart
+Disallow: /new-address
+Disallow: /edit-address
+Disallow: /delete-address
+Disallow: /order-user-details
+Disallow: /order-set-address
+Disallow: /order-shipping
+Disallow: /order-set-shipping
+Disallow: /order-back-to-shipping
+Disallow: /order-review
+Disallow: /make-order
+Disallow: /email
+Disallow: /login
+Disallow: /logout
+Disallow: /register
+Disallow: /home
+Disallow: /password
+
+# Group 2
+User-agent: *
+Allow: /
