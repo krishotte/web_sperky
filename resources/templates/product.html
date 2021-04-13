@@ -1,4 +1,15 @@
 {% extends "menu.html" %}
+
+{% block title %}
+    <title>Šperky od Vierky - {{ product['category']['name'] }} - {{ product['name'] }}</title>
+{% endblock %}
+
+{% block header_tags %}
+	{% if product['description']|length > 3 %}
+        <meta name="description" content="Handmade šperky - {{ product['description'] }}">
+    {% endif %}
+{% endblock %}
+
 {% block content_a %}
 
 <main role="main">

@@ -1,4 +1,21 @@
 {% extends "portfolio_header.html" %}
+
+{% block title %}
+	{% if category_['id'] != -1 %}
+        <title>Šperky od Vierky - {{ category_['name'] }}</title>
+    {% else %}
+        <title>Šperky od Vierky - Handmade šperky - Ponuka</title>
+    {% endif %}
+{% endblock %}
+
+{% block header_tags %}
+	{% if category_['id'] != -1 %}
+        <meta name="description" content="Handmade šperky - {{ category_['name'] }}">
+    {% else %}
+        <meta name="description" content="Handmade šperky - živicové, drevené, drôtené, macrame, koráliky">
+    {% endif %}
+{% endblock %}
+
 {% block content_main %}
 
 <!-- <main role="main"> -->
