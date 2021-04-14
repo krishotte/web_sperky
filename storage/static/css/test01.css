@@ -9,6 +9,10 @@ body {
     font-family: "Atma";
   }
 
+a, a:hover {
+    text-decoration: none;
+}
+
 .container-sm {
     max-width: 1140px;
 }
