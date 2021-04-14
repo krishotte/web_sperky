@@ -16,6 +16,7 @@ package-lock.json
 *.log
 *.pkl
 /storage/invoice
+/storage/*.xml
 
 # not working
 /storage/logs
