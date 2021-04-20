@@ -1,0 +1,23 @@
+{% extends "menu.html" %}
+{% block content_a %}
+
+<!-- <main role="main"> -->
+    <div class="container-sm _nav_padding">
+        <div class="row my-1">
+            <a href="/admin/test/welcome-email" class="btn btn-primary">Poslať uvítací email</a>
+        </div>
+
+        <div class="row my-1">
+            <a href="/admin/test/welcome-email-queue" class="btn btn-primary">Poslať uvítací email do fronty</a>
+        </div>
+
+        <div class="row my-1">
+            <a href="/admin/test/new-user-email-queue" class="btn btn-primary">Registrovaný nový užívateľ</a>
+        </div>
+
+        <div class="row my-1">
+            <a href="/admin/test/new-order-email-queue" class="btn btn-primary">Nová objednávka</a>
+        </div>
+    </div>
+
+{% endblock %}

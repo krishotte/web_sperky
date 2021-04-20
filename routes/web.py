@@ -58,6 +58,13 @@ ROUTES = [
         Post('/admin/invoice-create', 'InvoiceController@create_invoice'),
         Get('/admin/invoice-show-one/@invoice_id', 'InvoiceController@show'),
 
+        # test routes
+        Get('/admin/test', 'TestController@show'),
+        Get('/admin/test/welcome-email', 'TestController@send_welcome_email'),
+        Get('/admin/test/welcome-email-queue', 'TestController@send_welcome_email_queue'),
+        Get('/admin/test/new-user-email-queue', 'TestController@send_admins_new_user'),
+        Get('/admin/test/new-order-email-queue', 'TestController@send_admins_new_order'),
+
     ], middleware=('admin', )),
 
     # User Dashboard routes

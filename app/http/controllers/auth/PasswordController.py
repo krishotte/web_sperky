@@ -60,7 +60,7 @@ class PasswordController:
             "success",
             #"If we found that email in our system then the email has been sent. Please follow the instructions in the email to reset your password.",
             "Ak emailová adresa existuje v našom systéme, email bol odoslaný."
-            "Pre resetovanie hesla prosím postupujte podľa inštrukcií uvedených v emaile."
+            "Pre resetovanie hesla prosím postupujte podľa inštrukcií uvedených v emaili."
         )
         return request.redirect("/password")
 

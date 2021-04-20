@@ -1,0 +1,22 @@
+{% extends "email/base.html" %}
+{% block content %}
+    <tr>
+        <td class="content-block">
+            <!--Please confirm your email address by clicking the link below.-->
+            Super, máš novú objednváku od užívateľa: {{ order['user']['email'] }}
+        </td>
+    </tr>
+
+    <tr>
+        <td class="content-block">
+            <!--Please confirm your email address by clicking the link below.-->
+            objednávka č.: {{ order['id'] }}, v hodnote {{ order['total_price'] }} EUR
+        </td>
+    </tr>
+
+    <tr>
+        <td class="content-block">
+            &mdash; Šperky od Vierky
+        </td>
+    </tr>
+{% endblock %}

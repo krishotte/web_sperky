@@ -1,0 +1,30 @@
+{% extends "email/base.html" %}
+{% block content %}
+    <tr>
+        <td class="content-block">
+            <!--Please confirm your email address by clicking the link below.-->
+            {{ user_name }}, vitajte v obchodíku Šperky od Vierky!
+        </td>
+    </tr>
+    <tr>
+        <td class="content-block">
+            <!--We may need to send you critical information about our service and it is important that we have an accurate email address.-->
+            Dúfam, že Vás poteším mojou tvorbou. V prípade, že potrebujete pomôcť, poradiť alebo konzultovať
+            špeciálnu požiadavku na výrobu šperku, neváhajte ma kontakovať prostredníctvom messenger četu na stránke
+            <a href="https://sperkyodvierky.sk">sperkyodvierky.sk</a>,
+            telefonicky alebo emailom.
+        </td>
+    </tr>
+    <tr>
+        <td class="content-block">
+            <!--We may need to send you critical information about our service and it is important that we have an accurate email address.-->
+            Prajem Vám príjemné vyberanie a nákup šperkov.
+        </td>
+    </tr>
+
+    <tr>
+        <td class="content-block">
+            &mdash; Šperky od Vierky
+        </td>
+    </tr>
+{% endblock %}
