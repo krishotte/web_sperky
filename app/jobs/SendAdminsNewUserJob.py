@@ -21,4 +21,6 @@ class SendAdminsNewUserJob(Queueable):
 
         for admin in admins:
             print(f' found admin: {admin.email}')
-            self.mail.mailable(AdminsNewUserMailable(admin.email, user_address)).send()
+            # self.mail.mailable(AdminsNewUserMailable(admin.email, user_address)).send()
+            self.mail.to(admin.email).subject('sperkyodvierky.sk - nový užívateľ').template('email/new_user',
+                                                                                        {'user_address': user_address}).send()

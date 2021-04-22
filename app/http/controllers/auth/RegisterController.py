@@ -8,6 +8,9 @@ from masonite.view import View
 from orator.exceptions.query import QueryException
 from masonite.validation import MessageBag
 from app.tools.SvkMustVerifyEmail import SvkMustVerifyEmail
+from masonite import Queue
+from app.jobs.SendWelcomeEmailJob import SendWelcomeEmailJob
+from app.jobs.SendAdminsNewUserJob import SendAdminsNewUserJob
 
 
 class RegisterController:
@@ -34,6 +37,7 @@ class RegisterController:
         mail_manager: MailManager,
         auth: Auth,
         validate: Validator,
+        queue: Queue,
     ):
         """Register the user with the database.
 
@@ -82,6 +86,14 @@ class RegisterController:
             bag = MessageBag()
             bag.add('error', 'Užívateľa nebolo možné zaregistrovať, už existuje iný s rovnakou emailovou adresou')
             return request.back().with_errors(bag)
+
+        print(f' user: {user.email}; {user.name}')
+        # send welcome email
+        print(f' sending welcome email...')
+        queue.push(SendWelcomeEmailJob, args=[user.email, user.name])
+        # send admins notification
+        print(f' sending notification to admins...')
+        queue.push(SendAdminsNewUserJob, args=[user.email])
 
         if isinstance(user, SvkMustVerifyEmail):
             user.verify_email(mail_manager, request)

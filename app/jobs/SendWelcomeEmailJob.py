@@ -16,4 +16,5 @@ class SendWelcomeEmailJob(Queueable):
 
     def handle(self, user_address, user_name):
         """Logic to handle the job."""
-        self.mail.mailable(WelcomeEmailMailable(user_address, user_name)).send()
+        # self.mail.mailable(WelcomeEmailMailable(user_address, user_name)).send()
+        self.mail.to(user_address).subject('Vitajte na sperkyodvierky.sk').template('email/welcome', {'user_name': user_name}).send()
