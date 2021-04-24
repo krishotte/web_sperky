@@ -11,6 +11,7 @@ from app.tools.SvkMustVerifyEmail import SvkMustVerifyEmail
 from masonite import Queue
 from app.jobs.SendWelcomeEmailJob import SendWelcomeEmailJob
 from app.jobs.SendAdminsNewUserJob import SendAdminsNewUserJob
+import time
 
 
 class RegisterController:
@@ -91,6 +92,7 @@ class RegisterController:
         # send welcome email
         print(f' sending welcome email...')
         queue.push(SendWelcomeEmailJob, args=[user.email, user.name])
+        time.sleep(0.2)
         # send admins notification
         print(f' sending notification to admins...')
         queue.push(SendAdminsNewUserJob, args=[user.email])
