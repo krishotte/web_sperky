@@ -17,6 +17,10 @@ import pendulum
 import json
 from app.Variant import Variant
 from .PortfolioController import get_settings
+from masonite import Mail
+from app.mailable.AdminsNewOrderMailable import AdminsNewOrderMailable
+from threading import Thread
+import time
 
 
 class DashboardController(Controller):
@@ -329,7 +333,7 @@ class DashboardController(Controller):
             'settings': get_settings(),
         })
 
-    def make_order(self, request: Request):
+    def make_order(self, request: Request, mail: Mail):
         print(f' session: {request.session.all()}')
 
         shipping = Shipping.find(int(request.session.get('shipping')))
@@ -388,6 +392,15 @@ class DashboardController(Controller):
                     'product_count': unique_items[index]['count'],
                     'unit_price': product.price,
                 })
+
+        # send notification to admins
+        admins = User.where('role_id', '=', 1).get()
+        emails = []
+        for admin in admins:
+            emails.append(AdminsNewOrderMailable(admin.email, order))
+
+        thr1 = Thread(target=admin_send_order_notification, args=[mail, emails])
+        thr1.start()
 
         # clear session
         request.session.reset()
@@ -543,3 +556,10 @@ def evaluate_cart(unique_items, total_price):
         serialized_products = []
 
     return serialized_products, total_price_
+
+
+def admin_send_order_notification(mail, emails):
+    print(f' sending order notification to admins from another thread')
+    for email in emails:
+        mail.mailable(email).send()
+        time.sleep(2)
