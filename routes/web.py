@@ -64,6 +64,7 @@ ROUTES = [
         Get('/admin/test/welcome-email-queue', 'TestController@send_welcome_email_queue'),
         Get('/admin/test/new-user-email-queue', 'TestController@send_admins_new_user'),
         Get('/admin/test/new-order-email-queue', 'TestController@send_admins_new_order'),
+        Get('/admin/test/welcome-email-more', 'TestController@send_more_welcome_email'),
 
     ], middleware=('admin', )),
 

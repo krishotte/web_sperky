@@ -9,9 +9,12 @@ from orator.exceptions.query import QueryException
 from masonite.validation import MessageBag
 from app.tools.SvkMustVerifyEmail import SvkMustVerifyEmail
 from masonite import Queue
-from app.jobs.SendWelcomeEmailJob import SendWelcomeEmailJob
-from app.jobs.SendAdminsNewUserJob import SendAdminsNewUserJob
 import time
+from threading import Thread
+from app.mailable.WelcomeEmailMailable import WelcomeEmailMailable
+from app.mailable.AdminsNewUserMailable import AdminsNewUserMailable
+from app.User import User
+from masonite import Mail
 
 
 class RegisterController:
@@ -38,7 +41,7 @@ class RegisterController:
         mail_manager: MailManager,
         auth: Auth,
         validate: Validator,
-        queue: Queue,
+        mail: Mail,
     ):
         """Register the user with the database.
 
@@ -89,13 +92,21 @@ class RegisterController:
             return request.back().with_errors(bag)
 
         print(f' user: {user.email}; {user.name}')
-        # send welcome email
-        print(f' sending welcome email...')
-        queue.push(SendWelcomeEmailJob, args=[user.email, user.name])
-        time.sleep(0.2)
-        # send admins notification
-        print(f' sending notification to admins...')
-        queue.push(SendAdminsNewUserJob, args=[user.email])
+
+        # prepare welcome email
+        emails = [
+            WelcomeEmailMailable(user.email, user.name),
+        ]
+
+        # prepare admins notification
+        admins = User.where('role_id', '=', 1).get()
+        print(f' admins: {admins.serialize()}')
+        for admin in admins:
+            emails.append(AdminsNewUserMailable(admin.email, user.email))
+
+        # send emails from different thread
+        thr1 = Thread(target=send_register_emails, args=[mail, emails])
+        thr1.start()
 
         if isinstance(user, SvkMustVerifyEmail):
             user.verify_email(mail_manager, request)
@@ -107,3 +118,10 @@ class RegisterController:
 
         # Login failed. Redirect to the register page.
         return request.back().with_input()
+
+
+def send_register_emails(mail, emails):
+    print(f' sending register emails from another thread')
+    for email in emails:
+        mail.mailable(email).send()
+    time.sleep(2)

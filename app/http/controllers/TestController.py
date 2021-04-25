@@ -12,6 +12,8 @@ from app.jobs.SendAdminsNewOrderJob import SendAdminsNewOrderJob
 from os import environ
 from app.User import User
 from app.Order import Order
+from threading import Thread
+import time
 
 
 class TestController(Controller):
@@ -48,6 +50,22 @@ class TestController(Controller):
 
         return request.redirect('/admin/test')
 
+    def send_more_welcome_email(self, request: Request, mail: Mail):
+        user = get_user(request)
+        print(f' sending more emails to you...')
+
+        emails = [
+            WelcomeEmailMailable(user['email'], f"{user['name']} - 1"),
+            WelcomeEmailMailable(user['email'], f"{user['name']} - 2"),
+            WelcomeEmailMailable(user['email'], f"{user['name']} - 3"),
+        ]
+        thr1 = Thread(target=send_more_welcome_emails, args=[mail, emails])
+        thr1.start()
+        print(f' thread started, redirecting')
+
+        return request.redirect('/admin/test')
+
+
     def send_admins_new_user(self, request: Request, queue: Queue):
         user = User.find(4)  # {'email': request.input('user')}
         queue.push(SendAdminsNewUserJob, args=[user.email])
@@ -61,3 +79,11 @@ class TestController(Controller):
         queue.push(SendAdminsNewOrderJob, args=[order.serialize()])
 
         return request.redirect('/admin/test')
+
+
+def send_more_welcome_emails(mail, emails):
+    for i, email in enumerate(emails):
+        print(f' sending welcome email: {i}')
+        # mail.mailable(WelcomeEmailMailable(user['email'], user['name'])).send()
+        mail.mailable(email).send()
+        time.sleep(2)
