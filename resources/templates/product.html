@@ -6,8 +6,12 @@
 
 {% block header_tags %}
 	{% if product['description']|length > 3 %}
-        <meta name="description" content="Handmade šperky - {{ product['description'] }}">
+        <meta name="description" content="{{ product['description'] }}">
     {% endif %}
+    <meta name="og:type" content="website">
+    <meta property="og:title" content="Šperky od Vierky - {{ product['category']['name'] }} - {{ product['name'] }}">
+    <meta property="og:description" content="{{ product['description'] }}">
+    <meta property="og:image" content="https://sperkyodvierky.sk{{ product['images'][0] }}">
 {% endblock %}
 
 {% block content_a %}
@@ -51,11 +55,13 @@
                         {% for index in product["indexes"] %}
                             {% if index == 0 %}
                                 <div class="carousel-item active">
-                                    <img src="{{ product['images'][index] }}" class="img-fluid carousel_item_padding" alt="Obrázok chýba 1">
+                                    <img src="{{ product['images'][index] }}" class="img-fluid carousel_item_padding"
+                                         alt="{{ product['category']['name'] }} - {{ product['name'] }}">
                                 </div>
                             {% else %}
                                 <div class="carousel-item">
-                                    <img src="{{ product['images'][index] }}" class="img-fluid carousel_item_padding" alt="Obrázok chýba">
+                                    <img src="{{ product['images'][index] }}" class="img-fluid carousel_item_padding"
+                                         alt="{{ product['category']['name'] }} - {{ product['name'] }}">
                                 </div>
                             {% endif %}
 
