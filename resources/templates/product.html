@@ -12,6 +12,44 @@
     <meta property="og:title" content="Šperky od Vierky - {{ product['category']['name'] }} - {{ product['name'] }}">
     <meta property="og:description" content="{{ product['description'] }}">
     <meta property="og:image" content="https://sperkyodvierky.sk{{ product['images'][0] }}">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org/",
+      "@type": "Product",
+      "name": "{{ product['name'] }}",
+      "image": [
+        "https://sperkyodvierky.sk{{ product['images'][0] }}"
+       ],
+      "description": "{{ product['description'] }}",
+      "brand": {
+        "@type": "Brand",
+        "name": "Šperky od Vierky"
+      },
+      "review": {
+        "@type": "Review",
+        "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": "5",
+          "bestRating": "5"
+        },
+        "author": {
+          "@type": "Person",
+          "name": "Viera Fajtakova"
+        }
+      },
+
+      "offers": {
+        "@type": "Offer",
+        "url": "https://sperkyodvierky.sk/product/{{ product['id'] }}",
+        "priceCurrency": "EUR",
+        "price": "{{ product['price'] }}",
+        "priceValidUntil": "2022-01-01",
+        "itemCondition": "https://schema.org/NewCondition",
+        "availability": "https://schema.org/InStock"
+      }
+    }
+    </script>
 {% endblock %}
 
 {% block content_a %}
