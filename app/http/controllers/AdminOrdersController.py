@@ -34,6 +34,7 @@ class AdminOrdersController(Controller):
         orders = Order.order_by('id', 'desc').get()
         orders.load('order_state')
         orders.load('user')
+        orders.load('invoice')
 
         return view.render('admin/orders/all', {
             'user': user,

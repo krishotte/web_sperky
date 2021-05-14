@@ -12,6 +12,7 @@
                     <th scope="col">užívateľ</th>
                     <th scope="col">cena spolu</th>
                     <th scope="col">stav objednávky</th>
+                    <th scope="col">faktúra</th>
 
                 </tr>
             </thead>
@@ -25,6 +26,13 @@
                         <td>{{ order['user']['email'] }}</td>
                         <td>{{ order['total_price'] - order['discount'] }}</td>
                         <th>{{ order['order_state']['name'] }}</th>
+                        <td>
+                            {% if 'invoice' in order %}
+                                <a href="/admin/invoice-show-one/{{ order['invoice']['id'] }}" target="_blank">
+                                    {{ order['invoice']['year'] }}/{{ order['invoice']['number'] }}
+                                </a>
+                            {% endif %}
+                        </td>
 
                     </tr>
 
