@@ -13,6 +13,7 @@ from unidecode import unidecode
 from masonite.auth import Auth
 from app.Availability import Availability
 from os import environ
+from masonite.response import Response
 
 
 class PortfolioController(Controller):
@@ -113,42 +114,47 @@ class PortfolioController(Controller):
             'settings': settings,
         })
 
-    def show_one_product(self, request: Request, view: View):
-        product = Product.find(request.param('product_id'))
-        product.availability
-        product.category
+    def show_one_product(self, request: Request, view: View, response: Response):
+        try:
+            product = Product.find(int(request.param('product_id')))
+            product.availability
+            product.category
 
-        for variant in product.variants:
-            variant.load({
-                'availability': Availability.query().where('name', '<>', 'Vypredané')
+            for variant in product.variants:
+                variant.load({
+                    'availability': Availability.query().where('name', '<>', 'Vypredané')
+                })
+            print(f' loaded product: {product.serialize()}')
+
+            serialized_product = add_image_path([product.serialize()])[0]
+            serialized_product = add_description_lines([serialized_product])[0]
+            serialized_product = add_detail_lines([serialized_product])[0]
+            serialized_product = add_note_lines([serialized_product])[0]
+            files, indexes = get_files_on_disk(request.param('product_id'))
+            serialized_product['images'] = files
+            serialized_product['indexes'] = indexes
+
+            # related_products = product.related_products
+            # get only products with certain availabilities
+            related_products = product.related_products().where_has(
+                'availability',
+                lambda q: q.where('name', '<>', 'Vypredané')
+            ).order_by('id', 'desc').get()
+
+            related_products_serialized = add_image_path(related_products.serialize())
+            user = get_user(request)
+            settings = get_settings()
+
+            return view.render('product', {
+                'product': serialized_product,
+                'related_products': related_products_serialized,
+                'user': user,
+                'settings': settings,
             })
-        print(f' loaded product: {product.serialize()}')
-
-        serialized_product = add_image_path([product.serialize()])[0]
-        serialized_product = add_description_lines([serialized_product])[0]
-        serialized_product = add_detail_lines([serialized_product])[0]
-        serialized_product = add_note_lines([serialized_product])[0]
-        files, indexes = get_files_on_disk(request.param('product_id'))
-        serialized_product['images'] = files
-        serialized_product['indexes'] = indexes
-
-        # related_products = product.related_products
-        # get only products with certain availabilities
-        related_products = product.related_products().where_has(
-            'availability',
-            lambda q: q.where('name', '<>', 'Vypredané')
-        ).order_by('id', 'desc').get()
-
-        related_products_serialized = add_image_path(related_products.serialize())
-        user = get_user(request)
-        settings = get_settings()
-
-        return view.render('product', {
-            'product': serialized_product,
-            'related_products': related_products_serialized,
-            'user': user,
-            'settings': settings,
-        })
+        except AttributeError:
+            return response.view('does not exist', status=404)
+        except ValueError:
+            return response.view('bad request', status=400)
 
     def show_search(self, request: Request, view: View):
         # products = Product.order_by('id', 'desc').get()
