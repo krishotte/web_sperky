@@ -56,34 +56,37 @@ class PortfolioController(Controller):
             'settings': settings,
         })
 
-    def show_one_category(self, request: Request, view: View):
+    def show_one_category(self, request: Request, view: View, response: Response):
         categories = Product_category.order_by('id', 'asc').get()
         materials = Material.order_by('id', 'asc').get()
-        category = Product_category.find(request.param('category_id'))
-        # products = category.products().order_by('id', 'desc').get()
+        try:
+            category = Product_category.find(int(request.param('category_id')))
+            # products = category.products().order_by('id', 'desc').get()
 
-        # get only products with certain availabilities
-        products = category.products().where_has(
-            'availability',
-            lambda q: q.where('name', '<>', 'Vypredané')
-        ).order_by('id', 'desc').get()
-        products.load('variants')
+            # get only products with certain availabilities
+            products = category.products().where_has(
+                'availability',
+                lambda q: q.where('name', '<>', 'Vypredané')
+            ).order_by('id', 'desc').get()
+            products.load('variants')
 
-        serialized_products = add_image_path(products.serialize())
-        serialized_products = add_description_lines(serialized_products)
+            serialized_products = add_image_path(products.serialize())
+            serialized_products = add_description_lines(serialized_products)
 
-        user = get_user(request)
-        settings = get_settings()
+            user = get_user(request)
+            settings = get_settings()
 
-        return view.render('portfolio', {
-            'products': serialized_products,
-            'categories': categories,
-            'materials': materials,
-            'category_': category,
-            'material_': {'id': -1},
-            'user': user,
-            'settings': settings,
-        })
+            return view.render('portfolio', {
+                'products': serialized_products,
+                'categories': categories,
+                'materials': materials,
+                'category_': category,
+                'material_': {'id': -1},
+                'user': user,
+                'settings': settings,
+            })
+        except (AttributeError, ValueError):
+            return response.view('does not exist', status=404)
 
     def show_one_category_and_material(self, request: Request, view: View):
         categories = Product_category.order_by('id', 'asc').get()
