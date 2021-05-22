@@ -1,6 +1,7 @@
 import subprocess
 import sys
 from masonite import env
+from threading import Thread
 
 
 """
@@ -25,7 +26,11 @@ print(f' server2: {server_2}')
 
 def restart_server():
     if len(server_1) > 0:
-        subprocess.run(['sudo', 'systemctl', 'restart', server_1])
+        # subprocess.run(['sudo', 'systemctl', 'restart', server_1])
+        thr1 = Thread(target=subprocess.run, args=[['sudo', 'systemctl', 'restart', server_1]])
+        thr1.start()
 
     if len(server_2) > 0:
-        subprocess.run(['sudo', 'systemctl', 'restart', server_2])
+        # subprocess.run(['sudo', 'systemctl', 'restart', server_2])
+        thr2 = Thread(target=subprocess.run, args=[['sudo', 'systemctl', 'restart', server_2]])
+        thr2.start()
