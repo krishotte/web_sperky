@@ -15,6 +15,7 @@ from app.Availability import Availability
 from app.jobs.RestartWebserverJob import RestartWebserverJob
 from app.Variant import Variant
 from orator.exceptions.query import QueryException
+import pendulum
 
 
 class EditPortfolioController(Controller):
@@ -108,6 +109,7 @@ class EditPortfolioController(Controller):
             'related_products': related_products_serialized,
             'user': user,
             'availabilities': availabilities,
+            'ts': str(pendulum.now()),
         })
 
     def get_all_products(self, view: View, request: Request):
@@ -192,7 +194,7 @@ class EditPortfolioController(Controller):
         deleted = self._delete_file(image_to_delete)
         print(f'  image was deleted: {deleted}')
 
-        return response.redirect('/admin/product/edit/' + str(request.all()['caller_id']))
+        return response.redirect(f'/admin/product/edit/{str(request.all()["caller_id"])}?v={str(pendulum.now())}')
 
     def save_variant(self, request: Request):
         # print(f' form: {request.all()}')

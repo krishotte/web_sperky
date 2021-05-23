@@ -99,7 +99,7 @@
                     {% for image in images %}
                         <div class="col">
                             <p>{{ image }}</p>
-                            <img src="{{ image }}" class="img-fluid img-thumbnail">
+                            <img src="{{ image }}?v={{ ts }}" class="img-fluid img-thumbnail">
                             <form action="/admin/image/delete" method="post">
                                 {{ csrf_field }}
                                 <input type="hidden" name="image_to_delete" value="{{ image }}">
