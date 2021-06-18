@@ -144,7 +144,7 @@
   <body>
 
         <div class="alert alert-success my-2 text-center z-index-master fixed-top" style="top: 3.5rem">
-            <h3 class="py-0 my-1">
+            <h3 class="py-0 my-1" id="holiday_info">
             Dovolenka do 28.6.
             Objednávky prijímam aj počas dovolenky, ale vybavené, odoslané, poprípade začatá výroba budú až po návrate.
             Ďakujem za pochopenie
@@ -201,5 +201,12 @@
 		});
 	</script>
 
+    <script type="text/javascript">
+        var width_ = window.innerWidth;
+        console.log("window width: " + width_ + " px")
+        if (width_ < 1650) {
+            document.getElementById("holiday_info").innerHTML = "Dovolenka do 28.6."
+        }
+    </script>
   </body>
 </html>
