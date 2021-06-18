@@ -32,7 +32,8 @@
 	<header>
 			<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
 					<a class="navbar-brand" href="/">Šperky od Vierky</a>
-					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+                            aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 					</button>
 					<div class="collapse navbar-collapse" id="navbarCollapse">
@@ -93,7 +94,8 @@
 					{% if user['role'] == 'admin' %}
 					<form class="form-inline mt-2 mt-md-0">
 						<div class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle btn-danger my-2 mx-2 my-sm-0" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+							<a class="nav-link dropdown-toggle btn-danger my-2 mx-2 my-sm-0" data-toggle="dropdown"
+                               role="button" aria-haspopup="true" aria-expanded="false">
 								<!--<button class="btn btn-danger my-2 mx-2 my-sm-0">Admin</button>-->
 								Admin
 							</a>
@@ -143,7 +145,8 @@
 
   <body>
 
-        <div class="alert alert-success my-2 text-center z-index-master fixed-top" style="top: 3.5rem">
+        <div class="alert alert-success my-2 text-center z-index-1 fixed-top"
+             style="top: 3.5rem" id="holiday_info_alert">
             <h3 class="py-0 my-1" id="holiday_info">
             Dovolenka do 28.6.
             Objednávky prijímam aj počas dovolenky, ale vybavené, odoslané, poprípade začatá výroba budú až po návrate.
@@ -207,6 +210,18 @@
         if (width_ < 1650) {
             document.getElementById("holiday_info").innerHTML = "Dovolenka do 28.6."
         }
+    </script>
+
+    <script type="text/javascript">
+        $('#navbarCollapse').on('show.bs.collapse', function () {
+            $('#holiday_info_alert').hide();
+        })
+    </script>
+
+    <script type="text/javascript">
+        $('#navbarCollapse').on('hide.bs.collapse', function () {
+            $('#holiday_info_alert').show();
+        })
     </script>
   </body>
 </html>
