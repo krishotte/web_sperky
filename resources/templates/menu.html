@@ -65,9 +65,9 @@
 									</svg>
 									Používateľ</a>
 							</li>
-							<li class="nav-link"> <!-- initially hidden - js -->
+							<li class="nav-link" id="label_user"> <!-- initially hidden - js -->
 								{% if user['email'] %}
-									<div class="nav-item text-light mx-2" id="label_user">
+									<div class="nav-item text-light mx-2" >
 										prihlásený užívateľ: {{ user['email'] }}</div>
 								{% endif %}
 							</li>
@@ -88,13 +88,13 @@
 
 					{% if user['email'] %}
 						<!--
-						<div class="nav-item text-light mx-2">prihlásený užívateľ: {{ user['email'] }}</div>-->
+						<div class="nav-item text-light mx-2">prihlásený užívateľ: {#{ user['email'] }#}</div>-->
 					{% endif %}
 
 					{% if user['role'] == 'admin' %}
 					<form class="form-inline mt-2 mt-md-0">
 						<div class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle btn-danger my-2 mx-2 my-sm-0" data-toggle="dropdown"
+							<a class="nav-link dropdown-toggle btn-danger my-2 mr-2 my-sm-0" data-toggle="dropdown"
                                role="button" aria-haspopup="true" aria-expanded="false">
 								<!--<button class="btn btn-danger my-2 mx-2 my-sm-0">Admin</button>-->
 								Admin
@@ -110,7 +110,7 @@
 						</div>
 					</form>
 					{% endif %}
-					<form class="form-inline mt-2 mt-md-0" action="/portfolio/search" method="post">
+					<form class="form-inline mt-2 mt-md-0 mr-2" action="/portfolio/search" method="post">
 							{{ csrf_field }}
 							<input class="form-control mr-sm-2" type="text" placeholder="Hľadaj" aria-label="Search" name="search">
 							<button class="btn btn-outline-success my-2 my-sm-0" type="submit">
@@ -121,7 +121,7 @@
 					</form>
 
 					{% if not user %}
-						<form class="form-inline mt-2 mt-md-0 ml-2" action="/login" method="get">
+						<form class="form-inline mt-2 mt-md-0" action="/login" method="get">
 							<button class="btn btn-primary my-2 my-sm-0" type="submit">
 								<svg class="bi pb-1" width="1.4em" height="1.4em">
 									<use xlink:href="/static/svg/icons.svg#box-arrow-in-right"></use>
@@ -130,7 +130,7 @@
 						</form>
 					{% endif %}
 					{% if user %}
-						<form class="form-inline mt-2 mt-md-0 ml-2" action="/logout" method="get">
+						<form class="form-inline mt-2 mt-md-0" action="/logout" method="get">
 							<button class="btn btn-primary my-2 my-sm-0" type="submit">
 								<svg class="bi pb-1" width="1.4em" height="1.4em">
 									<use xlink:href="/static/svg/icons.svg#box-arrow-left"></use>
@@ -216,10 +216,16 @@
         $('#navbarCollapse').on('show.bs.collapse', function () {
             $('#holiday_info_alert').hide();
         })
+        $('.dropdown').on('show.bs.dropdown', function () {
+            $('#holiday_info_alert').hide();
+        })
     </script>
 
     <script type="text/javascript">
         $('#navbarCollapse').on('hide.bs.collapse', function () {
+            $('#holiday_info_alert').show();
+        })
+        $('.dropdown').on('hide.bs.dropdown', function () {
             $('#holiday_info_alert').show();
         })
     </script>
