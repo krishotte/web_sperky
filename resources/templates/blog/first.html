@@ -4,9 +4,13 @@
     <!-- Page -->
 	<main role="main">
         <div class="container-sm">
-            <div class="display-4 _nav_padding mb-4">
-                Všehochuť
-            </div>
+            {% if settings['display_holiday_note'] == True %}
+                <div class="display-4 _nav_padding_holiday mb-4">
+            {% else %}
+                <div class="display-4 _nav_padding mb-4">
+            {% endif %}
+                    Všehochuť
+                </div>
 
             <p class="h5">Milé zákazníčky, milí zákazníci,</p>
 
@@ -83,5 +87,5 @@
             <p class="blog_text">PS: Všetky sprievodné fotky vznikli z mojej tvorby, z mojich zásob, v mojej dielni ;)</p>
 
         </div>
-	</main>
+	<!--</main>-->
 {% endblock %}

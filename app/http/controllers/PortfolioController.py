@@ -14,6 +14,7 @@ from masonite.auth import Auth
 from app.Availability import Availability
 from os import environ
 from masonite.response import Response
+from distutils.util import strtobool
 
 
 class PortfolioController(Controller):
@@ -260,7 +261,11 @@ def get_user(request):
 
 def get_settings():
     try:
-        settings = {'fb_chat_id': environ['FB_CHAT_ID']}
+        settings = {
+            'fb_chat_id': environ['FB_CHAT_ID'],
+            'display_holiday_note': strtobool(environ['DISPLAY_HOLIDAY_NOTE']),
+            'holiday_until': environ['HOLIDAY_UNTIL'],
+        }
     except KeyError:
         settings = {'fb_chat_id': ''}
 

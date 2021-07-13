@@ -1,7 +1,11 @@
 {% extends "menu.html" %}
 {% block content_a %}
 
-<div class="container-sm" style="max-width: 960px; margin-top: 3rem">
+{% if settings['display_holiday_note'] == True %}
+  <div class="container-sm _nav_padding_holiday" style="max-width: 960px">
+{% else %}
+  <div class="container-sm _nav_padding" style="max-width: 960px">
+{% endif %}
     <div class="text-center mb-4">
         <img src="/static/img/logo/logo-400-w-bck.png" class="img-fluid mx-auto d-block" alt="..." style="max-width: 200px">
     </div>

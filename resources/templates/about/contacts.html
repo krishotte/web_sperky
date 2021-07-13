@@ -1,76 +1,80 @@
 {% extends "menu.html" %}
 {% block content_a %}
 
-<div class="container-sm mb-4" style="max-width: 600px; margin-top: 3rem">
-    <div class="text-center mb-4">
-        <img src="/static/img/logo/logo-400-w-bck.png" class="img-fluid mx-auto d-block" alt="..." style="max-width: 200px">
+{% if settings['display_holiday_note'] == True %}
+    <div class="container-sm mb-4 _nav_padding_holiday" style="max-width: 600px">
+{% else %}
+    <div class="container-sm mb-4 _nav_padding" style="max-width: 600px">
+{% endif %}
+        <div class="text-center mb-4">
+            <img src="/static/img/logo/logo-400-w-bck.png" class="img-fluid mx-auto d-block" alt="..." style="max-width: 200px">
+        </div>
+
+        <h3 class="text-center mb-4">Kontakty</h3>
+
+        <p class="text-center mb-4"><strong>V prípade otázok ma neváhajte kontaktovať.</strong></p>
+
+        <p class="text-center mb-2">Viera Fajtáková</p>
+
+        <p class="text-center mb-2">Pri cintoríne 1320</p>
+
+        <p class="text-center">908 73 Veľké Leváre</p>
+
+        <p class="text-center mb-2"><strong>telefón:</strong></p>
+
+        <p class="text-center">+421 903 319 112</p>
+
+        <p class="text-center mb-2"><strong>e-mail:</strong></p>
+
+        <div class="text-center mb-0">
+            <a href="mailto:sperkyodvierky@gmail.com">sperkyodvierky@gmail.com</a>
+        </div>
+
+        <div class="text-center mb-3">
+            <a href="mailto:vfajtakova@gmail.com">vfajtakova@gmail.com</a>
+        </div>
+
+        <hr>
+
+        <div class="text-center">
+            <a href="https://www.facebook.com/vfdizajn" class="mx-1" target="_blank">
+                <!--<img src="/static/svg/facebook.svg" alt="facebook" width="32" height="32">-->
+                <svg width="32" height="32" style="color: #1877f2">
+                    <use xlink:href="/static/svg/icons.svg#facebook"></use>
+                </svg>
+            </a>
+            <a href="https://sk.pinterest.com/vfajtakova/_created" class="mx-1" target="_blank">
+                <!--<img src="/static/svg/pinterest.svg" alt="pinterest" width="32" height="32">-->
+                <svg width="32" height="32" style="color: #e60023">
+                    <use xlink:href="/static/svg/icons.svg#pinterest"></use>
+                </svg>
+            </a>
+            <a href="https://www.instagram.com/sperkyodvierky" class="mx-1" target="_blank">
+                <!--<img src="/static/svg/instagram.svg" alt="instagram" width="32" height="32">-->
+                <svg width="32" height="32" style="color: #252525">
+                    <use xlink:href="/static/svg/icons.svg#instagram"></use>
+                </svg>
+            </a>
+        </div>
+
+        <!--<p class="text-center mb-2"><strong>facebook:</strong></p>
+
+        <div class="text-center mb-3">
+            <a href="https://www.facebook.com/vfdizajn" target="_blank">https://www.facebook.com/vfdizajn</a>
+        </div>
+
+        <p class="text-center mb-2"><strong>pinterest:</strong></p>
+
+        <div class="text-center mb-3">
+            <a href="https://sk.pinterest.com/vfajtakova/_created/" target="_blank">https://sk.pinterest.com/vfajtakova/_created/</a>
+        </div>
+
+        <p class="text-center mb-2"><strong>instagram:</strong></p>
+
+        <div class="text-center mb-3">
+            <a href="https://www.instagram.com/sperkyodvierky/" target="_blank">https://www.instagram.com/sperkyodvierky/</a>
+        </div>-->
+
     </div>
-
-    <h3 class="text-center mb-4">Kontakty</h3>
-
-    <p class="text-center mb-4"><strong>V prípade otázok ma neváhajte kontaktovať.</strong></p>
-
-    <p class="text-center mb-2">Viera Fajtáková</p>
-
-    <p class="text-center mb-2">Pri cintoríne 1320</p>
-
-    <p class="text-center">908 73 Veľké Leváre</p>
-
-    <p class="text-center mb-2"><strong>telefón:</strong></p>
-
-    <p class="text-center">+421 903 319 112</p>
-
-    <p class="text-center mb-2"><strong>e-mail:</strong></p>
-
-    <div class="text-center mb-0">
-        <a href="mailto:sperkyodvierky@gmail.com">sperkyodvierky@gmail.com</a>
-    </div>
-
-    <div class="text-center mb-3">
-        <a href="mailto:vfajtakova@gmail.com">vfajtakova@gmail.com</a>
-    </div>
-
-    <hr>
-
-    <div class="text-center">
-        <a href="https://www.facebook.com/vfdizajn" class="mx-1" target="_blank">
-            <!--<img src="/static/svg/facebook.svg" alt="facebook" width="32" height="32">-->
-            <svg width="32" height="32" style="color: #1877f2">
-                <use xlink:href="/static/svg/icons.svg#facebook"></use>
-            </svg>
-        </a>
-        <a href="https://sk.pinterest.com/vfajtakova/_created" class="mx-1" target="_blank">
-            <!--<img src="/static/svg/pinterest.svg" alt="pinterest" width="32" height="32">-->
-            <svg width="32" height="32" style="color: #e60023">
-                <use xlink:href="/static/svg/icons.svg#pinterest"></use>
-            </svg>
-        </a>
-        <a href="https://www.instagram.com/sperkyodvierky" class="mx-1" target="_blank">
-            <!--<img src="/static/svg/instagram.svg" alt="instagram" width="32" height="32">-->
-            <svg width="32" height="32" style="color: #252525">
-                <use xlink:href="/static/svg/icons.svg#instagram"></use>
-            </svg>
-        </a>
-    </div>
-
-    <!--<p class="text-center mb-2"><strong>facebook:</strong></p>
-
-    <div class="text-center mb-3">
-        <a href="https://www.facebook.com/vfdizajn" target="_blank">https://www.facebook.com/vfdizajn</a>
-    </div>
-
-    <p class="text-center mb-2"><strong>pinterest:</strong></p>
-
-    <div class="text-center mb-3">
-        <a href="https://sk.pinterest.com/vfajtakova/_created/" target="_blank">https://sk.pinterest.com/vfajtakova/_created/</a>
-    </div>
-
-    <p class="text-center mb-2"><strong>instagram:</strong></p>
-
-    <div class="text-center mb-3">
-        <a href="https://www.instagram.com/sperkyodvierky/" target="_blank">https://www.instagram.com/sperkyodvierky/</a>
-    </div>-->
-
-</div>
 
 {% endblock %}
