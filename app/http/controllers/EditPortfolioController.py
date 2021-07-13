@@ -9,7 +9,7 @@ from app.Material import Material
 from app.Product import Product
 from masonite import Upload, Queue
 from pathlib import Path
-from .PortfolioController import get_files_on_disk, add_image_path, add_description_lines
+from .PortfolioController import get_files_on_disk, add_image_path, add_description_lines, get_settings
 from os import remove
 from app.Availability import Availability
 from app.jobs.RestartWebserverJob import RestartWebserverJob
@@ -42,6 +42,7 @@ class EditPortfolioController(Controller):
             'categories': categories,
             'materials': materials,
             'user': user,
+            'settings': get_settings(),
         })
 
     def store_product(self, request: Request, view: View, upload: Upload):
@@ -110,6 +111,7 @@ class EditPortfolioController(Controller):
             'user': user,
             'availabilities': availabilities,
             'ts': str(pendulum.now()),
+            'settings': get_settings(),
         })
 
     def get_all_products(self, view: View, request: Request):
@@ -127,6 +129,7 @@ class EditPortfolioController(Controller):
             'categories': [],
             'materials': [],
             'user': user,
+            'settings': get_settings(),
 
         })
 
@@ -171,6 +174,7 @@ class EditPortfolioController(Controller):
             'caller_product': caller_product,
             'related_products_ids': related_products_ids,
             'user': user,
+            'settings': get_settings(),
         })
 
     def update_related_products(self, request: Request, response: Response):

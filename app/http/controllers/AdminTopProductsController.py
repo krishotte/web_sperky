@@ -4,7 +4,7 @@ from masonite.request import Request
 from masonite.view import View
 from masonite.controllers import Controller
 from app.TopProduct import TopProduct
-from .PortfolioController import get_user, add_image_path
+from .PortfolioController import get_user, add_image_path, get_settings
 from app.Product import Product
 
 
@@ -35,6 +35,7 @@ class AdminTopProductsController(Controller):
         return view.render('admin/top_products/setup', {
             'user': user,
             'top_products': top_products,
+            'settings': get_settings(),
         })
 
     def choose_new(self, request: Request, view: View):
@@ -49,6 +50,7 @@ class AdminTopProductsController(Controller):
             'user': user,
             'products': serialized_products,
             'form_action': form_action,
+            'settings': get_settings(),
         })
 
     def create_new(self, request: Request):
@@ -75,6 +77,7 @@ class AdminTopProductsController(Controller):
             'products': serialized_products,
             'form_action': form_action,
             'top_product_id': top_product_id,
+            'settings': get_settings(),
         })
 
     def update_existing(self, request: Request):

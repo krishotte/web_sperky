@@ -3,7 +3,7 @@
 from masonite.request import Request
 from masonite.view import View
 from masonite.controllers import Controller
-from .PortfolioController import get_user
+from .PortfolioController import get_user, get_settings
 from app.User import User
 
 
@@ -30,4 +30,5 @@ class AdminUsersController(Controller):
         return view.render('admin/users/all', {
             'user': user,
             'users': users.serialize(),
+            'settings': get_settings(),
         })

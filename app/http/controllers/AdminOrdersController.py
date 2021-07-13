@@ -7,7 +7,7 @@ from app.Order import Order
 from app.OrderState import OrderState
 from app.User import User
 from .EditPortfolioController import add_image_path
-from .PortfolioController import get_user
+from .PortfolioController import get_user, get_settings
 from app.Variant import Variant
 
 
@@ -39,6 +39,7 @@ class AdminOrdersController(Controller):
         return view.render('admin/orders/all', {
             'user': user,
             'orders': orders.serialize(),
+            'settings': get_settings(),
         })
 
     def show_one_order(self, request: Request, view: View):
@@ -69,6 +70,7 @@ class AdminOrdersController(Controller):
             'order': order.serialize(),
             'order_states': order_states,
             'products': serialized_products,
+            'settings': get_settings(),
         })
 
     def update_order_status(self, request: Request):
